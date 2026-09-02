@@ -7,12 +7,6 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f4f8; color: #1f2d3d; padding: 20px; }
-  .gate { position: fixed; inset: 0; background: #f0f4f8; display: flex; align-items: center; justify-content: center; z-index: 99; }
-  .gate-box { background: #fff; padding: 34px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); text-align: center; width: 320px; }
-  .gate-box h1 { font-size: 20px; margin-bottom: 6px; }
-  .gate-box .sub { color: #7a8ba3; font-size: 13px; margin-bottom: 16px; }
-  .gate-box input { width: 100%; padding: 10px 12px; border: 1px solid #d5dee8; border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
-  .gate-box button { width: 100%; background: #2563eb; color: #fff; border: 0; border-radius: 8px; padding: 10px; font-size: 15px; cursor: pointer; }
   .err { color: #dc2626; font-size: 13px; margin-top: 8px; min-height: 18px; }
   h1.top { font-size: 22px; margin-bottom: 4px; }
   .sub { color: #7a8ba3; font-size: 13px; }
@@ -48,17 +42,7 @@
 </style>
 </head>
 <body>
-<div class="gate" id="gate">
-  <div class="gate-box">
-    <h1>🛒 电商工作台</h1>
-    <div class="sub">请输入访问密码</div>
-    <input type="password" id="pw" placeholder="密码" autocomplete="off">
-    <button onclick="checkPw()">进入</button>
-    <div class="err" id="pwErr"></div>
-  </div>
-</div>
-
-<div id="app" style="display:none">
+<div id="app">
   <h1 class="top">🛒 电商工作台 <span class="sub">Shopee 印尼 · MULMUL</span></h1>
   <div class="upd" id="upd"></div>
   <div class="cards" id="cards"></div>
@@ -67,24 +51,7 @@
 </div>
 
 <script>
-var HASH = '87d820bbf89694dea253134841e8b656ae446ab92ea5d0f68d9f17cbba8b86dd';
-
-// 用浏览器原生 SHA-256（可靠）
-async function sha256hex(s) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-}
-async function checkPw() {
-  var v = document.getElementById('pw').value;
-  var ok = await sha256hex(v) === HASH;
-  if (ok) {
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('app').style.display = '';
-    load();
-  } else {
-    document.getElementById('pwErr').textContent = '密码错误';
-  }
-}
+load();
 function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 function fixedTable(cols, rowsHtml, cls) {
   if (!rowsHtml) return '<div class="empty">暂无数据</div>';
@@ -115,7 +82,6 @@ function load() {
       : '<div class="empty">🎉 全部已发货</div>';
   }).catch(function () { document.getElementById('upd').textContent = '数据加载失败'; });
 }
-document.getElementById('pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkPw(); });
 </script>
 </body>
 </html>
