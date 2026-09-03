@@ -81,6 +81,7 @@
     <div class="upd" id="upd"></div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
+      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag">昨日业绩 · 每 15 分钟更新</span></h2><div id="adsShopee"></div></div>
       <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-shopee"></div></div>
       <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-shopee"></div></div>
     </div>
@@ -247,11 +248,35 @@ function switchTab(plat) {
   document.querySelectorAll('.state').forEach(function (s) { s.classList.toggle('on', s.id === 'state-' + plat); });
   load(plat);
 }
+// ===== Shopee 广告面板 =====
+function fmtK(n) { return n == null ? '—' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
+function loadAds() {
+  fetch('ads_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+    var box = document.getElementById('adsShopee');
+    if (!box) return;
+    if (!a || a.expense == null) { box.innerHTML = '<div class="empty">暂无广告数据</div>'; return; }
+    var roasCls = a.roas != null && a.roas >= 1 ? 'green' : 'red';
+    var cards = [
+      ['广告花费', a.expense != null ? 'Rp ' + a.expense.toLocaleString('en-US') : '—', 'red'],
+      ['广告销售', a.sales != null ? 'Rp ' + a.sales.toLocaleString('en-US') : '—', 'green'],
+      ['ROAS(投产比)', a.roas != null ? a.roas : '—', roasCls],
+      ['广告订单', (a.orders || 0) + ' 单', ''],
+      ['曝光', fmtK(a.impressions), ''],
+      ['点击', fmtK(a.clicks) + (a.ctrPct != null ? ' (' + a.ctrPct + '%)' : ''), ''],
+      ['售出件数', (a.itemsSold || 0) + ' 件', '']
+    ];
+    box.innerHTML = '<div class="cards" style="margin:0">' + cards.map(function (x) {
+      return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
+    }).join('') + '</div><div class="upd" style="margin-top:8px">数据期间：' + (a.period === 'yesterday' ? '昨日' : a.period) + ' · 生成于 ' + esc(a.generatedAt || '') + '</div>';
+  }).catch(function () { var box = document.getElementById('adsShopee'); if (box) box.innerHTML = '<div class="empty">广告数据加载失败</div>'; });
+}
 load('shopee');
+loadAds();
 // 每 5 分钟自动刷新当前平台
 setInterval(function () {
   var cur = document.querySelector('.tab.on');
   if (cur) { cache[cur.dataset.plat] = null; load(cur.dataset.plat); }
+  loadAds();
 }, 5 * 60 * 1000);
 </script>
 </body>
