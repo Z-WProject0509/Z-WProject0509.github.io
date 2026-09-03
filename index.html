@@ -64,10 +64,10 @@
 <body>
 <div class="layout">
   <div class="main">
-    <h1 class="top">🛒 电商工作台 <span class="sub">Shopee / TikTok 印尼 · MULMUL</span></h1>
+    <h1 class="top">🛒 电商工作台 <span class="sub">站斧多店铺 · 并行同步 · 各自计时</span></h1>
     <div class="tabs">
-      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee · MULMUL</button>
-      <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok Shop · MULMUL</button>
+      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee—MULMUL</button>
+      <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
     </div>
     <div class="upd" id="upd"></div>
     <div id="state-shopee" class="state on">
@@ -112,10 +112,11 @@ function stName(s) {
   return m[s] || s;
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
-var PLAT_NAME = { shopee: 'Shopee', tk: 'TikTok Shop' };
+var PLAT_NAME = { shopee: 'Shopee—MULMUL', tk: 'TikTok—MULMUL' };
 var cache = {};
 function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
 function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
+function storeNameOf(plat, d) { return (d && d.storeName) ? d.storeName : PLAT_NAME[plat]; }
 
 function renderSide(plat, d) {
   var c = d.orders || {};
@@ -123,9 +124,13 @@ function renderSide(plat, d) {
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var fx = d.fx || null;
   var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
-  document.getElementById('upd').textContent = PLAT_NAME[plat] + ' · MULMUL — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新';
+  var sName = storeNameOf(plat, d);
+  var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
+  var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
+  if (tabEl) tabEl.textContent = sName;
+  document.getElementById('upd').textContent = sName + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
-    '<div class="snap-row"><span class="k">平台</span><span class="v">' + PLAT_NAME[plat] + ' · MULMUL</span></div>' +
+    '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(sName) + '</span></div>' +
     '<div class="snap-row"><span class="k">订单总数</span><span class="v">' + (c.count || 0) + ' 单</span></div>' +
     '<div class="snap-row"><span class="k">取消订单</span><span class="v' + (cancelled ? ' red' : '') + '">' + cancelled + ' 单</span></div>' +
     '<div class="snap-row"><span class="k">总销售额</span><span class="v">' + fmtRp(c.amountLocal) + '</span></div>' +
