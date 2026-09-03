@@ -67,9 +67,21 @@
   .fx-calc .fxc-row { display: flex; align-items: center; gap: 8px; font-size: 14px; margin: 6px 0; }
   .fx-calc select, .fx-calc input { padding: 6px 8px; border: 1px solid #d7dee8; border-radius: 6px; font-size: 14px; flex: 1; min-width: 0; }
   .fx-calc .fxr { color: #16a34a; font-size: 18px; }
-  .ads-periods { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .ads-periods .ap { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
-  .ads-periods .ap.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
+  .rg-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 12px; }
+  .rg-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+  .rg-presets .rp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
+  .rg-presets .rp.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
+  .rg-presets .rp.apply { background: #f59e0b; border-color: #f59e0b; color: #fff; font-weight: 700; }
+  .rg-custom { display: flex; gap: 6px; align-items: center; }
+  .rg-custom input[type=date] { padding: 5px 8px; border: 1px solid #d7dee8; border-radius: 8px; font-size: 13px; background: #fff; }
+  .plat-btns { display: flex; gap: 6px; }
+  .plat-btns .sp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
+  .plat-btns .sp.on { background: #dc2626; border-color: #dc2626; color: #fff; }
+  .srow { font-size: 12.5px; color: #475569; border-bottom: 1px dashed #eef2f7; padding: 4px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .srow b { color: #0e2a47; }
+  .areanav { display: flex; gap: 8px; margin: 14px 0 4px; flex-wrap: wrap; }
+  .areanav a.an { padding: 9px 20px; border-radius: 10px; background: #dde5ee; color: #4b5d71; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; }
+  .areanav a.an.on { background: #0e2a47; color: #fff; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
@@ -77,21 +89,60 @@
 <div class="layout">
   <div class="main">
     <h1 class="top">🛒 电商工作台 <span class="sub">站斧多店铺 · 并行同步 · 各自计时</span></h1>
+    <div class="areanav">
+      <a class="an on" href="index.html">📦 订单发货</a>
+      <a class="an" href="store.html">📊 店铺数据</a>
+      <a class="an" href="finance.html">💰 财务</a>
+    </div>
     <div class="tabs">
       <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee—MULMUL</button>
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
     </div>
     <div class="upd" id="upd"></div>
+    <!-- 全局：店铺销售统计（可自选 日/周/月/任意区间） -->
+    <div class="panel">
+      <h2>📊 店铺每日销售统计 <span class="tag" id="salesTag">定型留存 · 自选区间</span></h2>
+      <div class="rg-head">
+        <div class="plat-btns" id="salesPlatBtns">
+          <button class="sp on" data-plat="all">双平台合计</button>
+          <button class="sp" data-plat="Shopee">Shopee</button>
+          <button class="sp" data-plat="TikTok">TikTok</button>
+        </div>
+        <div class="rg-presets" id="salesPresets">
+          <button class="rp on" data-p="yesterday">昨日</button>
+          <button class="rp" data-p="today">今天</button>
+          <button class="rp" data-p="thisWeek">本周</button>
+          <button class="rp" data-p="lastWeek">上周</button>
+          <button class="rp" data-p="thisMonth">本月</button>
+          <button class="rp" data-p="lastMonth">上月</button>
+          <button class="rp" data-p="7d">近7天</button>
+          <button class="rp" data-p="30d">近30天</button>
+        </div>
+        <div class="rg-custom">
+          <input type="date" id="salesFrom"> ~ <input type="date" id="salesTo">
+          <button class="rp apply" id="salesApply">查区间</button>
+        </div>
+      </div>
+      <div id="salesStats"></div>
+    </div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
-      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag" id="adsTag">周期统计 · GMT+7 自然日</span></h2>
-        <div class="ads-periods" id="adsPeriodBtns">
-          <button class="ap on" data-p="yesterday">昨日</button>
-          <button class="ap" data-p="today">今天</button>
-          <button class="ap" data-p="last7d">近7天</button>
-          <button class="ap" data-p="last30d">近30天</button>
-          <button class="ap" data-p="thisMonth">本月</button>
-          <button class="ap" data-p="prevMonth">上月</button>
+      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag" id="adsTag">GMT+7 定型 · 留存半年</span></h2>
+        <div class="rg-head">
+          <div class="rg-presets" id="adsPresets">
+            <button class="rp on" data-p="yesterday">昨日</button>
+            <button class="rp" data-p="today">今天</button>
+            <button class="rp" data-p="thisWeek">本周</button>
+            <button class="rp" data-p="lastWeek">上周</button>
+            <button class="rp" data-p="thisMonth">本月</button>
+            <button class="rp" data-p="lastMonth">上月</button>
+            <button class="rp" data-p="7d">近7天</button>
+            <button class="rp" data-p="30d">近30天</button>
+          </div>
+          <div class="rg-custom">
+            <input type="date" id="adsFrom"> ~ <input type="date" id="adsTo">
+            <button class="rp apply" id="adsApply">查区间</button>
+          </div>
         </div>
         <div id="adsShopee"></div>
       </div>
@@ -261,56 +312,159 @@ function switchTab(plat) {
   document.querySelectorAll('.state').forEach(function (s) { s.classList.toggle('on', s.id === 'state-' + plat); });
   load(plat);
 }
-// ===== Shopee 广告面板（周期统计，源 ads_summary.json）=====
+// ===== 通用区间工具（销售 & 广告共用）=====
 function fmtK(n) { return n == null ? '—' : n >= 1000000 ? (n / 1000000).toFixed(2) + 'm' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(Math.round(n)); }
-var adsPeriod = 'yesterday';
-var adsSummary = null;
-var ADS_LABEL = { yesterday: '昨日', today: '今天', last7d: '近7天', last30d: '近30天', thisMonth: '本月', prevMonth: '上月' };
-function adsRowCards(p, d) {
-  if (!d || (d.expense == null && d.sales == null)) return '<div class="empty">该周期暂无广告数据</div>';
-  var daysNote = d.days && d.days > 1 ? '（覆盖 ' + d.days + ' 天）' : '';
-  var roasCls = d.roas != null && d.roas >= 1 ? 'green' : 'red';
+function todayLocal() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function addDay(yyyymmdd, n) { var d = new Date(yyyymmdd + 'T00:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function mondayOf(yyyymmdd) { var d = new Date(yyyymmdd + 'T00:00:00'); var w = (d.getDay() + 6) % 7; return addDay(yyyymmdd, -w); }
+function monthFirst(yyyymmdd) { return yyyymmdd.slice(0, 8) + '01'; }
+function prevMonthRange(fromStr) {
+  var f = monthFirst(fromStr);
+  var fD = new Date(f + 'T00:00:00'); fD.setMonth(fD.getMonth() - 1);
+  var pf = fD.getFullYear() + '-' + String(fD.getMonth() + 1).padStart(2, '0') + '-01';
+  var pe = addDay(f, -1);
+  return { from: pf, to: pe };
+}
+// 预设 → [from,to]（含两端）。today 指本地自然日（广告为 GMT+7 时区说明见下方 tag）
+function presetRange(p) {
+  var t = todayLocal();
+  if (p === 'today') return { from: t, to: t };
+  if (p === 'yesterday') { var y = addDay(t, -1); return { from: y, to: y }; }
+  if (p === '7d') return { from: addDay(t, -6), to: t };
+  if (p === '30d') return { from: addDay(t, -29), to: t };
+  if (p === 'thisWeek') { var mw = mondayOf(t); return { from: mw, to: t }; }
+  if (p === 'lastWeek') { var lw = addDay(mondayOf(t), -1); return { from: addDay(lw, -6), to: lw }; }
+  if (p === 'thisMonth') return { from: monthFirst(t), to: t };
+  if (p === 'lastMonth') return prevMonthRange(t);
+  return null;
+}
+var RANGE_LABEL = { today: '今天', yesterday: '昨日', thisWeek: '本周', lastWeek: '上周', thisMonth: '本月', lastMonth: '上月', '7d': '近7天', '30d': '近30天' };
+// 绑定一组预设按钮 + date input + 应用键，返回当前 [from,to]
+function makeRangePicker(btnSel, fromId, toId, applyId, onPick) {
+  var fromEl = document.getElementById(fromId), toEl = document.getElementById(toId);
+  function set(p) {
+    var rg = presetRange(p);
+    if (rg) { fromEl.value = rg.from; toEl.value = rg.to; }
+    document.querySelectorAll(btnSel).forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); });
+    onPick(rg);
+  }
+  document.querySelectorAll(btnSel).forEach(function (b) {
+    b.addEventListener('click', function () { set(b.getAttribute('data-p')); });
+  });
+  document.getElementById(applyId).addEventListener('click', function () {
+    if (fromEl.value && toEl.value) {
+      document.querySelectorAll(btnSel).forEach(function (x) { x.classList.remove('on'); });
+      onPick({ from: fromEl.value, to: toEl.value });
+    }
+  });
+  // 默认昨日
+  var rg = presetRange('yesterday');
+  fromEl.value = rg.from; toEl.value = rg.to;
+  return { set: set };
+}
+function rangeOk(rg) { return rg && rg.from && rg.to && rg.from <= rg.to; }
+// 明细行（按日排列区间内）
+function listDays(daily, rg) { return (daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; }); }
+
+// ===== 店铺销售统计（sales_summary.json，本地按区间聚合）=====
+var salesSummary = null;
+var salesPlat = 'all';
+var salesPk = null;
+function salesCards(rows, rg, lbl) {
+  var a = rows.reduce(function (s, r) { s.orders += r.orders; s.qty += r.totalQty; s.rp += r.amountLocal; s.cny += r.amountCny || 0; s.inc += r.incomeLocal || 0; return s; }, { orders: 0, qty: 0, rp: 0, cny: 0, inc: 0 });
+  var days = rows.length;
+  var platNote = salesPlat === 'all' ? '双平台' : (salesPlat === 'Shopee' ? 'Shopee' : 'TikTok');
+  if (!days) return '<div class="empty">该区间暂无销售数据</div>';
   var cards = [
-    ['广告花费', d.expense != null ? 'Rp ' + d.expense.toLocaleString('en-US') : '—', 'red'],
-    ['广告销售', d.sales != null ? 'Rp ' + d.sales.toLocaleString('en-US') : '—', 'green'],
-    ['ROAS(投产比)', d.roas != null ? d.roas : '—', roasCls],
-    ['广告订单', (d.orders || 0) + ' 单', ''],
-    ['曝光', fmtK(d.impressions), ''],
-    ['点击', fmtK(d.clicks) + (d.ctrPct != null ? ' (' + d.ctrPct + '%)' : ''), ''],
-    ['售出件数', (d.itemsSold || 0) + ' 件', ''],
-    ['券抵扣', d.voucherAmount != null ? 'Rp ' + d.voucherAmount.toLocaleString('en-US') : '—', '']
+    ['销售单数', a.orders + ' 单', ''],
+    ['售出件数', a.qty + ' 件', ''],
+    ['销售金额', 'Rp ' + Math.round(a.rp).toLocaleString('en-US'), 'green'],
+    ['折合人民币', '≈¥ ' + Math.round(a.cny).toLocaleString('en-US'), 'green'],
+    ['应到账', a.inc ? 'Rp ' + Math.round(a.inc).toLocaleString('en-US') : '—', '']
   ];
+  var detail = rows.slice().reverse().map(function (r) {
+    return '<div class="srow">' + r.date + ' · ' + r.platform + ' · <b>' + r.orders + '单 ' + r.totalQty + '件</b> · Rp ' + Math.round(r.amountLocal).toLocaleString('en-US') + (r.amountCny ? ' (≈¥' + Math.round(r.amountCny).toLocaleString('en-US') + ')' : '') + (r.incomeLocal ? ' · 应到账 Rp' + Math.round(r.incomeLocal).toLocaleString('en-US') : '') + '</div>';
+  }).join('');
   return '<div class="cards" style="margin:0">' + cards.map(function (x) {
     return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
-  }).join('') + '</div><div class="upd" style="margin-top:8px">' + daysNote + '数据更新于 ' + esc(adsSummary ? adsSummary.updatedAt : '') + '</div>';
+  }).join('') + '</div><div class="upd" style="margin:8px 0 4px">' + lbl + '（' + platNote + ' · 覆盖 ' + days + ' 天：' + rg.from + ' ~ ' + rg.to + '）</div>' + detail;
+}
+function renderSales(rg, lbl) {
+  var box = document.getElementById('salesStats');
+  if (!salesSummary || !rangeOk(rg)) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  var rows = listDays(salesSummary.daily, rg);
+  if (salesPlat !== 'all') rows = rows.filter(function (r) { return r.platform === salesPlat; });
+  box.innerHTML = salesCards(rows, rg, lbl);
+  document.getElementById('salesTag').textContent = (salesPlat === 'all' ? '双平台' : salesPlat) + ' ' + (lbl || (rg.from === rg.to ? '单日' : '区间')) + ' · 定型留存';
+}
+function loadSales() {
+  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+    salesSummary = a;
+    if (salesPk) salesPk.set('yesterday');
+    renderSales(presetRange('yesterday'), RANGE_LABEL['yesterday']);
+  }).catch(function () { var box = document.getElementById('salesStats'); if (box) box.innerHTML = '<div class="empty">销售数据加载失败</div>'; });
+}
+// 平台切换
+document.getElementById('salesPlatBtns').addEventListener('click', function (e) {
+  var b = e.target;
+  if (b.classList && b.classList.contains('sp')) {
+    document.querySelectorAll('.sp').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    salesPlat = b.getAttribute('data-plat');
+    var curBtn = document.querySelector('#salesPresets .rp.on');
+    if (curBtn) renderSales(presetRange(curBtn.getAttribute('data-p')), RANGE_LABEL[curBtn.getAttribute('data-p')]);
+  }
+});
+
+// ===== Shopee 广告面板（ads_summary.json daily 自选区间聚合）=====
+var adsSummary = null;
+function adsCards(rows, rg, lbl) {
+  if (!rows.length) return '<div class="empty">该区间暂无广告数据</div>';
+  var a = rows.reduce(function (s, r) { s.imp += r.impressions || 0; s.clk += r.clicks || 0; s.ord += r.orders || 0; s.item += r.itemsSold || 0; s.sales += r.sales || 0; s.exp += r.expense || 0; s.vou += r.voucherAmount || 0; return s; }, { imp: 0, clk: 0, ord: 0, item: 0, sales: 0, exp: 0, vou: 0 });
+  var roas = a.exp > 0 ? Math.round((a.sales / a.exp) * 100) / 100 : null;
+  var ctr = a.imp > 0 ? Math.round((a.clk / a.imp) * 10000) / 100 : null;
+  var cards = [
+    ['广告花费', 'Rp ' + a.exp.toLocaleString('en-US'), 'red'],
+    ['广告销售', 'Rp ' + Math.round(a.sales).toLocaleString('en-US'), 'green'],
+    ['ROAS(投产比)', roas != null ? roas : '—', roas != null && roas >= 1 ? 'green' : 'red'],
+    ['广告订单', a.ord + ' 单', ''],
+    ['曝光', fmtK(a.imp), ''],
+    ['点击', fmtK(a.clk) + (ctr != null ? ' (' + ctr + '%)' : ''), ''],
+    ['售出件数', a.item + ' 件', ''],
+    ['券抵扣', a.vou ? 'Rp ' + a.vou.toLocaleString('en-US') : '—', '']
+  ];
+  var detail = rows.slice().reverse().map(function (r) {
+    return '<div class="srow">' + r.date + ' · <b>花费Rp' + (r.expense || 0).toLocaleString('en-US') + ' / 销售Rp' + Math.round(r.sales || 0).toLocaleString('en-US') + '</b>' + (r.roas != null ? ' · ROAS ' + r.roas : '') + (r.impressions ? ' · 曝光' + fmtK(r.impressions) : '') + (r.orders ? ' · ' + r.orders + '单' : '') + '</div>';
+  }).join('');
+  return '<div class="cards" style="margin:0">' + cards.map(function (x) {
+    return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
+  }).join('') + '</div><div class="upd" style="margin:8px 0 4px">' + lbl + '（覆盖 ' + rows.length + ' 天：' + rg.from + ' ~ ' + rg.to + '，GMT+7 自然日）</div>' + detail;
+}
+function renderAds(rg, lbl) {
+  var box = document.getElementById('adsShopee');
+  if (!adsSummary || !rangeOk(rg)) { if (box) box.innerHTML = '<div class="empty">暂无广告数据</div>'; return; }
+  var rows = listDays(adsSummary.daily, rg);
+  box.innerHTML = adsCards(rows, rg, lbl);
+  document.getElementById('adsTag').textContent = (lbl || '区间') + ' · GMT+7 定型留存（6个月）';
 }
 function loadAds() {
   fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
     adsSummary = a;
-    var box = document.getElementById('adsShopee');
-    if (!box || !a || !a.periods) return;
-    box.innerHTML = adsRowCards(adsPeriod, a.periods[adsPeriod]);
-    var tag = document.getElementById('adsTag');
-    if (tag) tag.textContent = ADS_LABEL[adsPeriod] + ' · GMT+7 自然日 · 定型留存';
+    if (adsPk) adsPk.set('yesterday');
+    renderAds(presetRange('yesterday'), RANGE_LABEL['yesterday']);
   }).catch(function () { var box = document.getElementById('adsShopee'); if (box) box.innerHTML = '<div class="empty">广告数据加载失败</div>'; });
 }
-document.addEventListener('click', function (e) {
-  var b = e.target;
-  if (b && b.classList && b.classList.contains('ap')) {
-    document.querySelectorAll('.ap').forEach(function (x) { x.classList.remove('on'); });
-    b.classList.add('on');
-    adsPeriod = b.getAttribute('data-p');
-    var box = document.getElementById('adsShopee');
-    if (box && adsSummary) box.innerHTML = adsRowCards(adsPeriod, adsSummary.periods[adsPeriod]);
-  }
-});
+// 初始化区间选择器（按钮点击后自动重渲染）
+var adsPk = makeRangePicker('#adsPresets .rp', 'adsFrom', 'adsTo', 'adsApply', function (rg) { renderAds(rg, rg.from === rg.to ? '单日' : '区间'); });
+var salesPk = makeRangePicker('#salesPresets .rp', 'salesFrom', 'salesTo', 'salesApply', function (rg) { renderSales(rg, rg.from === rg.to ? '单日' : '区间'); });
 load('shopee');
 loadAds();
+loadSales();
 // 每 5 分钟自动刷新当前平台
 setInterval(function () {
   var cur = document.querySelector('.tab.on');
   if (cur) { cache[cur.dataset.plat] = null; load(cur.dataset.plat); }
-  loadAds();
+  loadAds(); loadSales();
 }, 5 * 60 * 1000);
 </script>
 </body>
