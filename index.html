@@ -136,7 +136,7 @@ function renderSide(plat, d) {
     var t = fx.updatedAt || '';
     document.getElementById('rateBox').innerHTML =
       '<div class="fx-row"><span>¥1 ≈</span><span class="big">Rp ' + Math.round(fx.idrPerCny).toLocaleString('en-US') + '</span></div>' +
-      '<div class="fx-row"><span>Rp1 ≈</span><span>¥' + (fx.cnyPerIdr * 1000).toFixed(4) + '</span></div>' +
+      '<div class="fx-row"><span>Rp1,000 ≈</span><span>¥' + (fx.cnyPerIdr * 1000).toFixed(2) + '</span></div>' +
       '<div class="fx-note">汇率更新于 ' + esc(t.replace('T', ' ').slice(0, 16)) + '<br>每 15 分钟随数据自动带上最新快照</div>';
   } else {
     document.getElementById('rateBox').innerHTML = '<div class="sub">汇率暂不可用</div>';
