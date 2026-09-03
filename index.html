@@ -7,18 +7,18 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f4f8; color: #1f2d3d; padding: 20px; }
-  .err { color: #dc2626; font-size: 13px; margin-top: 8px; min-height: 18px; }
   h1.top { font-size: 22px; margin-bottom: 4px; }
   .sub { color: #7a8ba3; font-size: 13px; }
-  .tabs { display: flex; gap: 8px; margin: 14px 0 4px; }
-  .tab { padding: 8px 18px; border-radius: 8px 8px 0 0; background: #dde5ee; color: #4b5d71; font-size: 14px; font-weight: 600; cursor: pointer; border: none; user-select: none; }
-  .tab.on { background: #fff; color: #0e2a47; box-shadow: 0 -1px 4px rgba(0,0,0,.05); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+  .tabs { display: flex; gap: 8px; margin: 14px 0 12px; }
+  .tab { padding: 8px 18px; border-radius: 8px; background: #dde5ee; color: #4b5d71; font-size: 14px; font-weight: 600; cursor: pointer; border: none; user-select: none; }
+  .tab.on { background: #0e2a47; color: #fff; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 0 0 16px; }
   .card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .card .k { font-size: 13px; color: #7a8ba3; }
-  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; }
+  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; word-break: break-all; }
   .card .v.red { color: #dc2626; }
   .card .v.green { color: #16a34a; }
+  .card .m { font-size: 11px; color: #94a3b8; margin-top: 4px; line-height: 1.6; }
   .panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .panel h2 { font-size: 16px; margin-bottom: 10px; color: #0e2a47; }
   .panel h2 .tag { font-size: 12px; color: #7a8ba3; font-weight: 400; }
@@ -41,32 +41,61 @@
   .w4 .fhead th:nth-child(3), .w4 .fbody td:nth-child(3) { width: 41%; }
   .w4 .fhead th:nth-child(4), .w4 .fbody td:nth-child(4) { width: 11%; }
   .empty { color: #94a3b8; font-size: 13px; padding: 20px 0; text-align: center; }
-  .upd { color: #94a3b8; font-size: 12px; margin: 10px 0; }
+  .upd { color: #94a3b8; font-size: 12px; margin: 0 0 10px; }
   .state { display: none; }
   .state.on { display: block; }
+  .layout { display: flex; gap: 18px; align-items: flex-start; }
+  .main { flex: 1; min-width: 0; }
+  .side { width: 300px; flex-shrink: 0; position: sticky; top: 16px; }
+  .side .panel { margin-bottom: 14px; }
+  .side .panel h2 { font-size: 14px; }
+  .snap-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px dashed #eef2f7; }
+  .snap-row:last-child { border-bottom: 0; }
+  .snap-row .k { color: #7a8ba3; }
+  .snap-row .v { font-weight: 700; color: #0e2a47; }
+  .snap-row .v.red { color: #dc2626; }
+  .snap-row .v.green { color: #16a34a; }
+  .fx-row { display: flex; align-items: baseline; gap: 6px; font-size: 13px; padding: 5px 0; }
+  .fx-row .big { font-size: 17px; font-weight: 700; color: #0e2a47; }
+  .fx-note { color: #94a3b8; font-size: 11px; margin-top: 6px; line-height: 1.7; }
+  @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
 <body>
-<div id="app">
-  <h1 class="top">🛒 电商工作台 <span class="sub">Shopee / TikTok 印尼 · MULMUL</span></h1>
-  <div class="tabs">
-    <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee · MULMUL</button>
-    <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok Shop · MULMUL</button>
+<div class="layout">
+  <div class="main">
+    <h1 class="top">🛒 电商工作台 <span class="sub">Shopee / TikTok 印尼 · MULMUL</span></h1>
+    <div class="tabs">
+      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee · MULMUL</button>
+      <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok Shop · MULMUL</button>
+    </div>
+    <div class="upd" id="upd"></div>
+    <div id="state-shopee" class="state on">
+      <div class="cards" id="cards-shopee"></div>
+      <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-shopee"></div></div>
+      <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-shopee"></div></div>
+    </div>
+    <div id="state-tk" class="state">
+      <div class="cards" id="cards-tk"></div>
+      <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-tk"></div></div>
+      <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-tk"></div></div>
+    </div>
   </div>
 
-  <div id="state-shopee" class="state on">
-    <div class="upd" id="upd-shopee"></div>
-    <div class="cards" id="cards-shopee"></div>
-    <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-shopee"></div></div>
-    <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-shopee"></div></div>
-  </div>
-
-  <div id="state-tk" class="state">
-    <div class="upd" id="upd-tk"></div>
-    <div class="cards" id="cards-tk"></div>
-    <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-tk"></div></div>
-    <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-tk"></div></div>
-  </div>
+  <!-- ===== 右侧栏 ===== -->
+  <aside class="side">
+    <div class="panel"><h2>📌 今日快照</h2><div id="sideSnapshot"><div class="empty">加载中…</div></div></div>
+    <div class="panel"><h2>💱 实时汇率</h2><div id="rateBox" class="sub"></div></div>
+    <div class="panel"><h2>ℹ️ 数据说明</h2>
+      <div class="sub" style="line-height:1.8">
+        数据来源：站斧店铺环境自动同步（只读）<br>
+        · 当日实时：最新同步结果<br>
+        · 数据每 15 分钟自动更新<br>
+        · 待发货/取消标红<br>
+        · 汇率折算仅供参考
+      </div>
+    </div>
+  </aside>
 </div>
 
 <script>
@@ -76,7 +105,6 @@ function fixedTable(cols, rowsHtml, cls) {
   return '<div class="' + cls + '"><div class="fhead"><table><thead><tr>' + cols.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr></thead></table></div>' +
     '<div class="fbody"><table><tbody>' + rowsHtml + '</tbody></table></div></div>';
 }
-// 状态中文/红色判定：TK 状态名（Awaiting shipment…）与 Shopee（To Ship…）统一
 var BAD = ['To Ship', 'To ship', 'Awaiting shipment', 'Unpaid', 'Cancelled', 'Canceled', 'Return/refund', 'Return / refund', 'Failed delivery', 'Pending'];
 function stName(s) {
   s = String(s || '');
@@ -84,36 +112,72 @@ function stName(s) {
   return m[s] || s;
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
+var PLAT_NAME = { shopee: 'Shopee', tk: 'TikTok Shop' };
+var cache = {};
+function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
+function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
+
+function renderSide(plat, d) {
+  var c = d.orders || {};
+  var st = d.statusAgg || {};
+  var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
+  var fx = d.fx || null;
+  var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
+  document.getElementById('upd').textContent = PLAT_NAME[plat] + ' · MULMUL — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新';
+  document.getElementById('sideSnapshot').innerHTML =
+    '<div class="snap-row"><span class="k">平台</span><span class="v">' + PLAT_NAME[plat] + ' · MULMUL</span></div>' +
+    '<div class="snap-row"><span class="k">订单总数</span><span class="v">' + (c.count || 0) + ' 单</span></div>' +
+    '<div class="snap-row"><span class="k">取消订单</span><span class="v' + (cancelled ? ' red' : '') + '">' + cancelled + ' 单</span></div>' +
+    '<div class="snap-row"><span class="k">总销售额</span><span class="v">' + fmtRp(c.amountLocal) + '</span></div>' +
+    '<div class="snap-row"><span class="k">折合人民币</span><span class="v green">' + fmtCny(cny) + '</span></div>' +
+    '<div class="snap-row"><span class="k">已售件数</span><span class="v">' + (c.totalQty || 0) + ' 件</span></div>' +
+    '<div class="snap-row"><span class="k">待发货</span><span class="v' + ((d.toshipCount || 0) ? ' red' : '') + '">' + (d.toshipCount || 0) + ' 单</span></div>';
+  if (fx) {
+    var t = fx.updatedAt || '';
+    document.getElementById('rateBox').innerHTML =
+      '<div class="fx-row"><span>¥1 ≈</span><span class="big">Rp ' + Math.round(fx.idrPerCny).toLocaleString('en-US') + '</span></div>' +
+      '<div class="fx-row"><span>Rp1 ≈</span><span>¥' + (fx.cnyPerIdr * 1000).toFixed(4) + '</span></div>' +
+      '<div class="fx-note">汇率更新于 ' + esc(t.replace('T', ' ').slice(0, 16)) + '<br>每 15 分钟随数据自动带上最新快照</div>';
+  } else {
+    document.getElementById('rateBox').innerHTML = '<div class="sub">汇率暂不可用</div>';
+  }
+}
+
 function render(plat, d) {
-  document.getElementById('upd-' + plat).textContent = '更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新';
+  renderSide(plat, d);
   var c = d.orders || {};
   var st = d.statusAgg || {};
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var toShip = d.toshipCount || 0;
   var fx = d.fx || null;
   var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
-  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) + ' ' + fx.updatedAt.slice(11, 16) : '';
+  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) : '';
   document.getElementById('cards-' + plat).innerHTML = [
-    ['订单总数', c.count + ' 单', ''],
+    ['订单总数', (c.count || 0) + ' 单', ''],
     ['取消订单', cancelled + ' 单', cancelled ? 'red' : ''],
-    ['总销售额', (c.amountLocal ? 'Rp ' + Math.round(c.amountLocal).toLocaleString('en-US') : '—'), 'green'],
-    ['折合人民币', (cny ? '≈ ¥' + Math.round(cny).toLocaleString('en-US') + (fx && fx.idrPerCny ? '<div class="k" style="font-size:11px">¥1≈Rp' + Math.round(fx.idrPerCny).toLocaleString('en-US') + ' · ' + esc(fxNote) + '</div>' : '') : '—'), cny ? 'green' : ''],
-    ['已售件数', c.totalQty + ' 件', ''],
+    ['总销售额', fmtRp(c.amountLocal), 'green'],
+    ['折合人民币', fmtCny(cny), cny ? 'green' : ''],
+    ['已售件数', (c.totalQty || 0) + ' 件', ''],
     ['待发货', toShip + ' 单', toShip ? 'red' : '']
-  ].map(function (x) { return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>'; }).join('');
+  ].map(function (x) {
+    var extra = x[0] === '折合人民币' && fx ? '<div class="m">¥1 ≈ Rp ' + Math.round(fx.idrPerCny).toLocaleString('en-US') + '<br>' + esc(fxNote) + '</div>' : '';
+    return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div>' + extra + '</div>';
+  }).join('');
   document.getElementById('recentOrders-' + plat).innerHTML = fixedTable(['#', '下单时间', '订单号', 'SKU', '件数', '销售金额', '应到账', '状态'],
     (d.recent || []).map(function (o, i) {
-      var incCell = o.inc != null && o.inc !== '' ? 'Rp ' + Number(o.inc).toLocaleString('en-US') : (plat === 'tk' ? '—' : '—');
-      return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + esc(o.id) + '</td><td>' + esc(o.sku) + '</td><td>' + (o.qty || '') + '</td><td>' + (o.amt != null ? 'Rp ' + Number(o.amt).toLocaleString('en-US') : '—') + '</td><td>' + incCell + '</td><td' + (isBad(o.st) ? ' class="st-red"' : '') + '>' + esc(stName(o.st)) + '</td></tr>';
+      var incCell = o.inc != null && o.inc !== '' ? fmtRp(o.inc) : '—';
+      return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + esc(o.id) + '</td><td>' + esc(o.sku) + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amt) + '</td><td>' + incCell + '</td><td' + (isBad(o.st) ? ' class="st-red"' : '') + '>' + esc(stName(o.st)) + '</td></tr>';
     }).join(''), 'w8');
   document.getElementById('toshipOrders-' + plat).innerHTML = (d.toship && d.toship.length) ? fixedTable(['#', '下单时间', '订单号', '状态'],
     d.toship.map(function (o, i) { return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + esc(o.id) + '</td><td class="st-red">' + esc(stName(o.st || '待发货')) + '</td></tr>'; }).join(''), 'w4')
     : '<div class="empty">🎉 全部已发货</div>';
 }
 function load(plat) {
-  fetch((plat === 'tk' ? 'tk.json' : 'data.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
-    render(plat, d);
-  }).catch(function () { document.getElementById('upd-' + plat).textContent = '数据加载失败'; });
+  var url = plat === 'tk' ? 'tk.json' : 'data.json';
+  if (cache[plat]) { render(plat, cache[plat]); return; }
+  fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
+    cache[plat] = d; render(plat, d);
+  }).catch(function () { document.getElementById('upd').textContent = '数据加载失败'; });
 }
 function switchTab(plat) {
   document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('on', b.dataset.plat === plat); });
@@ -121,6 +185,11 @@ function switchTab(plat) {
   load(plat);
 }
 load('shopee');
+// 每 5 分钟自动刷新当前平台
+setInterval(function () {
+  var cur = document.querySelector('.tab.on');
+  if (cur) { cache[cur.dataset.plat] = null; load(cur.dataset.plat); }
+}, 5 * 60 * 1000);
 </script>
 </body>
 </html>
