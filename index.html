@@ -28,6 +28,7 @@
   .fhead th, .fbody td { padding: 7px 8px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
   .fbody td { border-bottom: 1px solid #eef2f7; }
   .st-red { color: #dc2626; font-weight: 700; }
+  .sample-tag { display: inline-block; background: #dc2626; color: #fff; font-size: 10px; line-height: 1; padding: 2px 4px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
   .w8 .fhead th:nth-child(1), .w8 .fbody td:nth-child(1) { width: 5%; }
   .w8 .fhead th:nth-child(2), .w8 .fbody td:nth-child(2) { width: 15%; }
   .w8 .fhead th:nth-child(3), .w8 .fbody td:nth-child(3) { width: 15%; }
@@ -124,6 +125,12 @@ var cache = {};
 function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
 function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
 function storeNameOf(plat, d) { return (d && d.storeName) ? d.storeName : PLAT_NAME[plat]; }
+// 订单号单元格：样品单（Free sample）在订单号后加红色"样品"角标
+function idCell(o) {
+  var s = esc(o.id);
+  if (o.sample) s += ' <span class="sample-tag">样品</span>';
+  return s;
+}
 
 // 从 fx.list 取某币种条目（新结构）
 function fxItem(fx, code) {
@@ -217,10 +224,10 @@ function render(plat, d) {
   document.getElementById('recentOrders-' + plat).innerHTML = fixedTable(['#', '下单时间', '订单号', 'SKU', '件数', '销售金额', '应到账', '状态'],
     (d.recent || []).map(function (o, i) {
       var incCell = o.inc != null && o.inc !== '' ? fmtRp(o.inc) : '—';
-      return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + esc(o.id) + '</td><td>' + esc(o.sku) + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amt) + '</td><td>' + incCell + '</td><td' + (isBad(o.st) ? ' class="st-red"' : '') + '>' + esc(stName(o.st)) + '</td></tr>';
+      return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + idCell(o) + '</td><td>' + esc(o.sku) + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amt) + '</td><td>' + incCell + '</td><td' + (isBad(o.st) ? ' class="st-red"' : '') + '>' + esc(stName(o.st)) + '</td></tr>';
     }).join(''), 'w8');
   document.getElementById('toshipOrders-' + plat).innerHTML = (d.toship && d.toship.length) ? fixedTable(['#', '下单时间', '订单号', '状态'],
-    d.toship.map(function (o, i) { return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + esc(o.id) + '</td><td class="st-red">' + esc(stName(o.st || '待发货')) + '</td></tr>'; }).join(''), 'w4')
+    d.toship.map(function (o, i) { return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + idCell(o) + '</td><td class="st-red">' + esc(stName(o.st || '待发货')) + '</td></tr>'; }).join(''), 'w4')
     : '<div class="empty">🎉 全部已发货</div>';
 }
 function load(plat) {
