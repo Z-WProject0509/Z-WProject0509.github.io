@@ -90,10 +90,14 @@ function render(plat, d) {
   var st = d.statusAgg || {};
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var toShip = d.toshipCount || 0;
+  var fx = d.fx || null;
+  var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
+  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) + ' ' + fx.updatedAt.slice(11, 16) : '';
   document.getElementById('cards-' + plat).innerHTML = [
     ['订单总数', c.count + ' 单', ''],
     ['取消订单', cancelled + ' 单', cancelled ? 'red' : ''],
     ['总销售额', (c.amountLocal ? 'Rp ' + Math.round(c.amountLocal).toLocaleString('en-US') : '—'), 'green'],
+    ['折合人民币', (cny ? '≈ ¥' + Math.round(cny).toLocaleString('en-US') + (fx && fx.idrPerCny ? '<div class="k" style="font-size:11px">¥1≈Rp' + Math.round(fx.idrPerCny).toLocaleString('en-US') + ' · ' + esc(fxNote) + '</div>' : '') : '—'), cny ? 'green' : ''],
     ['已售件数', c.totalQty + ' 件', ''],
     ['待发货', toShip + ' 单', toShip ? 'red' : '']
   ].map(function (x) { return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>'; }).join('');
