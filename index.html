@@ -67,6 +67,9 @@
   .fx-calc .fxc-row { display: flex; align-items: center; gap: 8px; font-size: 14px; margin: 6px 0; }
   .fx-calc select, .fx-calc input { padding: 6px 8px; border: 1px solid #d7dee8; border-radius: 6px; font-size: 14px; flex: 1; min-width: 0; }
   .fx-calc .fxr { color: #16a34a; font-size: 18px; }
+  .ads-periods { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .ads-periods .ap { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
+  .ads-periods .ap.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
@@ -81,7 +84,17 @@
     <div class="upd" id="upd"></div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
-      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag">昨日业绩 · 每 15 分钟更新</span></h2><div id="adsShopee"></div></div>
+      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag" id="adsTag">周期统计 · GMT+7 自然日</span></h2>
+        <div class="ads-periods" id="adsPeriodBtns">
+          <button class="ap on" data-p="yesterday">昨日</button>
+          <button class="ap" data-p="today">今天</button>
+          <button class="ap" data-p="last7d">近7天</button>
+          <button class="ap" data-p="last30d">近30天</button>
+          <button class="ap" data-p="thisMonth">本月</button>
+          <button class="ap" data-p="prevMonth">上月</button>
+        </div>
+        <div id="adsShopee"></div>
+      </div>
       <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-shopee"></div></div>
       <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-shopee"></div></div>
     </div>
@@ -248,28 +261,49 @@ function switchTab(plat) {
   document.querySelectorAll('.state').forEach(function (s) { s.classList.toggle('on', s.id === 'state-' + plat); });
   load(plat);
 }
-// ===== Shopee 广告面板 =====
-function fmtK(n) { return n == null ? '—' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
+// ===== Shopee 广告面板（周期统计，源 ads_summary.json）=====
+function fmtK(n) { return n == null ? '—' : n >= 1000000 ? (n / 1000000).toFixed(2) + 'm' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(Math.round(n)); }
+var adsPeriod = 'yesterday';
+var adsSummary = null;
+var ADS_LABEL = { yesterday: '昨日', today: '今天', last7d: '近7天', last30d: '近30天', thisMonth: '本月', prevMonth: '上月' };
+function adsRowCards(p, d) {
+  if (!d || (d.expense == null && d.sales == null)) return '<div class="empty">该周期暂无广告数据</div>';
+  var daysNote = d.days && d.days > 1 ? '（覆盖 ' + d.days + ' 天）' : '';
+  var roasCls = d.roas != null && d.roas >= 1 ? 'green' : 'red';
+  var cards = [
+    ['广告花费', d.expense != null ? 'Rp ' + d.expense.toLocaleString('en-US') : '—', 'red'],
+    ['广告销售', d.sales != null ? 'Rp ' + d.sales.toLocaleString('en-US') : '—', 'green'],
+    ['ROAS(投产比)', d.roas != null ? d.roas : '—', roasCls],
+    ['广告订单', (d.orders || 0) + ' 单', ''],
+    ['曝光', fmtK(d.impressions), ''],
+    ['点击', fmtK(d.clicks) + (d.ctrPct != null ? ' (' + d.ctrPct + '%)' : ''), ''],
+    ['售出件数', (d.itemsSold || 0) + ' 件', ''],
+    ['券抵扣', d.voucherAmount != null ? 'Rp ' + d.voucherAmount.toLocaleString('en-US') : '—', '']
+  ];
+  return '<div class="cards" style="margin:0">' + cards.map(function (x) {
+    return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
+  }).join('') + '</div><div class="upd" style="margin-top:8px">' + daysNote + '数据更新于 ' + esc(adsSummary ? adsSummary.updatedAt : '') + '</div>';
+}
 function loadAds() {
-  fetch('ads_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+  fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+    adsSummary = a;
     var box = document.getElementById('adsShopee');
-    if (!box) return;
-    if (!a || a.expense == null) { box.innerHTML = '<div class="empty">暂无广告数据</div>'; return; }
-    var roasCls = a.roas != null && a.roas >= 1 ? 'green' : 'red';
-    var cards = [
-      ['广告花费', a.expense != null ? 'Rp ' + a.expense.toLocaleString('en-US') : '—', 'red'],
-      ['广告销售', a.sales != null ? 'Rp ' + a.sales.toLocaleString('en-US') : '—', 'green'],
-      ['ROAS(投产比)', a.roas != null ? a.roas : '—', roasCls],
-      ['广告订单', (a.orders || 0) + ' 单', ''],
-      ['曝光', fmtK(a.impressions), ''],
-      ['点击', fmtK(a.clicks) + (a.ctrPct != null ? ' (' + a.ctrPct + '%)' : ''), ''],
-      ['售出件数', (a.itemsSold || 0) + ' 件', '']
-    ];
-    box.innerHTML = '<div class="cards" style="margin:0">' + cards.map(function (x) {
-      return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
-    }).join('') + '</div><div class="upd" style="margin-top:8px">数据期间：' + (a.period === 'yesterday' ? '昨日' : a.period) + ' · 生成于 ' + esc(a.generatedAt || '') + '</div>';
+    if (!box || !a || !a.periods) return;
+    box.innerHTML = adsRowCards(adsPeriod, a.periods[adsPeriod]);
+    var tag = document.getElementById('adsTag');
+    if (tag) tag.textContent = ADS_LABEL[adsPeriod] + ' · GMT+7 自然日 · 定型留存';
   }).catch(function () { var box = document.getElementById('adsShopee'); if (box) box.innerHTML = '<div class="empty">广告数据加载失败</div>'; });
 }
+document.addEventListener('click', function (e) {
+  var b = e.target;
+  if (b && b.classList && b.classList.contains('ap')) {
+    document.querySelectorAll('.ap').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    adsPeriod = b.getAttribute('data-p');
+    var box = document.getElementById('adsShopee');
+    if (box && adsSummary) box.innerHTML = adsRowCards(adsPeriod, adsSummary.periods[adsPeriod]);
+  }
+});
 load('shopee');
 loadAds();
 // 每 5 分钟自动刷新当前平台
