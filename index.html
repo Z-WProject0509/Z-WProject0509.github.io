@@ -55,9 +55,16 @@
   .snap-row .v { font-weight: 700; color: #0e2a47; }
   .snap-row .v.red { color: #dc2626; }
   .snap-row .v.green { color: #16a34a; }
-  .fx-row { display: flex; align-items: baseline; gap: 6px; font-size: 13px; padding: 5px 0; }
-  .fx-row .big { font-size: 17px; font-weight: 700; color: #0e2a47; }
+  .fx-row { display: flex; align-items: baseline; gap: 6px; font-size: 13px; padding: 4px 0; border-bottom: 1px dashed #eef2f7; }
+  .fx-row .k2 { color: #7a8ba3; font-size: 12px; width: 88px; flex-shrink: 0; }
+  .fx-row .big { font-size: 16px; font-weight: 700; color: #0e2a47; }
+  .fx-row .lbl { color: #94a3b8; font-size: 11px; margin-left: auto; }
   .fx-note { color: #94a3b8; font-size: 11px; margin-top: 6px; line-height: 1.7; }
+  .fx-calc { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+  .fx-calc .fxc-title { font-size: 12px; color: #0e2a47; font-weight: 700; margin-bottom: 6px; }
+  .fx-calc .fxc-row { display: flex; align-items: center; gap: 8px; font-size: 14px; margin: 6px 0; }
+  .fx-calc select, .fx-calc input { padding: 6px 8px; border: 1px solid #d7dee8; border-radius: 6px; font-size: 14px; flex: 1; min-width: 0; }
+  .fx-calc .fxr { color: #16a34a; font-size: 18px; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
@@ -118,12 +125,41 @@ function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleStr
 function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
 function storeNameOf(plat, d) { return (d && d.storeName) ? d.storeName : PLAT_NAME[plat]; }
 
+// 从 fx.list 取某币种条目（新结构）
+function fxItem(fx, code) {
+  if (fx && fx.list) { for (var i = 0; i < fx.list.length; i++) { if (fx.list[i].code === code) return fx.list[i]; } }
+  return null;
+}
+function calcFx() {
+  try {
+    var list = window.__fxList || [];
+    var from = document.getElementById('fxFrom');
+    var amtEl = document.getElementById('fxAmount');
+    if (!from || !amtEl) return;
+    var code = from.value;
+    var amt = parseFloat(amtEl.value);
+    if (isNaN(amt)) { document.getElementById('fxResult').textContent = '—'; return; }
+    var item = null;
+    for (var i = 0; i < list.length; i++) { if (list[i].code === code) { item = list[i]; break; } }
+    if (!item) return;
+    var out;
+    if (code === 'CNY') {
+      // 输入人民币 → 显示折算成其他币不直观，直接显示人民币
+      out = '¥ ' + amt.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    } else {
+      out = '¥ ' + (amt * item.cnyPer).toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+    document.getElementById('fxResult').textContent = out;
+  } catch (e) {}
+}
+
 function renderSide(plat, d) {
   var c = d.orders || {};
   var st = d.statusAgg || {};
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var fx = d.fx || null;
-  var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
+  var idrFx = fxItem(fx, 'IDR');
+  var cny = fx && c.amountLocal != null && idrFx ? c.amountLocal * idrFx.cnyPer : null;
   var sName = storeNameOf(plat, d);
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
@@ -137,12 +173,21 @@ function renderSide(plat, d) {
     '<div class="snap-row"><span class="k">折合人民币</span><span class="v green">' + fmtCny(cny) + '</span></div>' +
     '<div class="snap-row"><span class="k">已售件数</span><span class="v">' + (c.totalQty || 0) + ' 件</span></div>' +
     '<div class="snap-row"><span class="k">待发货</span><span class="v' + ((d.toshipCount || 0) ? ' red' : '') + '">' + (d.toshipCount || 0) + ' 单</span></div>';
-  if (fx) {
-    var t = fx.updatedAt || '';
+  if (fx && fx.list && fx.list.length) {
+    var chips = fx.list.filter(function (x) { return x.code !== 'CNY'; }).map(function (x) {
+      return '<div class="fx-row"><span class="k2">¥1 ≈ ' + esc(x.symbol) + '</span><span class="big">' + x.perCny.toLocaleString('en-US') + '</span><span class="lbl">' + esc(x.label) + '</span></div>';
+    }).join('');
     document.getElementById('rateBox').innerHTML =
-      '<div class="fx-row"><span>¥1 ≈</span><span class="big">Rp ' + Math.round(fx.idrPerCny).toLocaleString('en-US') + '</span></div>' +
-      '<div class="fx-row"><span>Rp1,000 ≈</span><span>¥' + (fx.cnyPerIdr * 1000).toFixed(2) + '</span></div>' +
-      '<div class="fx-note">汇率更新于 ' + esc(t.replace('T', ' ').slice(0, 16)) + '<br>每 15 分钟随数据自动带上最新快照</div>';
+      chips +
+      '<div class="fx-note">汇率实时（每 15 分钟随数据更新）· 更新于 ' + esc(fx.updatedAt.replace('T', ' ').slice(0, 16)) + '</div>' +
+      '<div class="fx-calc"><div class="fxc-title">💱 换算（币种可选 · 汇率实时）</div>' +
+      '<div class="fxc-row"><select id="fxFrom"></select><input id="fxAmount" type="number" placeholder="金额" value="100"></div>' +
+      '<div class="fxc-row">≈ <b id="fxResult" class="fxr">—</b></div></div>';
+    var sel = document.getElementById('fxFrom');
+    sel.innerHTML = fx.list.map(function (x) { return '<option value="' + x.code + '">' + esc(x.label) + ' (' + esc(x.symbol) + ')</option>'; }).join('');
+    window.__fxList = fx.list;
+    sel.onchange = calcFx; document.getElementById('fxAmount').oninput = calcFx;
+    calcFx();
   } else {
     document.getElementById('rateBox').innerHTML = '<div class="sub">汇率暂不可用</div>';
   }
@@ -155,7 +200,8 @@ function render(plat, d) {
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var toShip = d.toshipCount || 0;
   var fx = d.fx || null;
-  var cny = fx && c.amountLocal != null ? c.amountLocal * fx.cnyPerIdr : null;
+  var idrFx = fxItem(fx, 'IDR');
+  var cny = fx && c.amountLocal != null && idrFx ? c.amountLocal * idrFx.cnyPer : null;
   var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) : '';
   document.getElementById('cards-' + plat).innerHTML = [
     ['订单总数', (c.count || 0) + ' 单', ''],
@@ -165,7 +211,7 @@ function render(plat, d) {
     ['已售件数', (c.totalQty || 0) + ' 件', ''],
     ['待发货', toShip + ' 单', toShip ? 'red' : '']
   ].map(function (x) {
-    var extra = x[0] === '折合人民币' && fx ? '<div class="m">¥1 ≈ Rp ' + Math.round(fx.idrPerCny).toLocaleString('en-US') + '<br>' + esc(fxNote) + '</div>' : '';
+    var extra = x[0] === '折合人民币' && fx && idrFx ? '<div class="m">¥1 ≈ Rp ' + idrFx.perCny.toLocaleString('en-US') + '<br>' + esc(fxNote) + '</div>' : '';
     return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div>' + extra + '</div>';
   }).join('');
   document.getElementById('recentOrders-' + plat).innerHTML = fixedTable(['#', '下单时间', '订单号', 'SKU', '件数', '销售金额', '应到账', '状态'],
