@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>财务 · 电商工作台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f4f8; color: #1f2d3d; padding: 20px; }
+  h1.top { font-size: 22px; margin-bottom: 4px; }
+  .sub { color: #7a8ba3; font-size: 13px; }
+  .areanav { display: flex; gap: 8px; margin: 14px 0 14px; flex-wrap: wrap; }
+  .areanav a.an { padding: 9px 20px; border-radius: 10px; background: #dde5ee; color: #4b5d71; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
+  .areanav a.an.on { background: #0e2a47; color: #fff; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 16px; }
+  .card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .card .k { font-size: 13px; color: #7a8ba3; }
+  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; word-break: break-all; }
+  .card .v.red { color: #dc2626; } .card .v.green { color: #16a34a; } .card .v.amber { color: #d97706; }
+  .card .m { font-size: 11px; color: #94a3b8; margin-top: 4px; line-height: 1.6; }
+  .panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .panel h2 { font-size: 16px; margin-bottom: 10px; color: #0e2a47; }
+  .panel h2 .tag { font-size: 12px; color: #7a8ba3; font-weight: 400; }
+  .empty { color: #94a3b8; font-size: 13px; padding: 20px 0; text-align: center; }
+  .upd { color: #94a3b8; font-size: 12px; margin-bottom: 10px; }
+  .fhead { overflow: hidden; background: #fafbfd; border-bottom: 2px solid #e2e8f0; }
+  .fbody { max-height: 60vh; overflow: auto; }
+  .fhead table, .fbody table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+  .fhead th, .fbody td { padding: 7px 8px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+  .fbody td { border-bottom: 1px solid #eef2f7; }
+  .ok { color: #16a34a; font-weight: 700; }
+  .pend { color: #d97706; font-weight: 700; }
+  .bad { color: #dc2626; font-weight: 700; }
+  .filt { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .filt button { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
+  .filt button.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
+  .plat-btns { display: flex; gap: 6px; margin-bottom: 10px; }
+  .plat-btns .sp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
+  .plat-btns .sp.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
+  @media (max-width: 900px) { body { padding: 12px; } }
+</style>
+</head>
+<body>
+<h1 class="top">💰 财务 <span class="sub">以每笔订单真实进账为准 · 留存≥6个月 · 未到账持续跟踪</span></h1>
+<div class="areanav">
+  <a class="an" href="index.html">📦 订单发货</a>
+  <a class="an" href="store.html">📊 店铺数据</a>
+  <a class="an on" href="finance.html">💰 财务</a>
+</div>
+
+<div class="panel">
+  <h2>📌 真实进账总览 <span class="tag">Shopee My Income 快照 · 每日更新</span></h2>
+  <div id="incomeOverview"><div class="empty">加载中…</div></div>
+</div>
+
+<div class="panel">
+  <h2>🔍 60天订单进账核对 <span class="tag">正常✓ / 未到账⏳ / 异常⚠ 需人工确认</span></h2>
+  <div class="plat-btns" id="checkPlat">
+    <button class="sp on" data-plat="all">全部平台</button>
+    <button class="sp" data-plat="Shopee">Shopee</button>
+    <button class="sp" data-plat="TikTok">TikTok</button>
+  </div>
+  <div class="filt" id="checkFilt">
+    <button class="on" data-c="all">全部</button>
+    <button data-c="ok">✅ 正常到账</button>
+    <button data-c="abnormal">⚠ 异常/待核对</button>
+    <button data-c="pending">⏳ 未到账(在途)</button>
+    <button data-c="cancelled">✖ 取消</button>
+  </div>
+  <div id="checkBox"><div class="empty">加载中…</div></div>
+</div>
+
+<div class="panel">
+  <h2>💸 广告支出 vs 到账 <span class="tag">广告费=最大支出项 · 需计入财务</span></h2>
+  <div id="adsVsIncome"><div class="empty">加载中…</div></div>
+</div>
+
+<script>
+function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function fmtRp(n) { return n == null || isNaN(n) ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
+var CHECK_LABEL = { ok: '✅ 正常到账', pending: '⏳ 未到账', abnormal: '⚠ 异常/待核对', cancelled: '✖ 取消' };
+var ledger = null, cPlat = 'all', cFilt = 'all';
+
+function renderIncome(inc) {
+  var box = document.getElementById('incomeOverview');
+  var html = '';
+  if (inc && inc.released && inc.released.length) {
+    var totReleased = inc.released.reduce(function (s, r) { return s + (r.amt || 0); }, 0);
+    var totPending = (inc.pending || []).reduce(function (s, r) { return s + (r.amt || 0); }, 0);
+    var days = [...new Set(inc.released.map(function (r) { return r.date; }))];
+    html = '<div class="cards">' +
+      '<div class="card"><div class="k">已放款笔数(快照)</div><div class="v green">' + inc.released.length + ' 笔</div><div class="m">累计 ' + fmtRp(totReleased) + '</div></div>' +
+      '<div class="card"><div class="k">待放款笔数</div><div class="v amber">' + (inc.pending || []).length + ' 笔</div><div class="m">待放款 ' + fmtRp(totPending) + '</div></div>' +
+      '<div class="card"><div class="k">最近放款日</div><div class="v">' + (days.sort().pop() || '—') + '</div><div class="m">快照 ' + esc(inc.generatedAt || '') + '</div></div>' +
+      '</div><div class="upd">Shopee My Income Released/Pending 明细快照（每日累积）——历史逐单核对依赖每日快照持续积累</div>';
+  } else html = '<div class="empty">暂无 My Income 快照（每日同步后自动积累）</div>';
+  box.innerHTML = html;
+}
+function renderCheck() {
+  var box = document.getElementById('checkBox');
+  if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty">暂无核对数据</div>'; return; }
+  var s = ledger.summary;
+  document.getElementById('incomeOverview').innerHTML += ''; // noop
+  // 顶部小统计卡
+  var sumHtml = '<div class="cards" style="margin-bottom:10px">' +
+    '<div class="card"><div class="k">60天订单总数</div><div class="v">' + s.totalOrders + '</div></div>' +
+    '<div class="card"><div class="k">✅ 正常到账</div><div class="v green">' + s.counts.ok + '</div></div>' +
+    '<div class="card"><div class="k">⏳ 未到账(在途)</div><div class="v amber">' + s.counts.pending + '</div></div>' +
+    '<div class="card"><div class="k">⚠ 异常待核对</div><div class="v red">' + s.counts.abnormal + '</div></div>' +
+    '<div class="card"><div class="k">✖ 取消</div><div class="v">' + s.counts.cancelled + '</div></div>' +
+    '</div>';
+  var all = (ledger.released || []).concat(ledger.pending || [], ledger.abnormal || [], ledger.cancelled || []);
+  var seen = {};
+  all = all.filter(function (o) { if (seen[o.sn]) return false; seen[o.sn] = 1; return true; });
+  if (cPlat !== 'all') all = all.filter(function (o) { return o.platform === cPlat; });
+  if (cFilt !== 'all') all = all.filter(function (o) { return o.check === cFilt; });
+  all.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  var rows = all.map(function (o) {
+    var cls = o.check === 'ok' ? 'ok' : o.check === 'cancelled' ? '' : o.check === 'abnormal' ? 'bad' : 'pend';
+    var amt = o.payAmt != null ? fmtRp(o.payAmt) : (o.estIncome != null ? '预估 ' + fmtRp(o.estIncome) : '—');
+    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td>' + esc(o.sn) + '</td><td>' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amt + '</td><td>' + esc(o.status || '') + '</td><td class="' + cls + '">' + (CHECK_LABEL[o.check] || o.check) + '</td></tr>';
+  }).join('');
+  box.innerHTML = sumHtml + '<div class="fhead"><table><thead><tr><th style="width:8%">平台</th><th style="width:10%">下单日</th><th style="width:15%">订单号</th><th style="width:15%">SKU</th><th style="width:5%">件数</th><th style="width:12%">销售金额</th><th style="width:13%">进账/预估</th><th style="width:14%">状态</th><th style="width:8%">核对</th></tr></thead></table></div><div class="fbody"><table><tbody>' + (rows || '<tr><td colspan="9"><div class="empty">无匹配订单</div></td></tr>') + '</tbody></table></div>';
+}
+function renderAdsVs(adsSp, adsTk, ledger) {
+  var box = document.getElementById('adsVsIncome');
+  function periodCost(src, costKey, salesKey) {
+    if (!src || !src.periods) return null;
+    var d = src.periods.yesterday;
+    return d ? { cost: d[costKey] || 0, sales: d[salesKey] || 0 } : null;
+  }
+  var sp = periodCost(adsSp, 'expense', 'sales');
+  var tk = periodCost(adsTk, 'cost', 'grossRevenue');
+  var realSp = ledger && ledger.summary ? ledger.summary.realIncome : null;
+  var cards = '<div class="cards">';
+  cards += '<div class="card"><div class="k">Shopee 广告花费(昨日)</div><div class="v red">' + (sp ? fmtRp(sp.cost) : '—') + '</div><div class="m">广告销售 ' + (sp ? fmtRp(sp.sales) : '—') + '</div></div>';
+  cards += '<div class="card"><div class="k">TikTok 广告花费(昨日)</div><div class="v red">' + (tk ? fmtRp(tk.cost) : '—') + '</div><div class="m">广告销售 ' + (tk ? fmtRp(tk.sales) : '—') + '</div></div>';
+  cards += '<div class="card"><div class="k">双平台广告合计(昨日)</div><div class="v red">' + fmtRp((sp ? sp.cost : 0) + (tk ? tk.cost : 0)) + '</div><div class="m">广告费是除成本外最大支出</div></div>';
+  cards += '</div>';
+  box.innerHTML = cards + '<div class="upd">广告数据来自 GMT+7 定型日行存档（留存半年）。财务报表 = 订单真实进账 − 广告花费 − 平台费用 − 成本。</div>';
+}
+function loadAll() {
+  fetch('finance_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(renderIncome).catch(function () {});
+  fetch('finance_orders.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+    ledger = a; renderCheck();
+    var sp = null, tk = null;
+    Promise.all([
+      fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
+      fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
+    ]).then(function (arr) { sp = arr[0]; tk = arr[1]; renderAdsVs(sp, tk, ledger); });
+  }).catch(function () { document.getElementById('checkBox').innerHTML = '<div class="empty">核对数据加载失败</div>'; });
+}
+document.getElementById('checkPlat').addEventListener('click', function (e) {
+  var b = e.target;
+  if (b.classList && b.classList.contains('sp')) {
+    document.querySelectorAll('#checkPlat .sp').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on'); cPlat = b.getAttribute('data-plat'); renderCheck();
+  }
+});
+document.getElementById('checkFilt').addEventListener('click', function (e) {
+  var b = e.target;
+  if (b.classList && b.classList.contains('sp')) return;
+  if (b.tagName === 'BUTTON') {
+    document.querySelectorAll('#checkFilt button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on'); cFilt = b.getAttribute('data-c'); renderCheck();
+  }
+});
+loadAll();
+setInterval(loadAll, 5 * 60 * 1000);
+</script>
+</body>
+</html>
