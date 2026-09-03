@@ -54,7 +54,7 @@
 </div>
 
 <div class="panel">
-  <h2>🔍 60天订单进账核对 <span class="tag">正常✓ / 未到账⏳ / 异常⚠ 需人工确认</span></h2>
+  <h2>🔍 60天订单·到账·利润跟踪 <span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
   <div class="plat-btns" id="checkPlat">
     <button class="sp on" data-plat="all">全部平台</button>
     <button class="sp" data-plat="Shopee">Shopee</button>
@@ -62,12 +62,13 @@
   </div>
   <div class="filt" id="checkFilt">
     <button class="on" data-c="all">全部</button>
-    <button data-c="ok">✅ 正常到账</button>
+    <button data-c="ok">💰 已到账(出利润)</button>
     <button data-c="abnormal">⚠ 异常/待核对</button>
-    <button data-c="pending">⏳ 未到账(在途)</button>
+    <button data-c="pending">⏳ 未到账·跟踪中</button>
     <button data-c="cancelled">✖ 取消</button>
   </div>
   <div id="checkBox"><div class="empty">加载中…</div></div>
+  <div class="upd" style="margin-top:8px">成本按 SKU 单价×件数（cost_skus.json）；未录入成本的 SKU 显示“待录成本”，到账后补成本即自动出利润。未到账订单持续保留跟踪，直到收款完成。</div>
 </div>
 
 <div class="panel">
@@ -100,12 +101,11 @@ function renderCheck() {
   var box = document.getElementById('checkBox');
   if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty">暂无核对数据</div>'; return; }
   var s = ledger.summary;
-  document.getElementById('incomeOverview').innerHTML += ''; // noop
-  // 顶部小统计卡
   var sumHtml = '<div class="cards" style="margin-bottom:10px">' +
-    '<div class="card"><div class="k">60天订单总数</div><div class="v">' + s.totalOrders + '</div></div>' +
-    '<div class="card"><div class="k">✅ 正常到账</div><div class="v green">' + s.counts.ok + '</div></div>' +
-    '<div class="card"><div class="k">⏳ 未到账(在途)</div><div class="v amber">' + s.counts.pending + '</div></div>' +
+    '<div class="card"><div class="k">60天订单</div><div class="v">' + s.totalOrders + '</div></div>' +
+    '<div class="card"><div class="k">💰 已到账</div><div class="v green">' + s.counts.ok + '</div><div class="m">实收 ' + fmtRp((s.realIncome ? s.realIncome.shopee : 0) + (s.realIncome ? s.realIncome.tk : 0)) + '</div></div>' +
+    '<div class="card"><div class="k">📈 利润(已到账单)</div><div class="v green">' + fmtRp((s.profit ? s.profit.shopee : 0) + (s.profit ? s.profit.tk : 0)) + '</div><div class="m">= 到账 − 成本</div></div>' +
+    '<div class="card"><div class="k">⏳ 未到账·跟踪</div><div class="v amber">' + s.counts.pending + '</div><div class="m">持续跟踪至收款</div></div>' +
     '<div class="card"><div class="k">⚠ 异常待核对</div><div class="v red">' + s.counts.abnormal + '</div></div>' +
     '<div class="card"><div class="k">✖ 取消</div><div class="v">' + s.counts.cancelled + '</div></div>' +
     '</div>';
@@ -117,10 +117,18 @@ function renderCheck() {
   all.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
   var rows = all.map(function (o) {
     var cls = o.check === 'ok' ? 'ok' : o.check === 'cancelled' ? '' : o.check === 'abnormal' ? 'bad' : 'pend';
-    var amt = o.payAmt != null ? fmtRp(o.payAmt) : (o.estIncome != null ? '预估 ' + fmtRp(o.estIncome) : '—');
-    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td>' + esc(o.sn) + '</td><td>' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amt + '</td><td>' + esc(o.status || '') + '</td><td class="' + cls + '">' + (CHECK_LABEL[o.check] || o.check) + '</td></tr>';
+    var amtTxt;
+    if (o.check === 'ok' && o.payAmt != null) amtTxt = fmtRp(o.payAmt);
+    else if (o.check === 'pending' && o.estIncome != null) amtTxt = '预估 ' + fmtRp(o.estIncome);
+    else amtTxt = '—';
+    var costTxt = o.cost != null ? fmtRp(o.cost) : '<span class="pend">待录成本</span>';
+    var profitTxt;
+    if (o.check === 'ok') profitTxt = o.profit != null ? '<span class="' + (o.profit >= 0 ? 'ok' : 'bad') + '">' + fmtRp(o.profit) + '</span>' : '<span class="pend">待补</span>';
+    else if (o.check === 'cancelled') profitTxt = '—';
+    else profitTxt = '<span class="pend">未到账</span>';
+    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td>' + esc(o.sn) + '</td><td>' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td class="' + cls + '">' + (o.check === 'ok' ? '已到账' : o.check === 'pending' ? '跟踪中' : o.check === 'abnormal' ? '⚠异常' : '取消') + '</td></tr>';
   }).join('');
-  box.innerHTML = sumHtml + '<div class="fhead"><table><thead><tr><th style="width:8%">平台</th><th style="width:10%">下单日</th><th style="width:15%">订单号</th><th style="width:15%">SKU</th><th style="width:5%">件数</th><th style="width:12%">销售金额</th><th style="width:13%">进账/预估</th><th style="width:14%">状态</th><th style="width:8%">核对</th></tr></thead></table></div><div class="fbody"><table><tbody>' + (rows || '<tr><td colspan="9"><div class="empty">无匹配订单</div></td></tr>') + '</tbody></table></div>';
+  box.innerHTML = sumHtml + '<div class="fhead"><table><thead><tr><th style="width:7%">平台</th><th style="width:9%">下单日</th><th style="width:13%">订单号</th><th style="width:12%">SKU</th><th style="width:4%">件</th><th style="width:10%">销售金额</th><th style="width:10%">真实到账</th><th style="width:9%">成本</th><th style="width:10%">利润</th><th style="width:11%">状态</th><th style="width:5%">进度</th></tr></thead></table></div><div class="fbody"><table><tbody>' + (rows || '<tr><td colspan="11"><div class="empty">无匹配订单</div></td></tr>') + '</tbody></table></div>';
 }
 function renderAdsVs(adsSp, adsTk, ledger) {
   var box = document.getElementById('adsVsIncome');
