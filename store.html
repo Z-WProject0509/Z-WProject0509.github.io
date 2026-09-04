@@ -3,218 +3,183 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3b6cf6">
 <title>店铺数据 · 电商工作台</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f4f8; color: #1f2d3d; padding: 20px; }
-  h1.top { font-size: 22px; margin-bottom: 4px; }
-  .sub { color: #7a8ba3; font-size: 13px; }
-  .areanav { display: flex; gap: 8px; margin: 14px 0 14px; flex-wrap: wrap; }
-  .areanav a.an { padding: 9px 20px; border-radius: 10px; background: #dde5ee; color: #4b5d71; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
-  .areanav a.an.on { background: #0e2a47; color: #fff; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 16px; }
-  .card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-  .card .k { font-size: 13px; color: #7a8ba3; }
-  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; word-break: break-all; }
-  .card .v.red { color: #dc2626; } .card .v.green { color: #16a34a; }
-  .panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-  .panel h2 { font-size: 16px; margin-bottom: 10px; color: #0e2a47; }
-  .panel h2 .tag { font-size: 12px; color: #7a8ba3; font-weight: 400; }
-  .empty { color: #94a3b8; font-size: 13px; padding: 20px 0; text-align: center; }
-  .upd { color: #94a3b8; font-size: 12px; margin-bottom: 10px; }
-  .rg-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 12px; }
-  .plat-btns { display: flex; gap: 6px; }
-  .plat-btns .sp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
-  .plat-btns .sp.on { background: #dc2626; border-color: #dc2626; color: #fff; }
-  .rg-presets { display: flex; flex-wrap: wrap; gap: 6px; }
-  .rg-presets .rp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
-  .rg-presets .rp.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
-  .rg-presets .rp.apply { background: #f59e0b; border-color: #f59e0b; color: #fff; font-weight: 700; }
-  .rg-custom { display: flex; gap: 6px; align-items: center; }
-  .rg-custom input[type=date] { padding: 5px 8px; border: 1px solid #d7dee8; border-radius: 8px; font-size: 13px; }
-  .srow { font-size: 12.5px; color: #475569; border-bottom: 1px dashed #eef2f7; padding: 4px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-  .srow b { color: #0e2a47; }
-  @media (max-width: 900px) { body { padding: 12px; } }
-</style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<h1 class="top">📊 店铺数据 <span class="sub">销售统计 · 广告 · 增长分析</span></h1>
-<div class="areanav">
-  <a class="an" href="index.html">📦 订单发货</a>
-  <a class="an on" href="store.html">📊 店铺数据</a>
-  <a class="an" href="finance.html">💰 财务</a>
-</div>
-
-<div class="panel">
-  <h2>📈 双平台每日销售统计 <span class="tag" id="salesTag">定型留存 · 自选 日/周/月/区间</span></h2>
-  <div class="rg-head">
-    <div class="plat-btns" id="salesPlatBtns">
-      <button class="sp on" data-plat="all">双平台</button>
-      <button class="sp" data-plat="Shopee">Shopee</button>
-      <button class="sp" data-plat="TikTok">TikTok</button>
-    </div>
-    <div class="rg-presets" id="salesPresets">
-      <button class="rp on" data-p="yesterday">昨日</button>
-      <button class="rp" data-p="today">今天</button>
-      <button class="rp" data-p="thisWeek">本周</button>
-      <button class="rp" data-p="lastWeek">上周</button>
-      <button class="rp" data-p="thisMonth">本月</button>
-      <button class="rp" data-p="lastMonth">上月</button>
-      <button class="rp" data-p="7d">近7天</button>
-      <button class="rp" data-p="30d">近30天</button>
-    </div>
-    <div class="rg-custom">
-      <input type="date" id="salesFrom"> ~ <input type="date" id="salesTo">
-      <button class="rp apply" id="salesApply">查区间</button>
-    </div>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand"><span class="logo">🛒</span>电商工作台 <small>双平台 · MULMUL</small></div>
+  <nav class="areanav">
+    <a class="an" href="index.html">📦 订单发货</a>
+    <a class="an on" href="store.html">📊 店铺数据</a>
+    <a class="an" href="finance.html">💰 财务</a>
+  </nav>
+  <div class="top-right">
+    <span class="sync-pill" id="syncPill" title="数据每 15 分钟自动同步推送"></span>
+    <button class="btn ghost" onclick="refreshNow()">⟳ 刷新</button>
   </div>
-  <div id="salesStats"></div>
-</div>
+</div></header>
 
-<div class="panel">
-  <h2>📢 广告花费（双平台） <span class="tag" id="adsTag">GMT+7 定型 · 留存半年</span></h2>
-  <div class="rg-presets" id="adsPresets" style="margin-bottom:12px">
-    <button class="rp on" data-p="yesterday">昨日</button>
-    <button class="rp" data-p="today">今天</button>
-    <button class="rp" data-p="thisWeek">本周</button>
-    <button class="rp" data-p="lastWeek">上周</button>
-    <button class="rp" data-p="thisMonth">本月</button>
-    <button class="rp" data-p="lastMonth">上月</button>
-    <button class="rp" data-p="7d">近7天</button>
-    <button class="rp" data-p="30d">近30天</button>
+<div class="wrap">
+  <div class="panel">
+    <h2>📈 每日销售统计 <span class="tag">定型留存 · 自选 日 / 周 / 月 / 任意区间</span></h2>
+    <div class="rg-head">
+      <div class="plat-btns" id="salesPlatBtns">
+        <button class="btn on" data-plat="all">双平台</button>
+        <button class="btn" data-plat="Shopee">Shopee</button>
+        <button class="btn" data-plat="TikTok">TikTok</button>
+      </div>
+      <div class="rg-presets" id="salesPresets">
+        <button class="btn on" data-p="yesterday">昨日</button>
+        <button class="btn" data-p="today">今天</button>
+        <button class="btn" data-p="thisWeek">本周</button>
+        <button class="btn" data-p="lastWeek">上周</button>
+        <button class="btn" data-p="thisMonth">本月</button>
+        <button class="btn" data-p="lastMonth">上月</button>
+        <button class="btn" data-p="7d">近7天</button>
+        <button class="btn" data-p="30d">近30天</button>
+      </div>
+      <div class="rg-custom">
+        <input type="date" id="salesFrom"> ~ <input type="date" id="salesTo">
+        <button class="btn primary" id="salesApply">查区间</button>
+      </div>
+    </div>
+    <div id="salesStats"></div>
   </div>
-  <div id="adsStats"></div>
+
+  <div class="panel">
+    <h2>📢 广告花费（双平台）<span class="tag">GMT+7 定型 · 留存半年 · 自选周期</span></h2>
+    <div class="rg-presets" id="adsPresets" style="margin-bottom:12px">
+      <button class="btn on" data-p="yesterday">昨日</button>
+      <button class="btn" data-p="today">今天</button>
+      <button class="btn" data-p="thisWeek">本周</button>
+      <button class="btn" data-p="lastWeek">上周</button>
+      <button class="btn" data-p="thisMonth">本月</button>
+      <button class="btn" data-p="lastMonth">上月</button>
+      <button class="btn" data-p="7d">近7天</button>
+      <button class="btn" data-p="30d">近30天</button>
+    </div>
+    <div id="adsStats"></div>
+  </div>
+
+  <div class="panel">
+    <h2>🏆 平台对照 <span class="tag">Shopee vs TikTok 累计销售与广告投入</span></h2>
+    <div id="platCompare"></div>
+  </div>
+
+  <div class="footer">
+    销售按本地自然日归档 · 广告按 GMT+7 自然日定型（留存半年）· 更新于 <span id="footTime">—</span>
+  </div>
 </div>
 
-<div class="panel">
-  <h2>💰 平台店铺对照 <span class="tag">Shopee vs TikTok 销售与广告</span></h2>
-  <div id="platCompare"><div class="empty">加载中…</div></div>
-</div>
-
+<script src="assets/app.js"></script>
 <script>
-function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-function todayLocal() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-function addDay(y, n) { var d = new Date(y + 'T00:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-function mondayOf(y) { var d = new Date(y + 'T00:00:00'); var w = (d.getDay() + 6) % 7; return addDay(y, -w); }
-function monthFirst(y) { return y.slice(0, 8) + '01'; }
-function prevMonthRange(f) {
-  var fd = new Date(f + 'T00:00:00'); fd.setMonth(fd.getMonth() - 1);
-  var pf = fd.getFullYear() + '-' + String(fd.getMonth() + 1).padStart(2, '0') + '-01';
-  return { from: pf, to: addDay(f, -1) };
-}
-function presetRange(p) {
-  var t = todayLocal();
-  if (p === 'today') return { from: t, to: t };
-  if (p === 'yesterday') return { from: addDay(t, -1), to: addDay(t, -1) };
-  if (p === '7d') return { from: addDay(t, -6), to: t };
-  if (p === '30d') return { from: addDay(t, -29), to: t };
-  if (p === 'thisWeek') return { from: mondayOf(t), to: t };
-  if (p === 'lastWeek') { var lw = addDay(mondayOf(t), -1); return { from: addDay(lw, -6), to: lw }; }
-  if (p === 'thisMonth') return { from: monthFirst(t), to: t };
-  if (p === 'lastMonth') return prevMonthRange(t);
-  return null;
-}
-function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
-function fmtK(n) { return n == null ? '—' : n >= 1000000 ? (n / 1000000).toFixed(2) + 'm' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(Math.round(n)); }
-var salesSummary = null, salesPlat = 'all', salesPk = null, salesFrom = null, salesTo = null;
+var salesSummary = null, salesPlat = 'all', salesFrom = null, salesTo = null, adSp = null, adTk = null;
+var PLABEL = { yesterday:'昨日', today:'今天', thisWeek:'本周', lastWeek:'上周', thisMonth:'本月', lastMonth:'上月', '7d':'近7天', '30d':'近30天' };
 
-function bindSales() {
-  document.querySelectorAll('#salesPresets .rp').forEach(function (b) { b.addEventListener('click', function () { doSales(b.getAttribute('data-p')); }); });
-  salesFrom = document.getElementById('salesFrom'); salesTo = document.getElementById('salesTo');
-  document.getElementById('salesApply').addEventListener('click', function () {
-    if (salesFrom.value && salesTo.value) {
-      document.querySelectorAll('#salesPresets .rp').forEach(function (x) { x.classList.remove('on'); });
-      renderSales({ from: salesFrom.value, to: salesTo.value }, '自定义区间');
-    }
-  });
-  document.getElementById('salesPlatBtns').addEventListener('click', function (e) {
-    var b = e.target;
-    if (b.classList && b.classList.contains('sp')) {
-      document.querySelectorAll('#salesPlatBtns .sp').forEach(function (x) { x.classList.remove('on'); });
-      b.classList.add('on'); salesPlat = b.getAttribute('data-plat');
-      var cur = document.querySelector('#salesPresets .rp.on');
-      if (cur) doSales(cur.getAttribute('data-p'));
-    }
-  });
-  var rg = presetRange('yesterday'); salesFrom.value = rg.from; salesTo.value = rg.to;
-}
-function doSales(p) {
-  var rg = presetRange(p);
-  if (!rg) return;
-  salesFrom.value = rg.from; salesTo.value = rg.to;
-  document.querySelectorAll('#salesPresets .rp').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); });
-  renderSales(rg, p === 'yesterday' ? '昨日' : p === 'today' ? '今天' : p === 'thisWeek' ? '本周' : p === 'lastWeek' ? '上周' : p === 'thisMonth' ? '本月' : p === 'lastMonth' ? '上月' : p === '7d' ? '近7天' : '近30天');
-}
 function renderSales(rg, lbl) {
   var box = document.getElementById('salesStats');
   if (!salesSummary || !rg) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
   var rows = (salesSummary.daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; });
   if (salesPlat !== 'all') rows = rows.filter(function (r) { return r.platform === salesPlat; });
-  if (!rows.length) { box.innerHTML = '<div class="empty">该区间暂无数据</div>'; return; }
+  if (!rows.length) { box.innerHTML = '<div class="empty"><span class="big">📭</span>该区间暂无销售数据</div>'; return; }
   var a = rows.reduce(function (s, r) { s.orders += r.orders; s.qty += r.totalQty; s.rp += r.amountLocal; s.cny += r.amountCny || 0; return s; }, { orders: 0, qty: 0, rp: 0, cny: 0 });
-  var cards = [
-    ['销售单数', a.orders + ' 单', ''], ['售出件数', a.qty + ' 件', ''],
-    ['销售金额', fmtRp(a.rp), 'green'], ['折合人民币', '≈¥ ' + Math.round(a.cny).toLocaleString('en-US'), 'green']
-  ];
+  var cards = '<div class="cards">' +
+    '<div class="card"><div class="k">🧾 销售单数</div><div class="v">' + a.orders + '</div><div class="m">' + rows.length + ' 天记录</div></div>' +
+    '<div class="card"><div class="k">👟 售出件数</div><div class="v">' + a.qty + '</div></div>' +
+    '<div class="card"><div class="k">💰 销售金额</div><div class="v green">' + fmtRp(a.rp) + '</div></div>' +
+    '<div class="card"><div class="k">🇨🇳 折合人民币</div><div class="v green">' + fmtCny(a.cny) + '</div><div class="m">汇率仅供参考</div></div>' +
+    '</div>';
   var detail = rows.slice().reverse().map(function (r) {
-    return '<div class="srow">' + r.date + ' · ' + r.platform + ' · <b>' + r.orders + '单 ' + r.totalQty + '件</b> · ' + fmtRp(r.amountLocal) + (r.amountCny ? ' (≈¥' + Math.round(r.amountCny).toLocaleString('en-US') + ')' : '') + '</div>';
+    return '<div class="srow">' + r.date + ' · <b>' + r.platform + '</b> · ' + r.orders + ' 单 ' + r.totalQty + ' 件 · ' + fmtRp(r.amountLocal) + (r.amountCny ? ' <span class="aux">(' + fmtCny(r.amountCny) + ')</span>' : '') + '</div>';
   }).join('');
-  box.innerHTML = '<div class="cards">' + cards.map(function (x) { return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>'; }).join('') + '</div><div class="upd">' + lbl + '（' + (salesPlat === 'all' ? '双平台' : salesPlat) + ' · 覆盖 ' + rows.length + ' 天 ' + rg.from + '~' + rg.to + '）</div>' + detail;
+  box.innerHTML = cards + '<div class="upd" style="margin:10px 0 4px">' + lbl + '（' + (salesPlat === 'all' ? '双平台' : salesPlat) + ' · ' + rg.from + ' ~ ' + rg.to + '）</div>' + detail;
 }
-// 广告周期（Shopee ads_summary + TK ads_tk_summary）
-var adSp = null, adTk = null;
+function doSales(p) {
+  var rg = presetRange(p); if (!rg) return;
+  salesFrom.value = rg.from; salesTo.value = rg.to;
+  document.querySelectorAll('#salesPresets .btn').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); });
+  renderSales(rg, PLABEL[p] || p);
+}
+function bindSales() {
+  document.querySelectorAll('#salesPresets .btn').forEach(function (b) { b.addEventListener('click', function () { doSales(b.getAttribute('data-p')); }); });
+  salesFrom = document.getElementById('salesFrom'); salesTo = document.getElementById('salesTo');
+  document.getElementById('salesApply').addEventListener('click', function () {
+    if (salesFrom.value && salesTo.value) {
+      document.querySelectorAll('#salesPresets .btn').forEach(function (x) { x.classList.remove('on'); });
+      renderSales({ from: salesFrom.value, to: salesTo.value }, '自定义区间');
+    }
+  });
+  document.getElementById('salesPlatBtns').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#salesPlatBtns .btn').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on'); salesPlat = b.getAttribute('data-plat');
+    var cur = document.querySelector('#salesPresets .btn.on');
+    doSales(cur ? cur.getAttribute('data-p') : 'yesterday');
+  });
+  var rg = presetRange('yesterday'); salesFrom.value = rg.from; salesTo.value = rg.to;
+}
+
 function adSum(rg) {
   function agg(src, f) {
     var rows = (src && src.daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; });
-    var a = { cost: 0, sales: 0, orders: 0 };
+    var a = { cost: 0, sales: 0, orders: 0, n: rows.length };
     rows.forEach(function (r) { a.cost += f.cost(r); a.sales += f.sales(r); a.orders += f.ord(r); });
     return a;
   }
-  var sp = adSp ? agg(adSp, { cost: function (r) { return r.expense || 0; }, sales: function (r) { return r.sales || 0; }, ord: function (r) { return r.orders || 0; } }) : null;
-  var tk = adTk ? agg(adTk, { cost: function (r) { return r.cost || 0; }, sales: function (r) { return r.grossRevenue || 0; }, ord: function (r) { return r.orders || 0; } }) : null;
-  return { sp: sp, tk: tk };
+  return {
+    sp: adSp ? agg(adSp, { cost: function (r) { return r.expense || 0; }, sales: function (r) { return r.sales || 0; }, ord: function (r) { return r.orders || 0; } }) : null,
+    tk: adTk ? agg(adTk, { cost: function (r) { return r.cost || 0; }, sales: function (r) { return r.grossRevenue || 0; }, ord: function (r) { return r.orders || 0; } }) : null
+  };
 }
-var adFrom = null, adTo = null;
-function bindAds() {
-  document.querySelectorAll('#adsPresets .rp').forEach(function (b) { b.addEventListener('click', function () { doAds(b.getAttribute('data-p')); }); });
-  var rg = presetRange('yesterday');
-  document.querySelectorAll('#adsPresets .rp').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === 'yesterday'); });
-  renderAds(rg);
-}
-function doAds(p) { var rg = presetRange(p); if (rg) renderAds(rg); }
 function renderAds(rg) {
   var box = document.getElementById('adsStats');
   var r = adSum(rg);
-  function card(title, a, isSp) {
-    if (!a) return '<div class="card"><div class="k">' + title + '</div><div class="v">—</div></div>';
+  function card(title, a) {
+    if (!a) return '<div class="card"><div class="k">' + title + '</div><div class="v dim">—</div></div>';
     var roas = a.cost > 0 ? Math.round((a.sales / a.cost) * 100) / 100 : null;
-    return '<div class="card"><div class="k">' + title + '</div><div class="v red">' + fmtRp(a.cost) + '</div><div class="v">销售 ' + fmtRp(a.sales) + '</div><div class="v ' + (roas != null && roas >= 1 ? 'green' : 'red') + '">ROAS/ROI ' + (roas != null ? roas : '—') + '</div><div class="upd">' + a.orders + ' 单</div></div>';
+    return '<div class="card"><div class="k">' + title + '</div><div class="v red">' + fmtRp(a.cost) + '</div>' +
+      '<div class="m">广告销售 ' + fmtRp(a.sales) + ' · ' + a.orders + ' 单</div>' +
+      '<div class="v ' + (roas != null && roas >= 1 ? 'green' : 'red') + '" style="font-size:15px;margin-top:6px">ROAS/ROI ' + (roas != null ? roas : '—') + '</div></div>';
   }
-  box.innerHTML = '<div class="cards">' +
-    card('Shopee 广告', r.sp) + card('TikTok 广告', r.tk) +
-    '</div><div class="upd">区间 ' + rg.from + ' ~ ' + rg.to + '（GMT+7 定型）</div>';
+  box.innerHTML = '<div class="cards">' + card('🟠 Shopee 广告', r.sp) + card('⚫ TikTok 广告', r.tk) + '</div>' +
+    '<div class="upd">' + rg.label + '（' + rg.from + ' ~ ' + rg.to + ' · GMT+7 定型）</div>';
 }
-// 平台对照
+function doAds(p) { var rg = presetRange(p); if (rg) { document.querySelectorAll('#adsPresets .btn').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); }); renderAds(rg); } }
+
 function renderCompare() {
   var box = document.getElementById('platCompare');
-  if (!salesSummary) return;
+  if (!salesSummary) { box.innerHTML = '<div class="empty">加载中…</div>'; return; }
   var rows = salesSummary.daily || [];
-  var agg = function (plat) {
-    var s = { orders: 0, rp: 0, days: 0 };
-    rows.forEach(function (r) { if (r.platform === plat) { s.orders += r.orders; s.rp += r.amountLocal; s.days++; } });
-    return s;
-  };
-  var sp = agg('Shopee'), tk = agg('TikTok');
+  function agg(plat) { var s = { orders: 0, rp: 0, days: 0 }; rows.forEach(function (r) { if (r.platform === plat) { s.orders += r.orders; s.rp += r.amountLocal; s.days++; } }); return s; }
+  function ads(plat) {
+    var src = plat === 'Shopee' ? adSp : adTk;
+    if (!src || !src.periods || !src.periods.prevMonth) return { cost: 0, sales: 0 };
+    var d = src.periods.prevMonth;
+    return { cost: d.expense != null ? d.expense : (d.cost || 0), sales: d.sales != null ? d.sales : (d.grossRevenue || 0) };
+  }
+  var sp = agg('Shopee'), tk = agg('TikTok'), spAd = ads('Shopee'), tkAd = ads('TikTok');
   box.innerHTML = '<div class="cards">' +
-    '<div class="card"><div class="k">Shopee 累计销售</div><div class="v green">' + fmtRp(sp.rp) + '</div><div class="upd">' + sp.orders + ' 单 · 覆盖 ' + sp.days + ' 天</div></div>' +
-    '<div class="card"><div class="k">TikTok 累计销售</div><div class="v green">' + fmtRp(tk.rp) + '</div><div class="upd">' + tk.orders + ' 单 · 覆盖 ' + tk.days + ' 天</div></div>' +
+    '<div class="card"><div class="k">🟠 Shopee 累计销售</div><div class="v green">' + fmtRp(sp.rp) + '</div><div class="m">' + sp.orders + ' 单 · ' + sp.days + ' 天<br>上月广告 ' + fmtRp(spAd.cost) + '</div></div>' +
+    '<div class="card"><div class="k">⚫ TikTok 累计销售</div><div class="v green">' + fmtRp(tk.rp) + '</div><div class="m">' + tk.orders + ' 单 · ' + tk.days + ' 天<br>上月广告 ' + fmtRp(tkAd.cost) + '</div></div>' +
     '</div>';
 }
-fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { salesSummary = a; bindSales(); doSales('yesterday'); renderCompare(); }).catch(function () { document.getElementById('salesStats').innerHTML = '<div class="empty">销售数据加载失败</div>'; });
-fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { adSp = a; renderAds(presetRange('yesterday')); }).catch(function () {});
+
+fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+  salesSummary = a; bindSales(); doSales('yesterday'); renderCompare();
+  document.getElementById('footTime').textContent = relTime(a.updatedAt);
+}).catch(function () { document.getElementById('salesStats').innerHTML = '<div class="empty">销售数据加载失败</div>'; });
+fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { adSp = a; renderAds(presetRange('yesterday')); renderCompare(); }).catch(function () {});
 fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { adTk = a; renderAds(presetRange('yesterday')); }).catch(function () {});
+bindAds();
+function bindAds() {
+  document.querySelectorAll('#adsPresets .btn').forEach(function (b) { b.addEventListener('click', function () { doAds(b.getAttribute('data-p')); }); });
+}
+initSyncPill();
 setInterval(function () {
-  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { salesSummary = a; var cur = document.querySelector('#salesPresets .rp.on'); if (cur) doSales(cur.getAttribute('data-p')); renderCompare(); }).catch(function () {});
+  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { salesSummary = a; var cur = document.querySelector('#salesPresets .btn.on'); doSales(cur ? cur.getAttribute('data-p') : 'yesterday'); renderCompare(); }).catch(function () {});
   Promise.all([
     fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
     fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
