@@ -61,6 +61,19 @@
   .rg-presets .rp.on { background: var(--text); border-color: var(--text); color: #fff; }
   .rg-presets .rp.apply { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
   .plat-btns .sp.on { background: var(--text); border-color: var(--text); color: #fff; }
+  /* 双平台总览（右侧汇总 + 圆环占比） */
+  .ov-flex { display: flex; gap: 14px; align-items: center; }
+  .ov-ring { width: 104px; height: 104px; border-radius: 50%; flex-shrink: 0; position: relative; }
+  .ov-hole { position: absolute; inset: 14px; background: var(--surface); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px var(--border); }
+  .ov-hole b { font-size: 19px; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: -.3px; line-height: 1.1; }
+  .ov-hole span { font-size: 10px; color: var(--text-3); margin-top: 1px; }
+  .ov-meta { flex: 1; min-width: 0; }
+  .ov-legend { margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 8px; }
+  .ov-lg { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-2); padding: 3px 0; }
+  .ov-lg i { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+  .ov-lg b { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ov-lg small { color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .ov-lg .sp { margin-left: auto; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
@@ -85,11 +98,6 @@
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
     </div>
     <div class="upd" id="upd"></div>
-    <!-- 总订单预览：双平台当日订单 + 占比 -->
-    <div class="panel">
-      <h2>📊 总订单预览 <span class="tag">当日出单 & 未发货占比 · 双平台</span></h2>
-      <div id="orderOverview"></div>
-    </div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
       <div class="panel"><h2>🕐 最近订单 <span class="tag">当日新单</span></h2><div id="recentOrders-shopee"></div></div>
@@ -104,6 +112,7 @@
 
   <!-- ===== 右侧栏 ===== -->
   <aside class="side">
+    <div class="panel"><h2>📊 双平台总览 <span class="tag">当日+未发货</span></h2><div id="ovBody"></div></div>
     <div class="panel"><h2>📌 今日快照</h2><div id="sideSnapshot"><div class="empty">加载中…</div></div></div>
     <div class="panel"><h2>💱 实时汇率</h2><div id="rateBox" class="sub"></div></div>
     <div class="panel"><h2>ℹ️ 数据说明</h2>
@@ -326,7 +335,7 @@ function rangeOk(rg) { return rg && rg.from && rg.to && rg.from <= rg.to; }
 // 明细行（按日排列区间内）
 function listDays(daily, rg) { return (daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; }); }
 
-// ===== 总订单预览（双平台：当日出单 + 未发货 + 占比）=====
+// ===== 双平台总览（右上汇总：当日出单 + 未发货，圆环占比）=====
 var ovCache = {};
 function loadOverview() {
   Promise.all([
@@ -337,39 +346,60 @@ function loadOverview() {
     renderOverview();
   });
 }
-function bar(pct) {
-  pct = Math.max(0, Math.min(100, Math.round(pct || 0)));
-  return '<div style="background:var(--surface-2);border-radius:6px;height:8px;margin-top:6px;overflow:hidden"><div style="width:' + pct + '%;height:100%;border-radius:6px;background:linear-gradient(90deg,#3b6cf6,#7c9bff)"></div></div>';
+function ovNum(d) {
+  if (!d) return { today: 0, toship: 0 };
+  return { today: (d.orders && d.orders.count != null) ? d.orders.count : 0, toship: d.toshipCount || 0 };
+}
+// 纯 SVG 圆环：两段弧按占比着色，中心显示合计
+function donut(pcts, colors, size) {
+  size = size || 104;
+  var r = 40, cx = size / 2, cy = size / 2, C = 2 * Math.PI * r;
+  var parts = '';
+  var acc = 0;
+  for (var i = 0; i < pcts.length; i++) {
+    var len = pcts[i] / 100 * C;
+    var gap = pcts[i] >= 100 ? 0 : 2;
+    if (len > gap) {
+      var dash = Math.max(len - gap, 0.5);
+      parts += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + colors[i] + '" stroke-width="16" ' +
+        'stroke-dasharray="' + dash + ' ' + (C - dash) + '" stroke-dashoffset="' + (-acc + gap / 2) + '" transform="rotate(-90 ' + cx + ' ' + cy + ')"></circle>';
+    }
+    acc += len;
+  }
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" style="transform:rotate(0)">' +
+    '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="var(--surface-2)" stroke-width="16"></circle>' + parts + '</svg>';
 }
 function renderOverview() {
-  var box = document.getElementById('orderOverview');
+  var box = document.getElementById('ovBody');
+  if (!box) return;
   var sp = ovCache.Shopee, tk = ovCache.TikTok;
   if (!sp && !tk) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
-  var mk = function (name, d, color) {
-    if (!d) return null;
-    var today = (d.orders && d.orders.count != null) ? d.orders.count : 0;
-    var toship = d.toshipCount || 0;
-    return { name: name, today: today, toship: toship, color: color };
-  };
-  var a = mk('Shopee', sp), b = mk('TikTok', tk);
-  var items = [a, b].filter(Boolean);
-  var todayTotal = items.reduce(function (s, x) { return s + x.today; }, 0);
-  var shipTotal = items.reduce(function (s, x) { return s + x.toship; }, 0);
+  var A = ovNum(sp), B = ovNum(tk);
+  var rows = [
+    { name: 'Shopee', color: '#3b6cf6', today: A.today, toship: A.toship },
+    { name: 'TikTok', color: '#10b981', today: B.today, toship: B.toship }
+  ];
+  var todayTotal = A.today + B.today;
+  var shipTotal = A.toship + B.toship;
   var tot = todayTotal + shipTotal;
-  function pc(v) { return tot ? (v / tot * 100) : 0; }
-  var rows = items.map(function (x) {
-    var c = x.color;
-    return '<div class="srow" style="align-items:center">' +
-      '<b style="min-width:64px">' + x.name + '</b>' +
-      '<span class="aux">当日 ' + x.today + ' 单 · 未发货 ' + x.toship + ' 单</span>' +
-      '<span style="margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums">' + pc(x.today + x.toship).toFixed(1) + '%</span>' +
-      bar(pc(x.today + x.toship)) + '</div>';
+  var c = rows.filter(function (x) { return x.today + x.toship > 0; });
+  var pcts, colors;
+  if (!c.length) { pcts = [100]; colors = ['var(--surface-2)']; }
+  else { pcts = c.map(function (x) { return (x.today + x.toship) / tot * 100; }); colors = c.map(function (x) { return x.color; }); }
+  var legend = rows.map(function (x) {
+    var v = x.today + x.toship;
+    var p = tot ? (v / tot * 100) : 0;
+    return '<div class="ov-lg" title="当日 ' + x.today + ' 单 · 未发货 ' + x.toship + ' 单">' +
+      '<i style="background:' + x.color + '"></i>' + x.name +
+      '<span class="sp"><b>' + v + '</b><small> 单 · ' + p.toFixed(1) + '%</small></span></div>';
   }).join('');
-  box.innerHTML = '<div class="cards">' +
-    '<div class="card"><div class="k">📦 当日出单</div><div class="v">' + todayTotal + ' 单</div><div class="m">双平台今日合计</div></div>' +
-    '<div class="card"><div class="k">🚚 全部未发货</div><div class="v amber">' + shipTotal + ' 单</div><div class="m">发货后自动移除</div></div>' +
-    '<div class="card"><div class="k">🧾 总订单预览</div><div class="v">' + tot + ' 单</div><div class="m">当日 + 未发货</div></div>' +
-    '</div><div class="upd" style="margin-bottom:6px">平台占比（按 当日出单 + 未发货 总量）</div>' + rows;
+  box.innerHTML = '<div class="ov-flex">' +
+    '<div class="ov-ring">' + donut(pcts, colors) +
+      '<div class="ov-hole"><b>' + tot + '</b><span>合计单数</span></div></div>' +
+    '<div class="ov-meta">' +
+      '<div class="snap-row"><span class="k">📦 当日出单</span><span class="v">' + todayTotal + ' 单</span></div>' +
+      '<div class="snap-row"><span class="k">🚚 全部未发货</span><span class="v' + (shipTotal ? ' red' : '') + '">' + shipTotal + ' 单</span></div>' +
+    '</div></div><div class="ov-legend">' + legend + '</div>';
 }
 // 每 5 分钟自动刷新
 load('shopee');
