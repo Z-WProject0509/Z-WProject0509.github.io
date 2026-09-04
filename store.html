@@ -7,6 +7,24 @@
 <title>店铺数据 · 电商工作台</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+  .shop-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .shop-pick { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px; gap: 2px; }
+  .shop-pick button { border: 0; background: transparent; padding: 7px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 650; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; }
+  .shop-pick button.on { background: #fff; color: var(--text); box-shadow: 0 1px 4px rgba(16,24,40,.12); }
+  .chartbox { position: relative; margin: 6px 0 2px; user-select: none; }
+  .chartbox canvas { width: 100%; display: block; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+  .ch-hint { color: var(--text-3); font-size: 11.5px; margin: 4px 2px 0; line-height: 1.7; }
+  .ch-legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 8px 2px 0; font-size: 12.5px; color: var(--text-2); }
+  .ch-legend i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .metric-switch { display: inline-flex; gap: 4px; }
+  .metric-switch button { border: 1px solid var(--border-strong); background: #fff; border-radius: 999px; padding: 4px 12px; font-size: 12px; color: var(--text-2); cursor: pointer; font-family: inherit; }
+  .metric-switch button.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .tot-bar { display: flex; gap: 8px; margin: 10px 0 4px; flex-wrap: wrap; }
+  .tot-chip { font-size: 12px; color: var(--text-2); background: var(--surface-2); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; }
+  .tot-chip b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .legend-row { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; }
+</style>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
@@ -24,167 +42,285 @@
 
 <div class="wrap">
   <div class="panel">
-    <h2>📈 每日销售统计 <span class="tag">定型留存 · 自选 日 / 周 / 月 / 任意区间</span></h2>
-    <div class="rg-head">
-      <div class="plat-btns" id="salesPlatBtns">
-        <button class="btn on" data-plat="all">双平台</button>
-        <button class="btn" data-plat="Shopee">Shopee</button>
-        <button class="btn" data-plat="TikTok">TikTok</button>
+    <div class="shop-head">
+      <h2 style="margin-bottom:0">📈 每日销售趋势</h2>
+      <div class="shop-pick" id="shopPick">
+        <button class="on" data-plat="all">🟦 双平台</button>
+        <button data-plat="Shopee">Shopee</button>
+        <button data-plat="TikTok">TikTok</button>
       </div>
-      <div class="rg-presets" id="salesPresets">
-        <button class="btn on" data-p="yesterday">昨日</button>
-        <button class="btn" data-p="today">今天</button>
-        <button class="btn" data-p="thisWeek">本周</button>
-        <button class="btn" data-p="lastWeek">上周</button>
-        <button class="btn" data-p="thisMonth">本月</button>
-        <button class="btn" data-p="lastMonth">上月</button>
-        <button class="btn" data-p="7d">近7天</button>
-        <button class="btn" data-p="30d">近30天</button>
-      </div>
-      <div class="rg-custom">
-        <input type="date" id="salesFrom"> ~ <input type="date" id="salesTo">
-        <button class="btn primary" id="salesApply">查区间</button>
+      <div class="metric-switch" id="metricSwitch">
+        <button class="on" data-m="amount">💰 销售额</button>
+        <button data-m="orders">🧾 单数</button>
+        <button data-m="qty">👟 件数</button>
       </div>
     </div>
-    <div id="salesStats"></div>
-  </div>
-
-  <div class="panel">
-    <h2>📢 广告花费（双平台）<span class="tag">GMT+7 定型 · 留存半年 · 自选周期</span></h2>
-    <div class="rg-presets" id="adsPresets" style="margin-bottom:12px">
-      <button class="btn on" data-p="yesterday">昨日</button>
-      <button class="btn" data-p="today">今天</button>
-      <button class="btn" data-p="thisWeek">本周</button>
-      <button class="btn" data-p="lastWeek">上周</button>
-      <button class="btn" data-p="thisMonth">本月</button>
-      <button class="btn" data-p="lastMonth">上月</button>
-      <button class="btn" data-p="7d">近7天</button>
-      <button class="btn" data-p="30d">近30天</button>
+    <div class="ch-hint">🖱 <b>滚轮缩放</b>时间范围（约 2 天 ~ 90 天）· <b>按住左右拖动</b>平移 · 悬停查看单日数值</div>
+    <div class="chartbox" id="chartbox">
+      <canvas id="chart" height="320"></canvas>
     </div>
-    <div id="adsStats"></div>
-  </div>
-
-  <div class="panel">
-    <h2>🏆 平台对照 <span class="tag">Shopee vs TikTok 累计销售与广告投入</span></h2>
-    <div id="platCompare"></div>
+    <div class="ch-legend" id="chartLegend"></div>
+    <div class="tot-bar" id="totBar"></div>
+    <div id="dailyList" style="margin-top:6px"></div>
   </div>
 
   <div class="footer">
-    销售按本地自然日归档 · 广告按 GMT+7 自然日定型（留存半年）· 更新于 <span id="footTime">—</span>
+    每日销售按本地自然日归档 · 数据留存 ≥ 6 个月 · 折线图可滚轮缩放 / 拖动平移浏览任意日期段 · 更新于 <span id="footTime">—</span>
   </div>
 </div>
 
 <script src="assets/app.js"></script>
 <script>
-var salesSummary = null, salesPlat = 'all', salesFrom = null, salesTo = null, adSp = null, adTk = null;
-var PLABEL = { yesterday:'昨日', today:'今天', thisWeek:'本周', lastWeek:'上周', thisMonth:'本月', lastMonth:'上月', '7d':'近7天', '30d':'近30天' };
+var daily = [];          // 归一 {date, Shopee:{amount,orders,qty}, TikTok:{...}}
+var plat = 'all';
+var metric = 'amount';
+var view = null;         // {start: idx, span: days} 相对数据的窗口
+var hoverIdx = -1;
+var drag = null;
 
-function renderSales(rg, lbl) {
-  var box = document.getElementById('salesStats');
-  if (!salesSummary || !rg) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
-  var rows = (salesSummary.daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; });
-  if (salesPlat !== 'all') rows = rows.filter(function (r) { return r.platform === salesPlat; });
-  if (!rows.length) { box.innerHTML = '<div class="empty"><span class="big">📭</span>该区间暂无销售数据</div>'; return; }
-  var a = rows.reduce(function (s, r) { s.orders += r.orders; s.qty += r.totalQty; s.rp += r.amountLocal; s.cny += r.amountCny || 0; return s; }, { orders: 0, qty: 0, rp: 0, cny: 0 });
-  var cards = '<div class="cards">' +
-    '<div class="card"><div class="k">🧾 销售单数</div><div class="v">' + a.orders + '</div><div class="m">' + rows.length + ' 天记录</div></div>' +
-    '<div class="card"><div class="k">👟 售出件数</div><div class="v">' + a.qty + '</div></div>' +
-    '<div class="card"><div class="k">💰 销售金额</div><div class="v green">' + fmtRp(a.rp) + '</div></div>' +
-    '<div class="card"><div class="k">🇨🇳 折合人民币</div><div class="v green">' + fmtCny(a.cny) + '</div><div class="m">汇率仅供参考</div></div>' +
-    '</div>';
-  var detail = rows.slice().reverse().map(function (r) {
-    return '<div class="srow">' + r.date + ' · <b>' + r.platform + '</b> · ' + r.orders + ' 单 ' + r.totalQty + ' 件 · ' + fmtRp(r.amountLocal) + (r.amountCny ? ' <span class="aux">(' + fmtCny(r.amountCny) + ')</span>' : '') + '</div>';
-  }).join('');
-  box.innerHTML = cards + '<div class="upd" style="margin:10px 0 4px">' + lbl + '（' + (salesPlat === 'all' ? '双平台' : salesPlat) + ' · ' + rg.from + ' ~ ' + rg.to + '）</div>' + detail;
+var COLORS = { Shopee: '#3b6cf6', TikTok: '#10b981', all1: '#3b6cf6', all2: '#10b981' };
+var canvas, ctx, box, W = 0, H = 0, padL = 62, padR = 12, padT = 14, padB = 26;
+
+function loadData() {
+  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+    // 汇总 daily 成 每日期双平台
+    var m = {};
+    (a.daily || []).forEach(function (r) {
+      if (!m[r.date]) m[r.date] = { date: r.date };
+      m[r.date][r.platform] = { amount: r.amountLocal, orders: r.orders, qty: r.totalQty, cny: r.amountCny, inc: r.incomeLocal };
+    });
+    daily = Object.keys(m).sort().map(function (d) { return m[d]; });
+    if (!daily.length) { return; }
+    // 默认视图：最近 14 天
+    var total = daily.length;
+    view = { end: total - 1, span: Math.min(14, total) };
+    resize();
+    drawAll();
+    document.getElementById('footTime').textContent = relTime(a.updatedAt);
+  }).catch(function () { document.getElementById('chartLegend').innerHTML = '<span class="empty">数据加载失败</span>'; });
 }
-function doSales(p) {
-  var rg = presetRange(p); if (!rg) return;
-  salesFrom.value = rg.from; salesTo.value = rg.to;
-  document.querySelectorAll('#salesPresets .btn').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); });
-  renderSales(rg, PLABEL[p] || p);
+
+function activeSeries() {
+  // 返回要画的 [{key:'Shopee'|'TikTok', color}] 和名称
+  if (plat === 'all') return [{ k: 'Shopee', c: COLORS.Shopee }, { k: 'TikTok', c: COLORS.TikTok }];
+  return [{ k: plat, c: COLORS[plat] }];
 }
-function bindSales() {
-  document.querySelectorAll('#salesPresets .btn').forEach(function (b) { b.addEventListener('click', function () { doSales(b.getAttribute('data-p')); }); });
-  salesFrom = document.getElementById('salesFrom'); salesTo = document.getElementById('salesTo');
-  document.getElementById('salesApply').addEventListener('click', function () {
-    if (salesFrom.value && salesTo.value) {
-      document.querySelectorAll('#salesPresets .btn').forEach(function (x) { x.classList.remove('on'); });
-      renderSales({ from: salesFrom.value, to: salesTo.value }, '自定义区间');
+function metricVal(rec, key) {
+  if (!rec[key]) return null;
+  if (metric === 'orders') return rec[key].orders != null ? rec[key].orders : null;
+  if (metric === 'qty') return rec[key].qty != null ? rec[key].qty : null;
+  return rec[key].amount != null ? rec[key].amount : null;
+}
+function fmtMetric(v) { return metric === 'amount' ? fmtRp(v) : (Math.round(v || 0) + (metric === 'orders' ? ' 单' : ' 件')); }
+function resize() {
+  canvas = document.getElementById('chart');
+  box = document.getElementById('chartbox');
+  var w = box.clientWidth - 2;
+  if (w < 200) w = 200;
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(w * dpr);
+  canvas.height = Math.round(320 * dpr);
+  canvas.style.height = '320px';
+  ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  W = w; H = 320;
+}
+function draw() {
+  if (!ctx || !daily.length) return;
+  ctx.clearRect(0, 0, W, H);
+  var vr = visibleRange();
+  var n = vr.end - vr.start + 1;
+  var series = activeSeries();
+  // 收集值
+  var allVals = [];
+  for (var i = vr.start; i <= vr.end; i++) {
+    for (var s = 0; s < series.length; s++) { var v = metricVal(daily[i], series[s].k); if (v != null) allVals.push(v); }
+  }
+  if (!allVals.length) { ctx.fillStyle = '#93a1b5'; ctx.font = '13px sans-serif'; ctx.fillText('该区间暂无数据', W / 2 - 50, H / 2); return; }
+  var vmax = Math.max.apply(null, allVals), vmin = 0;
+  if (vmax === vmin) vmax = vmin + 1;
+  var X = function (idx) { return padL + (idx - vr.start) / (n - 1 || 1) * (W - padL - padR); };
+  var Y = function (v) { return padT + (1 - (v - vmin) / (vmax - vmin)) * (H - padT - padB); };
+  // 网格 + Y轴
+  ctx.strokeStyle = '#eef1f6'; ctx.fillStyle = '#93a1b5'; ctx.font = '10.5px sans-serif'; ctx.lineWidth = 1;
+  var ticks = 4;
+  for (var t = 0; t <= ticks; t++) {
+    var gv = vmin + (vmax - vmin) * t / ticks;
+    var gy = Y(gv);
+    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(W - padR, gy); ctx.stroke();
+    ctx.textAlign = 'right';
+    ctx.fillText(metric === 'amount' ? 'Rp' + shortNum(gv) : Math.round(gv), padL - 6, gy + 3);
+  }
+  // X轴刻度（最多 ~8 个）
+  ctx.textAlign = 'center';
+  var step = Math.ceil(n / 8);
+  for (var i = vr.start; i <= vr.end; i += step) {
+    var d = daily[i].date;
+    ctx.fillText((d || '').slice(5), X(i), H - 8);
+  }
+  // 线
+  series.forEach(function (s) {
+    ctx.strokeStyle = s.c; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    var started = false;
+    for (var i = vr.start; i <= vr.end; i++) {
+      var v = metricVal(daily[i], s.k);
+      if (v == null) { started = false; continue; }
+      var x = X(i), y = Y(v);
+      if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    // 面积渐变
+    ctx.globalAlpha = 0.06;
+    ctx.lineTo(X(vr.end), H - padB); ctx.lineTo(X(vr.start), H - padB); ctx.closePath();
+    ctx.fillStyle = s.c; ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+  // 点 + hover
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#1a2233';
+  for (var i = vr.start; i <= vr.end; i++) {
+    for (var s = 0; s < series.length; s++) {
+      var v = metricVal(daily[i], series[s].k);
+      if (v == null) continue;
+      ctx.beginPath(); ctx.arc(X(i), Y(v), 2.5, 0, 7); ctx.fillStyle = series[s].c; ctx.fill();
+    }
+  }
+  // hover 线
+  if (hoverIdx >= vr.start && hoverIdx <= vr.end) {
+    var hx = X(hoverIdx);
+    ctx.strokeStyle = '#c9d3e0'; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.moveTo(hx, padT); ctx.lineTo(hx, H - padB); ctx.stroke(); ctx.setLineDash([]);
+    // tooltip
+    var tip = daily[hoverIdx].date + '\n';
+    series.forEach(function (s) {
+      var v = metricVal(daily[hoverIdx], s.k);
+      tip += (s.k === 'Shopee' ? 'Shopee' : 'TikTok') + ': ' + (v != null ? fmtMetric(v) : '—') + '\n';
+    });
+    var lines = tip.split('\n');
+    ctx.font = '11px sans-serif';
+    var tw = 0; lines.forEach(function (l) { tw = Math.max(tw, ctx.measureText(l).width); });
+    var bx = Math.min(hx + 10, W - tw - 16), by = padT + 6;
+    ctx.fillStyle = 'rgba(20,28,45,.92)'; ctx.strokeStyle = 'rgba(255,255,255,.15)';
+    ctx.beginPath(); roundRect(bx, by, tw + 14, lines.length * 15 + 8, 6); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left';
+    lines.forEach(function (l, k) { ctx.fillText(l, bx + 7, by + 15 + k * 15); });
+  }
+}
+function roundRect(x, y, w, h, r) { ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function shortNum(v) {
+  if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+  if (v >= 1000) return (v / 1000).toFixed(0) + 'k';
+  return Math.round(v);
+}
+function renderLegend() {
+  var el = document.getElementById('chartLegend');
+  var names = { amount: '销售额', orders: '单数', qty: '件数' };
+  var series = activeSeries();
+  el.innerHTML = '<span class="legend-row">' + names[metric] + '</span>' + series.map(function (s) {
+    return '<span class="legend-row"><i style="background:' + s.c + '"></i>' + s.k + '</span>';
+  }).join('') + '<span class="aux" id="rangeHint"></span>';
+}
+function renderTot() {
+  if (!daily.length) return;
+  var vr = visibleRange();
+  var sers = plat === 'all' ? ['Shopee', 'TikTok'] : [plat];
+  var label = document.getElementById('rangeHint');
+  if (label) label.textContent = '窗口 ' + (vr.start + 1) + '~' + (vr.end + 1) + ' 天 / 共 ' + daily.length + ' 天 · 滚轮缩放 · 拖动平移';
+  var chips = [];
+  var totalAmount = 0, totalOrders = 0;
+  sers.forEach(function (k) {
+    var a = 0, o = 0, q = 0;
+    for (var i = vr.start; i <= vr.end; i++) { var r = daily[i][k]; if (r) { a += r.amount || 0; o += r.orders || 0; q += r.qty || 0; } }
+    totalAmount += a; totalOrders += o;
+    chips.push('<span class="tot-chip"><b style="color:' + COLORS[k] + '">' + k + '</b> · 销售额 ' + fmtRp(a) + ' · ' + o + ' 单 · ' + q + ' 件</span>');
+  });
+  if (plat === 'all') chips.unshift('<span class="tot-chip">📊 窗口合计 <b>' + fmtRp(totalAmount) + '</b> · ' + totalOrders + ' 单</span>');
+  document.getElementById('totBar').innerHTML = chips.join('');
+}
+function renderList() {
+  var vr = visibleRange();
+  var box = document.getElementById('dailyList');
+  var rows = [];
+  for (var i = vr.end; i >= vr.start; i--) {
+    var d = daily[i]; if (!d) continue;
+    var sers = plat === 'all' ? ['Shopee', 'TikTok'] : [plat];
+    var cells = sers.map(function (k) {
+      var r = d[k]; if (!r) return '';
+      return '<span class="aux">' + k + '</span> <b>' + fmtRp(r.amount) + '</b> · ' + r.orders + ' 单';
+    }).join('　');
+    rows.push('<div class="srow"><b>' + esc(d.date) + '</b>　' + cells + '</div>');
+  }
+  box.innerHTML = rows.length ? rows.join('') : '<div class="empty">该窗口无数据</div>';
+}
+
+function drawAll() { renderLegend(); draw(); renderTot(); renderList(); }
+function visibleRange() {
+  var start = Math.max(0, view.end - view.span + 1);
+  return { start: start, end: view.end };
+}
+function clampView() { if (view.end < 0) view.end = 0; if (view.end > daily.length - 1) view.end = daily.length - 1; if (view.span < 2) view.span = 2; if (view.span > 120) view.span = 120; }
+function xToIdx(px) { var vr = visibleRange(); var n = vr.end - vr.start + 1; var f = (px - padL) / (W - padL - padR); var idx = Math.round(vr.start + f * (n - 1)); return idx; }
+
+// ==== 交互：滚轮缩放 / 拖拽平移 / hover ====
+var chartbox = null;
+function bindChart() {
+  chartbox = document.getElementById('chartbox');
+  canvas = document.getElementById('chart');
+  // 滚轮缩放（以指针处日期为锚）
+  chartbox.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var rect = canvas.getBoundingClientRect();
+    var px = e.clientX - rect.left;
+    var anchorIdx = xToIdx(px);
+    var oldSpan = view.span;
+    var factor = e.deltaY > 0 ? 1.18 : 1 / 1.18;   // 下滚放大范围
+    var newSpan = Math.max(2, Math.min(120, Math.round(oldSpan * factor)));
+    // 保持 anchor 天数相对位置稳定
+    var pos = (anchorIdx - view.end) / (oldSpan - 1);  // ~0 右端  ~-1 左端
+    view.span = newSpan;
+    view.end = Math.round(anchorIdx - pos * (newSpan - 1));
+    clampView();
+    drawAll();
+  }, { passive: false });
+  // 拖拽平移
+  canvas.addEventListener('mousedown', function (e) {
+    drag = e.clientX;
+    canvas.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', function (e) {
+    if (drag != null) {
+      var dx = e.clientX - drag;
+      drag = e.clientX;
+      var pxPerDay = (W - padL - padR) / (view.span - 1);
+      view.end -= Math.round(dx / pxPerDay);
+      clampView(); drawAll();
+    } else {
+      var rect = canvas.getBoundingClientRect();
+      var idx = xToIdx(e.clientX - rect.left);
+      if (idx !== hoverIdx) { hoverIdx = idx; draw(); }
     }
   });
-  document.getElementById('salesPlatBtns').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b) return;
-    document.querySelectorAll('#salesPlatBtns .btn').forEach(function (x) { x.classList.remove('on'); });
-    b.classList.add('on'); salesPlat = b.getAttribute('data-plat');
-    var cur = document.querySelector('#salesPresets .btn.on');
-    doSales(cur ? cur.getAttribute('data-p') : 'yesterday');
-  });
-  var rg = presetRange('yesterday'); salesFrom.value = rg.from; salesTo.value = rg.to;
+  window.addEventListener('mouseup', function () { if (drag != null) { drag = null; canvas.style.cursor = 'crosshair'; } });
+  // 点击跳转到当日数据不位移（仅提示）
+  canvas.style.cursor = 'crosshair';
 }
 
-function adSum(rg) {
-  function agg(src, f) {
-    var rows = (src && src.daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; });
-    var a = { cost: 0, sales: 0, orders: 0, n: rows.length };
-    rows.forEach(function (r) { a.cost += f.cost(r); a.sales += f.sales(r); a.orders += f.ord(r); });
-    return a;
-  }
-  return {
-    sp: adSp ? agg(adSp, { cost: function (r) { return r.expense || 0; }, sales: function (r) { return r.sales || 0; }, ord: function (r) { return r.orders || 0; } }) : null,
-    tk: adTk ? agg(adTk, { cost: function (r) { return r.cost || 0; }, sales: function (r) { return r.grossRevenue || 0; }, ord: function (r) { return r.orders || 0; } }) : null
-  };
-}
-function renderAds(rg) {
-  var box = document.getElementById('adsStats');
-  var r = adSum(rg);
-  function card(title, a) {
-    if (!a) return '<div class="card"><div class="k">' + title + '</div><div class="v dim">—</div></div>';
-    var roas = a.cost > 0 ? Math.round((a.sales / a.cost) * 100) / 100 : null;
-    return '<div class="card"><div class="k">' + title + '</div><div class="v red">' + fmtRp(a.cost) + '</div>' +
-      '<div class="m">广告销售 ' + fmtRp(a.sales) + ' · ' + a.orders + ' 单</div>' +
-      '<div class="v ' + (roas != null && roas >= 1 ? 'green' : 'red') + '" style="font-size:15px;margin-top:6px">ROAS/ROI ' + (roas != null ? roas : '—') + '</div></div>';
-  }
-  box.innerHTML = '<div class="cards">' + card('🟠 Shopee 广告', r.sp) + card('⚫ TikTok 广告', r.tk) + '</div>' +
-    '<div class="upd">' + rg.label + '（' + rg.from + ' ~ ' + rg.to + ' · GMT+7 定型）</div>';
-}
-function doAds(p) { var rg = presetRange(p); if (rg) { document.querySelectorAll('#adsPresets .btn').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === p); }); renderAds(rg); } }
+// 店铺/指标切换
+document.getElementById('shopPick').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#shopPick button').forEach(function (x) { x.classList.remove('on'); });
+  b.classList.add('on'); plat = b.getAttribute('data-plat'); drawAll();
+});
+document.getElementById('metricSwitch').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#metricSwitch button').forEach(function (x) { x.classList.remove('on'); });
+  b.classList.add('on'); metric = b.getAttribute('data-m'); drawAll();
+});
+window.addEventListener('resize', function () { resize(); draw(); });
 
-function renderCompare() {
-  var box = document.getElementById('platCompare');
-  if (!salesSummary) { box.innerHTML = '<div class="empty">加载中…</div>'; return; }
-  var rows = salesSummary.daily || [];
-  function agg(plat) { var s = { orders: 0, rp: 0, days: 0 }; rows.forEach(function (r) { if (r.platform === plat) { s.orders += r.orders; s.rp += r.amountLocal; s.days++; } }); return s; }
-  function ads(plat) {
-    var src = plat === 'Shopee' ? adSp : adTk;
-    if (!src || !src.periods || !src.periods.prevMonth) return { cost: 0, sales: 0 };
-    var d = src.periods.prevMonth;
-    return { cost: d.expense != null ? d.expense : (d.cost || 0), sales: d.sales != null ? d.sales : (d.grossRevenue || 0) };
-  }
-  var sp = agg('Shopee'), tk = agg('TikTok'), spAd = ads('Shopee'), tkAd = ads('TikTok');
-  box.innerHTML = '<div class="cards">' +
-    '<div class="card"><div class="k">🟠 Shopee 累计销售</div><div class="v green">' + fmtRp(sp.rp) + '</div><div class="m">' + sp.orders + ' 单 · ' + sp.days + ' 天<br>上月广告 ' + fmtRp(spAd.cost) + '</div></div>' +
-    '<div class="card"><div class="k">⚫ TikTok 累计销售</div><div class="v green">' + fmtRp(tk.rp) + '</div><div class="m">' + tk.orders + ' 单 · ' + tk.days + ' 天<br>上月广告 ' + fmtRp(tkAd.cost) + '</div></div>' +
-    '</div>';
-}
-
-fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
-  salesSummary = a; bindSales(); doSales('yesterday'); renderCompare();
-  document.getElementById('footTime').textContent = relTime(a.updatedAt);
-}).catch(function () { document.getElementById('salesStats').innerHTML = '<div class="empty">销售数据加载失败</div>'; });
-fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { adSp = a; renderAds(presetRange('yesterday')); renderCompare(); }).catch(function () {});
-fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { adTk = a; renderAds(presetRange('yesterday')); }).catch(function () {});
-bindAds();
-function bindAds() {
-  document.querySelectorAll('#adsPresets .btn').forEach(function (b) { b.addEventListener('click', function () { doAds(b.getAttribute('data-p')); }); });
-}
 initSyncPill();
-setInterval(function () {
-  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) { salesSummary = a; var cur = document.querySelector('#salesPresets .btn.on'); doSales(cur ? cur.getAttribute('data-p') : 'yesterday'); renderCompare(); }).catch(function () {});
-  Promise.all([
-    fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
-    fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
-  ]).then(function (arr) { adSp = arr[0]; adTk = arr[1]; renderAds(presetRange('yesterday')); });
-}, 5 * 60 * 1000);
+bindChart();
+loadData();
+setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
