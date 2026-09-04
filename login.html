@@ -205,12 +205,76 @@ function openCorp(corp) {
   setTimeout(function () { document.getElementById('user').focus(); }, 60);
 }
 
-async function sha256(txt) {
-  if (window.crypto && crypto.subtle) {
-    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
-    return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+// ===== 纯 JS SHA-256(不依赖 crypto.subtle, HTTP/HTTPS/本机通用; 密码为 ASCII, 已验证与标准一致)=====
+var SHA256 = (function () {
+  function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+  var mathPow = Math.pow, maxWord = mathPow(2, 32);
+  var hash = [], k = [];
+  var primeCounter = 0;
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (var ii = 0; ii < 313; ii += candidate) { isComposite[ii] = candidate; }
+      hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+    }
   }
-  return txt;
+  return function (ascii) {
+    ascii = String(ascii);
+    var result = '';
+    var words = [];
+    var asciiBitLength = ascii.length * 8;
+    var H = hash.slice(0);
+    ascii += '\x80';
+    while (ascii.length % 64 - 56) ascii += '\x00';
+    for (var i = 0; i < ascii.length; i++) {
+      var j = ascii.charCodeAt(i);
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words.length] = ((asciiBitLength / maxWord) | 0);
+    words[words.length] = (asciiBitLength);
+    for (var j2 = 0; j2 < words.length;) {
+      var w = words.slice(j2, j2 += 16);
+      var oldHash = H.slice(0, 8);
+      for (var i3 = 0; i3 < 64; i3++) {
+        var w15 = w[i3 - 15], w2 = w[i3 - 2];
+        var a = H[0], e = H[4];
+        var temp1 = H[7]
+          + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+          + ((e & H[5]) ^ ((~e) & H[6]))
+          + k[i3]
+          + (w[i3] = (i3 < 16) ? w[i3] : (
+              w[i3 - 16]
+              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+              + w[i3 - 7]
+              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+            ) | 0
+          );
+        var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+          + ((a & H[1]) ^ (a & H[2]) ^ (H[1] & H[2]));
+        H = [(temp1 + temp2) | 0].concat(H);
+        H[4] = (H[4] + temp1) | 0;
+      }
+      for (var i4 = 0; i4 < 8; i4++) { H[i4] = (H[i4] + oldHash[i4]) | 0; }
+    }
+    for (var i5 = 0; i5 < 8; i5++) {
+      for (var j3 = 3; j3 + 1; j3--) {
+        var b = (H[i5] >> (j3 * 8)) & 255;
+        result += ((b < 16) ? 0 : '') + b.toString(16);
+      }
+    }
+    return result;
+  };
+})();
+async function sha256(txt) {
+  // 优先 WebCrypto(https); http/旧环境走纯 JS 实现, 结果一致
+  try {
+    if (window.crypto && crypto.subtle) {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+      return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+    }
+  } catch (e) {}
+  return SHA256(txt);
 }
 async function doLogin() {
   var u = document.getElementById('user').value.trim();
