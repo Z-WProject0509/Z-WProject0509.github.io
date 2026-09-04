@@ -7,7 +7,6 @@
 <title>财务 · 电商工作台</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<script src="assets/gate.js"></script>
 <style>
   .tblwrap table { min-width: 1120px; }
 </style>
@@ -23,7 +22,6 @@
   <div class="top-right">
     <span class="sync-pill" id="syncPill" title="数据每 15 分钟自动同步推送"></span>
     <button class="btn ghost" onclick="refreshNow()" title="立即刷新页面数据">⟳ 刷新</button>
-    <button class="btn ghost" onclick="logoutNow()" title="退出并切换公司账号">⇄ 退出</button>
   </div>
 </div></header>
 
@@ -148,13 +146,13 @@ function renderAds(adsSp, adsTk) {
 }
 
 function loadAll() {
-  fetch(dataUrl('finance_shopee.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(renderIncome).catch(function () { document.getElementById('incomeOverview').innerHTML = '<div class="empty">加载失败，稍后自动重试</div>'; });
-  fetch(dataUrl('finance_orders.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+  fetch('finance_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(renderIncome).catch(function () { document.getElementById('incomeOverview').innerHTML = '<div class="empty">加载失败，稍后自动重试</div>'; });
+  fetch('finance_orders.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
     ledger = a; renderCheck();
     document.getElementById('footTime').textContent = relTime(a.summary.generatedAt);
     return Promise.all([
-      fetch(dataUrl('ads_summary.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
-      fetch(dataUrl('ads_tk_summary.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
+      fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
+      fetch('ads_tk_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
     ]).then(function (arr) { renderAds(arr[0], arr[1]); });
   }).catch(function () { document.getElementById('checkBox').innerHTML = '<div class="empty">核对数据加载失败</div>'; });
 }
