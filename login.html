@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3b6cf6">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+<title>登录 · 电商工作台</title>
+<style>
+  body { background: linear-gradient(160deg,#eef2ff 0%, #f6f8fc 55%, #eefaf3 100%); min-height: 100vh; }
+  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+  .login-card { width: 380px; max-width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 30px 30px 24px; box-shadow: 0 18px 50px rgba(30,50,120,.10); }
+  .login-logo { text-align: center; font-size: 30px; margin-bottom: 4px; }
+  .login-title { text-align: center; font-size: 19px; font-weight: 750; color: var(--text); }
+  .login-sub { text-align: center; color: var(--text-3); font-size: 12.5px; margin: 4px 0 22px; line-height: 1.7; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12.5px; color: var(--text-2); margin-bottom: 6px; font-weight: 600; }
+  .field input { width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1px solid var(--border-strong); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text); outline: none; transition: border-color .15s, box-shadow .15s; }
+  .field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,108,246,.12); }
+  .login-err { color: var(--red); font-size: 12.5px; min-height: 18px; margin: 2px 0 8px; }
+  .login-btn { width: 100%; padding: 12px; border: 0; border-radius: 10px; background: var(--primary); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; }
+  .login-btn:hover { background: var(--primary-hover); }
+  .login-btn:disabled { opacity: .55; cursor: default; }
+  .login-foot { margin-top: 16px; text-align: center; color: var(--text-3); font-size: 11.5px; line-height: 1.8; }
+  .login-acc { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 11.5px; color: var(--text-3); }
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">🛒</div>
+    <div class="login-title">电商工作台</div>
+    <div class="login-sub">多公司数据看板 · 登录后进入所属公司</div>
+    <div class="field">
+      <label>账号</label>
+      <input id="user" autocomplete="username" placeholder="请输入账号" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>密码</label>
+      <input id="pass" type="password" autocomplete="current-password" placeholder="请输入密码">
+    </div>
+    <div class="login-err" id="err"></div>
+    <button class="login-btn" id="btn">登 录</button>
+    <div class="login-foot">数据每 15 分钟自动更新 · 同步只读 · 需协助请联系管理员</div>
+    <div class="login-acc" id="accHint"></div>
+  </div>
+</div>
+
+<script>
+// ===== 账号表（普通门禁；可在此继续添加公司账号）=====
+// corp: a=公司A(根数据), b=公司B(b/ 子目录，预留)
+var ACCOUNTS = [
+  { user: 'ZEROTH', corp: 'a', name: '公司A · MULMUL', hash: '98d738abd01713fc6497c05c62c09f5bf487907d4f8b20124fba83a447cee033' }
+];
+var REDIR = new URLSearchParams(location.search).get('next') || 'index.html';
+// 防止 open redirect：只允许站内相对路径
+if (REDIR.indexOf('://') >= 0 || REDIR.charAt(0) === '/' && REDIR.indexOf('//') === 0) REDIR = 'index.html';
+if (REDIR.charAt(0) === '/') REDIR = REDIR.slice(1);
+if (REDIR === 'login.html' || REDIR === '') REDIR = 'index.html';
+
+async function sha256(txt) {
+  if (window.crypto && crypto.subtle) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+    return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+  }
+  // 极简兜底（非 https 老环境）：直接明文比较（普通门禁可接受）
+  return txt;
+}
+function setErr(m) { document.getElementById('err').textContent = m || ''; }
+
+async function doLogin() {
+  var u = document.getElementById('user').value.trim();
+  var p = document.getElementById('pass').value;
+  setErr('');
+  if (!u || !p) { setErr('请输入账号和密码'); return; }
+  var btn = document.getElementById('btn');
+  btn.disabled = true; btn.textContent = '登录中…';
+  var hit = null;
+  for (var i = 0; i < ACCOUNTS.length; i++) {
+    if (ACCOUNTS[i].user.toLowerCase() === u.toLowerCase()) { hit = ACCOUNTS[i]; break; }
+  }
+  if (!hit) { setErr('账号不存在'); btn.disabled = false; btn.textContent = '登 录'; return; }
+  var h = await sha256(p);
+  var ok = h === hit.hash || (h === p && p === hit.hash); // 兜底分支
+  if (!ok) { setErr('密码错误'); btn.disabled = false; btn.textContent = '登 录'; return; }
+  try {
+    localStorage.setItem('ds_corp', hit.corp);
+    localStorage.setItem('ds_user', hit.user);
+    localStorage.setItem('ds_name', hit.name);
+    localStorage.setItem('ds_at', String(Date.now()));
+  } catch (e) {}
+  location.href = REDIR;
+}
+document.getElementById('btn').addEventListener('click', doLogin);
+document.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+
+// 已登录则直接进入
+try {
+  var cur = localStorage.getItem('ds_corp');
+  if (cur) { location.replace(REDIR); }
+} catch (e) {}
+document.getElementById('accHint').textContent = '账号 ZEROTH（公司A · MULMUL）已就绪 · 公司B 账号待添加';
+</script>
+</body>
+</html>
