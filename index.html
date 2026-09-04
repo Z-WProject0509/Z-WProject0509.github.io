@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#3b6cf6">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
+<script src="assets/gate.js"></script>
 <style>
   /* ===== 订单发货页专属 ===== */
   .sub { color: var(--text-3); font-size: 12.5px; }
@@ -88,6 +89,7 @@
   <div class="top-right">
     <span class="sync-pill" id="syncPill" title="数据每 15 分钟自动同步推送"></span>
     <button class="btn ghost" onclick="refreshNow()">⟳ 刷新</button>
+    <button class="btn ghost" onclick="logoutNow()" title="退出并切换公司账号">⇄ 退出</button>
   </div>
 </div></header>
 <div class="wrap">
@@ -270,7 +272,7 @@ function render(plat, d) {
     : '<div class="empty">🎉 全部已发货</div>';
 }
 function load(plat) {
-  var url = plat === 'tk' ? 'tk.json' : 'data.json';
+  var url = dataUrl(plat === 'tk' ? 'tk.json' : 'data.json');
   if (cache[plat]) { render(plat, cache[plat]); return; }
   fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     cache[plat] = d; render(plat, d);
@@ -339,8 +341,8 @@ function listDays(daily, rg) { return (daily || []).filter(function (r) { return
 var ovCache = {};
 function loadOverview() {
   Promise.all([
-    fetch('data.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
-    fetch('tk.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
+    fetch(dataUrl('data.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
+    fetch(dataUrl('tk.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
   ]).then(function (arr) {
     ovCache = { Shopee: arr[0], TikTok: arr[1] };
     renderOverview();
