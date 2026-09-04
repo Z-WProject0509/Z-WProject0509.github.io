@@ -6,101 +6,256 @@
 <meta name="theme-color" content="#3b6cf6">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<title>登录 · 电商工作台</title>
+<title>中控台 · 电商工作台</title>
 <style>
-  body { background: linear-gradient(160deg,#eef2ff 0%, #f6f8fc 55%, #eefaf3 100%); min-height: 100vh; }
-  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
-  .login-card { width: 380px; max-width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 30px 30px 24px; box-shadow: 0 18px 50px rgba(30,50,120,.10); }
-  .login-logo { text-align: center; font-size: 30px; margin-bottom: 4px; }
-  .login-title { text-align: center; font-size: 19px; font-weight: 750; color: var(--text); }
-  .login-sub { text-align: center; color: var(--text-3); font-size: 12.5px; margin: 4px 0 22px; line-height: 1.7; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 12.5px; color: var(--text-2); margin-bottom: 6px; font-weight: 600; }
-  .field input { width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1px solid var(--border-strong); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text); outline: none; transition: border-color .15s, box-shadow .15s; }
+  body { background: linear-gradient(165deg,#eef2ff 0%, #f6f8fc 50%, #eefaf3 100%); min-height: 100vh; }
+  .portal { max-width: 1080px; margin: 0 auto; padding: 34px 20px 30px; }
+  .p-head { text-align: center; margin-bottom: 26px; }
+  .p-logo { font-size: 34px; }
+  .p-title { font-size: 23px; font-weight: 800; color: var(--text); margin-top: 2px; }
+  .p-sub { color: var(--text-3); font-size: 13px; margin-top: 5px; line-height: 1.8; }
+  .p-sub b { color: var(--text-2); }
+  .p-legend { display: inline-flex; gap: 14px; margin-top: 10px; font-size: 12px; color: var(--text-3); flex-wrap: wrap; justify-content: center; }
+  .p-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .ccard { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; transition: all .16s; position: relative; overflow: hidden; }
+  .ccard:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(30,50,120,.10); border-color: #c9d8ff; }
+  .ccard .ctop { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .ccard .cdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cdot.ok { background: var(--green); box-shadow: 0 0 0 3px rgba(22,163,74,.16); }
+  .cdot.warn { background: var(--amber); box-shadow: 0 0 0 3px rgba(217,119,6,.16); }
+  .cdot.bad { background: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,.16); }
+  .cdot.off { background: #c3ccd9; }
+  .ccard .cname { font-size: 16.5px; font-weight: 750; color: var(--text); }
+  .ccard .cbrand { font-size: 11.5px; color: var(--text-3); margin-top: 1px; }
+  .ccard .cstate { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .cs-ok { background: var(--green-weak); color: var(--green); }
+  .cs-warn { background: var(--amber-weak); color: var(--amber); }
+  .cs-bad { background: var(--red-weak); color: var(--red); }
+  .cs-off { background: #f1f4f9; color: var(--text-2); }
+  .cstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px; }
+  .cst { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 9px 6px; text-align: center; }
+  .cst .n { font-size: 16px; font-weight: 750; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .cst .k { font-size: 10.5px; color: var(--text-3); margin-top: 3px; }
+  .crows { font-size: 12px; color: var(--text-2); line-height: 1.9; }
+  .crows b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .cfoot { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-3); }
+  .cgo { font-weight: 700; color: var(--primary); }
+  .empty-plat { color: var(--text-3); font-size: 12px; padding: 4px 0; }
+  /* 登录浮层 */
+  .mask { position: fixed; inset: 0; background: rgba(23,32,54,.42); display: none; align-items: center; justify-content: center; z-index: 50; padding: 18px; }
+  .mask.on { display: flex; }
+  .login-pop { width: 360px; max-width: 100%; background: var(--surface); border-radius: 16px; padding: 22px 22px 18px; box-shadow: 0 24px 60px rgba(20,30,70,.25); }
+  .lp-title { font-size: 16px; font-weight: 750; color: var(--text); margin-bottom: 2px; }
+  .lp-sub { font-size: 12px; color: var(--text-3); margin-bottom: 14px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 5px; font-weight: 600; }
+  .field input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: 9px; font-size: 14.5px; font-family: inherit; outline: none; background: var(--surface); color: var(--text); }
   .field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,108,246,.12); }
-  .login-err { color: var(--red); font-size: 12.5px; min-height: 18px; margin: 2px 0 8px; }
-  .login-btn { width: 100%; padding: 12px; border: 0; border-radius: 10px; background: var(--primary); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; }
-  .login-btn:hover { background: var(--primary-hover); }
-  .login-btn:disabled { opacity: .55; cursor: default; }
-  .login-foot { margin-top: 16px; text-align: center; color: var(--text-3); font-size: 11.5px; line-height: 1.8; }
-  .login-acc { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 11.5px; color: var(--text-3); }
+  .err { color: var(--red); font-size: 12.5px; min-height: 17px; }
+  .row-btns { display: flex; gap: 8px; margin-top: 4px; }
+  .btn2 { flex: 1; padding: 10px; border: 0; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .btn2.pri { background: var(--primary); color: #fff; }
+  .btn2.pri:hover { background: var(--primary-hover); }
+  .btn2.gho { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+  .p-foot { text-align: center; color: var(--text-3); font-size: 11.5px; margin-top: 26px; line-height: 1.9; }
+  .off-badge { position: absolute; right: 12px; bottom: 12px; font-size: 10.5px; color: var(--text-3); background: var(--surface-2); padding: 3px 8px; border-radius: 999px; }
+  .loading { text-align: center; color: var(--text-3); padding: 40px 0; }
 </style>
 </head>
 <body>
-<div class="login-wrap">
-  <div class="login-card">
-    <div class="login-logo">🛒</div>
-    <div class="login-title">电商工作台</div>
-    <div class="login-sub">多公司数据看板 · 登录后进入所属公司</div>
-    <div class="field">
-      <label>账号</label>
-      <input id="user" autocomplete="username" placeholder="请输入账号" spellcheck="false">
+<div class="portal">
+  <div class="p-head">
+    <div class="p-logo">🛒</div>
+    <div class="p-title">电商工作台 · 中控台</div>
+    <div class="p-sub">多家公司统一入口 · 数据每 15 分钟自动同步 · <b>点公司卡片</b>进入对应看板（手机/电脑通用）</div>
+    <div class="p-legend">
+      <span><i style="background:var(--green)"></i>同步正常</span>
+      <span><i style="background:var(--amber)"></i>更新偏旧</span>
+      <span><i style="background:var(--red)"></i>同步中断</span>
+      <span><i style="background:#c3ccd9"></i>未接入</span>
     </div>
-    <div class="field">
-      <label>密码</label>
-      <input id="pass" type="password" autocomplete="current-password" placeholder="请输入密码">
+  </div>
+  <div id="grid" class="grid"><div class="loading">正在加载公司状态…</div></div>
+  <div class="p-foot" id="foot">数据来源：站斧店铺环境自动同步（只读）· 登录一次记住本设备，再次打开无需密码</div>
+</div>
+
+<!-- 登录浮层 -->
+<div class="mask" id="mask">
+  <div class="login-pop">
+    <div class="lp-title" id="lpTitle">登录</div>
+    <div class="lp-sub" id="lpSub"></div>
+    <div class="field"><label>账号</label><input id="user" autocomplete="username" placeholder="请输入账号" spellcheck="false"></div>
+    <div class="field"><label>密码</label><input id="pass" type="password" autocomplete="current-password" placeholder="请输入密码"></div>
+    <div class="err" id="err"></div>
+    <div class="row-btns">
+      <button class="btn2 pri" id="btnOk">进入看板</button>
+      <button class="btn2 gho" id="btnCancel">取消</button>
     </div>
-    <div class="login-err" id="err"></div>
-    <button class="login-btn" id="btn">登 录</button>
-    <div class="login-foot">数据每 15 分钟自动更新 · 同步只读 · 需协助请联系管理员</div>
-    <div class="login-acc" id="accHint"></div>
   </div>
 </div>
 
 <script>
-// ===== 账号表（普通门禁；可在此继续添加公司账号）=====
-// corp: a=公司A(根数据), b=公司B(b/ 子目录，预留)
-var ACCOUNTS = [
-  { user: 'ZEROTH', corp: 'a', name: '公司A · MULMUL', hash: '98d738abd01713fc6497c05c62c09f5bf487907d4f8b20124fba83a447cee033' }
-];
-var REDIR = new URLSearchParams(location.search).get('next') || 'index.html';
-// 防止 open redirect：只允许站内相对路径
-if (REDIR.indexOf('://') >= 0 || REDIR.charAt(0) === '/' && REDIR.indexOf('//') === 0) REDIR = 'index.html';
-if (REDIR.charAt(0) === '/') REDIR = REDIR.slice(1);
-if (REDIR === 'login.html' || REDIR === '') REDIR = 'index.html';
+var CFG = { companies: [], accounts: [] };
+var pickCorp = null;   // 当前要登录/进入的公司
+var corpData = {};     // corp -> {updatedAt, fresh, state, shopee, tk, ...}
+
+function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function todayOnly(ts) { return String(ts || '').replace('T', ' ').slice(0, 16); }
+// 兼容 "2026/9/5 02:15:21" 与 ISO
+function parseDT(ts) {
+  if (!ts) return NaN;
+  if (String(ts).includes('T')) { var t = new Date(ts); return isNaN(t) ? NaN : t.getTime(); }
+  var m = String(ts).match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})[\sT](\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) return NaN;
+  return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0)).getTime();
+}
+function relTime(ts) {
+  var t = parseDT(ts);
+  if (isNaN(t)) return '';
+  var s = Math.max(0, Math.round((Date.now() - t) / 1000));
+  if (s < 60) return s + ' 秒前';
+  if (s < 3600) return Math.round(s / 60) + ' 分钟前';
+  if (s < 86400) return Math.round(s / 3600) + ' 小时前';
+  return Math.round(s / 86400) + ' 天前';
+}
+function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
+function freshState(min) {
+  if (min == null) return 'off';
+  if (min <= 25) return 'ok';
+  if (min <= 120) return 'warn';
+  return 'bad';
+}
+var ST_LABEL = { ok: ['同步正常', 'cs-ok', 'ok'], warn: ['更新偏旧', 'cs-warn', 'warn'], bad: ['同步中断', 'cs-bad', 'bad'], off: ['未接入', 'cs-off', 'off'] };
+
+// 加载一家公司两份平台 JSON, 汇总卡片数据
+async function loadCorp(c) {
+  var p = c.prefix || '';
+  var out = { updatedAt: null, min: null, shopee: null, tk: null, state: 'off', name: c.name, brand: c.brand, accent: c.accent, enabled: c.enabled, corp: c.corp };
+  if (!c.enabled) return out;
+  var files = c.dataFiles && c.dataFiles.length ? c.dataFiles : ['data.json', 'tk.json'];
+  var results = await Promise.all(files.map(function (f) {
+    return fetch(p + f + '?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }));
+  var shopee = results[0] || null, tk = results[1] || null;
+  out.shopee = shopee; out.tk = tk;
+  var times = [];
+  if (shopee && shopee.generatedAt) times.push(shopee.generatedAt);
+  if (tk && tk.generatedAt) times.push(tk.generatedAt);
+  if (shopee && shopee.orders && shopee.orders.count != null) out.shopeeOrders = shopee.orders.count;
+  if (shopee) { out.shopeeToship = shopee.toshipCount || 0; out.shopeeAmount = (shopee.orders && shopee.orders.amountLocal) || 0; }
+  if (tk) { out.tkOrders = (tk.orders && tk.orders.count) || 0; out.tkToship = tk.toshipCount || 0; out.tkAmount = (tk.orders && tk.orders.amountLocal) || 0; }
+  if (times.length) {
+    out.updatedAt = times.sort().pop();
+    var tt = parseDT(out.updatedAt);
+    out.min = isNaN(tt) ? null : Math.max(0, Math.round((Date.now() - tt) / 60000));
+    out.state = freshState(out.min);
+  } else if (shopee || tk) { out.state = 'ok'; }
+  return out;
+}
+
+function renderGrid() {
+  var g = document.getElementById('grid');
+  g.innerHTML = CFG.companies.map(function (c) {
+    var d = corpData[c.corp];
+    if (!d) return '';
+    var st = ST_LABEL[d.state];
+    var rows = '';
+    var hasData = d.shopee || d.tk;
+    if (d.state === 'off' || !hasData) {
+      rows = '<div class="crows"><div class="empty-plat">' + (c.enabled ? '暂无数据（等待首次同步）' : '待接入 · 账号与店铺就绪后开放') + '</div></div>';
+    } else {
+      rows = '<div class="crows">' +
+        '<div>🛒 Shopee：今日 <b>' + (d.shopeeOrders || 0) + '</b> 单 · 销售额 <b>' + fmtRp(d.shopeeAmount) + '</b> · 待发货 <b>' + (d.shopeeToship || 0) + '</b></div>' +
+        '<div>🎵 TikTok：今日 <b>' + (d.tkOrders || 0) + '</b> 单 · 销售额 <b>' + fmtRp(d.tkAmount) + '</b> · 待发货 <b>' + (d.tkToship || 0) + '</b></div>' +
+        '</div>';
+    }
+    var upd = d.updatedAt ? '数据更新于 ' + relTime(d.updatedAt) + '（' + todayOnly(d.updatedAt) + '）' : '尚未生成数据';
+    var badge = c.enabled ? '<span class="cstate ' + st[1] + '">' + st[0] + '</span>' : '<span class="cstate cs-off">待接入</span>';
+    var go = c.enabled ? '<span class="cgo">进入看板 →</span>' : '<span class="cgo" style="color:var(--text-3)">—</span>';
+    return '<div class="ccard" data-corp="' + c.corp + '" style="' + (c.enabled ? '' : 'opacity:.62') + '">' +
+      '<div class="ctop"><span class="cdot ' + st[2] + '"></span>' +
+      '<div><div class="cname">' + esc(d.name) + '</div>' +
+      (d.brand ? '<div class="cbrand">' + esc(d.brand) + ' · Shopee + TikTok 印尼</div>' : '') + '</div>' + badge + '</div>' +
+      rows +
+      '<div class="cfoot"><span>' + upd + '</span>' + go + '</div>' +
+      (c.enabled ? '' : '<span class="off-badge">稍后开通</span>') +
+      '</div>';
+  }).join('');
+  // 卡片点击
+  document.querySelectorAll('.ccard').forEach(function (el) {
+    el.addEventListener('click', function () { openCorp(el.getAttribute('data-corp')); });
+  });
+}
+
+// 目标公司: 已登录且是同公司 → 直接进; 否则弹登录
+function openCorp(corp) {
+  var c = CFG.companies.find(function (x) { return x.corp === corp; });
+  if (!c || !c.enabled) return;
+  pickCorp = corp;
+  var cur = null; try { cur = localStorage.getItem('ds_corp'); } catch (e) {}
+  if (cur === corp) { location.href = 'index.html'; return; }
+  var nm = c.name + (c.brand ? ' · ' + c.brand : '');
+  document.getElementById('lpTitle').textContent = nm;
+  document.getElementById('lpSub').textContent = '请输入 ' + nm + ' 的账号密码（登录一次，本设备记住）';
+  document.getElementById('user').value = '';
+  document.getElementById('pass').value = '';
+  document.getElementById('err').textContent = '';
+  document.getElementById('mask').classList.add('on');
+  setTimeout(function () { document.getElementById('user').focus(); }, 60);
+}
 
 async function sha256(txt) {
   if (window.crypto && crypto.subtle) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
     return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
   }
-  // 极简兜底（非 https 老环境）：直接明文比较（普通门禁可接受）
   return txt;
 }
-function setErr(m) { document.getElementById('err').textContent = m || ''; }
-
 async function doLogin() {
   var u = document.getElementById('user').value.trim();
   var p = document.getElementById('pass').value;
-  setErr('');
-  if (!u || !p) { setErr('请输入账号和密码'); return; }
-  var btn = document.getElementById('btn');
-  btn.disabled = true; btn.textContent = '登录中…';
-  var hit = null;
-  for (var i = 0; i < ACCOUNTS.length; i++) {
-    if (ACCOUNTS[i].user.toLowerCase() === u.toLowerCase()) { hit = ACCOUNTS[i]; break; }
-  }
-  if (!hit) { setErr('账号不存在'); btn.disabled = false; btn.textContent = '登 录'; return; }
+  var err = document.getElementById('err');
+  if (!u || !p) { err.textContent = '请输入账号和密码'; return; }
+  var acc = CFG.accounts.find(function (a) { return a.corp === pickCorp && a.user.toLowerCase() === u.toLowerCase(); });
+  if (!acc) { err.textContent = '该账号不属于此公司'; return; }
   var h = await sha256(p);
-  var ok = h === hit.hash || (h === p && p === hit.hash); // 兜底分支
-  if (!ok) { setErr('密码错误'); btn.disabled = false; btn.textContent = '登 录'; return; }
+  if (h !== acc.hash && !(h === p && p === acc.hash)) { err.textContent = '密码错误'; return; }
   try {
-    localStorage.setItem('ds_corp', hit.corp);
-    localStorage.setItem('ds_user', hit.user);
-    localStorage.setItem('ds_name', hit.name);
+    localStorage.setItem('ds_corp', acc.corp);
+    localStorage.setItem('ds_user', acc.user);
+    localStorage.setItem('ds_name', acc.name);
     localStorage.setItem('ds_at', String(Date.now()));
   } catch (e) {}
-  location.href = REDIR;
+  location.href = 'index.html';
 }
-document.getElementById('btn').addEventListener('click', doLogin);
-document.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+function closeMask() { document.getElementById('mask').classList.remove('on'); pickCorp = null; }
 
-// 已登录则直接进入
-try {
-  var cur = localStorage.getItem('ds_corp');
-  if (cur) { location.replace(REDIR); }
-} catch (e) {}
-document.getElementById('accHint').textContent = '账号 ZEROTH（公司A · MULMUL）已就绪 · 公司B 账号待添加';
+document.getElementById('btnOk').addEventListener('click', doLogin);
+document.getElementById('btnCancel').addEventListener('click', closeMask);
+document.getElementById('mask').addEventListener('click', function (e) { if (e.target === this) closeMask(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && pickCorp) doLogin(); });
+
+(async function init() {
+  try {
+    var r = await fetch('companies.json?t=' + Date.now());
+    CFG = await r.json();
+  } catch (e) {}
+  if (!CFG.companies.length) CFG.companies = [{ corp: 'a', name: '公司A', brand: 'MULMUL', prefix: '', accent: '#3b6cf6', enabled: true, dataFiles: ['data.json', 'tk.json'] }];
+  var list = await Promise.all(CFG.companies.map(loadCorp));
+  CFG.companies.forEach(function (c, i) { corpData[c.corp] = list[i]; });
+  renderGrid();
+  var foot = document.getElementById('foot');
+  var cur = null; try { cur = localStorage.getItem('ds_name'); } catch (e) {}
+  if (cur) foot.textContent = '当前登录：' + cur + ' · 点右上角「⇄ 退出」可切换公司 · 数据每 15 分钟自动同步';
+})();
+// 每 2 分钟刷新卡片状态
+setInterval(function () {
+  CFG.companies.forEach(function (c) {
+    if (!c.enabled) return;
+    loadCorp(c).then(function (d) { corpData[c.corp] = d; renderGrid(); });
+  });
+}, 120000);
 </script>
 </body>
 </html>
