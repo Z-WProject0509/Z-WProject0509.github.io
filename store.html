@@ -103,7 +103,7 @@ var gran = 'day';      // day | week | month
 
 var axis = [];         // [{label, start, end(含)}] 聚合点 (label=起始日期MM-DD, endDate为区间末)
 var valByShop = {};    // shop -> 与 axis 等长数组 (无该店数据的点=null)
-var canvas, ctx, box, W = 0, H = 0;
+var canvas, ctx, box, chartbox, W = 0, H = 0;
 var padL = 64, padR = 14, padT = 16, padB = 28;
 var view = null;       // {end: 轴索引, span: 点数}
 var hoverIdx = -1, drag = null;
@@ -400,6 +400,8 @@ function xToIdx(px) {
   return Math.round(vr.start + f * (n - 1));
 }
 function bindChart() {
+  chartbox = document.getElementById('chartbox');
+  canvas = document.getElementById('chart');
   chartbox.addEventListener('wheel', e => {
     e.preventDefault();
     const rect = canvas.getBoundingClientRect();
