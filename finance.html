@@ -27,18 +27,13 @@
 
 <div class="wrap">
   <div class="panel">
-    <h2>📌 真实进账总览 <span class="tag">Shopee My Income · 每日 09:30 / 21:30 低频同步</span></h2>
+    <h2>📌 真实进账总览 <span class="tag">My Income 放款流水 · 每日 09:30 / 21:30 低频同步 · 到账时间随明细标记</span></h2>
     <div id="incomeOverview"></div>
   </div>
 
   <div class="panel">
     <h2>🔍 订单 · 到账 · 利润跟踪 <span class="badge-new">60天窗口</span><span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
-    <div class="plat-btns" id="checkPlat">
-      <button class="btn on" data-plat="all">全部平台</button>
-      <button class="btn" data-plat="Shopee">Shopee</button>
-      <button class="btn" data-plat="TikTok">TikTok</button>
-    </div>
-    <div class="rg-head" style="margin-top:8px">
+    <div class="rg-head">
       <div class="rg-presets" id="checkFilt">
         <button class="btn on" data-c="all">全部</button>
         <button class="btn" data-c="ok">💰 已到账</button>
@@ -66,7 +61,7 @@
 <script src="assets/app.js"></script>
 <script>
 var CHECK_LABEL = { ok: ['ok','已到账'], pending: ['pend','跟踪中'], abnormal: ['bad','⚠ 异常'], cancelled: ['dim','✕ 取消'] };
-var ledger = null, cPlat = 'all', cFilt = 'all';
+var ledger = null, cFilt = 'all';
 
 function renderIncome(inc) {
   var box = document.getElementById('incomeOverview');
@@ -105,7 +100,6 @@ function renderCheck() {
   var all = (ledger.released || []).concat(ledger.pending || [], ledger.abnormal || [], ledger.cancelled || []);
   var seen = {};
   all = all.filter(function (o) { if (seen[o.sn]) return false; seen[o.sn] = 1; return true; });
-  if (cPlat !== 'all') all = all.filter(function (o) { return o.platform === cPlat; });
   if (cFilt !== 'all') all = all.filter(function (o) { return o.check === cFilt; });
   all.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
   var rows = all.map(function (o) {
@@ -119,14 +113,18 @@ function renderCheck() {
     if (o.check === 'ok') profitTxt = o.profit != null ? '<span class="' + (o.profit >= 0 ? 'ok' : 'bad') + '">' + fmtRp(o.profit) + '</span>' : '<span class="aux">待补</span>';
     else if (o.check === 'cancelled') profitTxt = '<span class="dim">—</span>';
     else profitTxt = '<span class="aux">未到账</span>';
-    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td title="' + esc(o.sn) + '">' + esc(o.sn) + '</td><td title="' + esc(o.sku || '') + '">' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td><span class="pill ' + st[0] + '"><span class="d"></span>' + st[1] + '</span></td></tr>';
+    // 下单时间：优先完整时间(月-日 时:分)，老数据只有日则原样
+    var dateTxt = esc(String(o.date || ''));
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(dateTxt)) dateTxt = dateTxt.slice(5, 16); else if (/^\d{4}-\d{2}-\d{2}/.test(dateTxt)) dateTxt = dateTxt.slice(5);
+    var payTxt = o.payDate ? '<span class="ok">' + esc(String(o.payDate).slice(5)) + '</span>' : '<span class="dim">—</span>';
+    return '<tr><td>' + o.platform + '</td><td title="' + esc(o.date || '') + '">' + dateTxt + '</td><td title="' + esc(o.sn) + '">' + esc(o.sn) + '</td><td title="' + esc(o.sku || '') + '">' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td>' + payTxt + '</td><td><span class="pill ' + st[0] + '"><span class="d"></span>' + st[1] + '</span></td></tr>';
   }).join('');
-  window.__csvRows = all.map(function (o) { return [o.platform, o.date, o.sn, o.sku, o.qty, o.amount, o.check === 'ok' && o.payAmt != null ? o.payAmt : '', o.cost != null ? o.cost : '', o.profit != null ? o.profit : '', o.status, CHECK_LABEL[o.check] ? CHECK_LABEL[o.check][1] : o.check]; });
+  window.__csvRows = all.map(function (o) { return [o.platform, o.date, o.sn, o.sku, o.qty, o.amount, o.check === 'ok' && o.payAmt != null ? o.payAmt : '', o.cost != null ? o.cost : '', o.profit != null ? o.profit : '', o.status, o.payDate || '', CHECK_LABEL[o.check] ? CHECK_LABEL[o.check][1] : o.check]; });
   box.innerHTML = sumHtml +
     '<div class="tblwrap"><table><thead><tr>' +
-    '<th style="width:6%">平台</th><th style="width:8.5%">下单日</th><th style="width:13%">订单号</th><th style="width:11%">SKU</th><th style="width:3.5%">件</th>' +
-    '<th style="width:10%">销售金额</th><th style="width:10.5%">真实到账</th><th style="width:9%">成本</th><th style="width:9.5%">利润</th><th style="width:9%">状态</th><th style="width:8%">进度</th>' +
-    '</tr></thead><tbody>' + (rows || '<tr><td colspan="11"><div class="empty"><span class="big">🔍</span>无匹配订单</div></td></tr>') + '</tbody></table></div>';
+    '<th style="width:5%">平台</th><th style="width:9%">下单时间</th><th style="width:12%">订单号</th><th style="width:10%">SKU</th><th style="width:3%">件</th>' +
+    '<th style="width:9%">销售金额</th><th style="width:9.5%">真实到账</th><th style="width:8%">成本</th><th style="width:8.5%">利润</th><th style="width:8.5%">状态</th><th style="width:6.5%">到账时间</th><th style="width:7%">进度</th>' +
+    '</tr></thead><tbody>' + (rows || '<tr><td colspan="12"><div class="empty"><span class="big">🔍</span>无匹配订单</div></td></tr>') + '</tbody></table></div>';
 }
 
 function renderAds(adsSp, adsTk) {
@@ -156,11 +154,6 @@ function loadAll() {
     ]).then(function (arr) { renderAds(arr[0], arr[1]); });
   }).catch(function () { document.getElementById('checkBox').innerHTML = '<div class="empty">核对数据加载失败</div>'; });
 }
-document.getElementById('checkPlat').addEventListener('click', function (e) {
-  var b = e.target.closest('button'); if (!b) return;
-  document.querySelectorAll('#checkPlat .btn').forEach(function (x) { x.classList.remove('on'); });
-  b.classList.add('on'); cPlat = b.getAttribute('data-plat'); renderCheck();
-});
 document.getElementById('checkFilt').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
   document.querySelectorAll('#checkFilt .btn').forEach(function (x) { x.classList.remove('on'); });
@@ -168,7 +161,7 @@ document.getElementById('checkFilt').addEventListener('click', function (e) {
 });
 document.getElementById('exportBtn').addEventListener('click', function () {
   if (!window.__csvRows || !window.__csvRows.length) return;
-  exportCSV('财务订单明细_' + todayLocal() + '.csv', ['平台','下单日','订单号','SKU','件数','销售金额','真实到账','成本','利润','状态','核对'], window.__csvRows);
+  exportCSV('财务订单明细_' + todayLocal() + '.csv', ['平台','下单时间','订单号','SKU','件数','销售金额','真实到账','成本','利润','状态','到账时间','核对'], window.__csvRows);
 });
 initSyncPill();
 loadAll();
