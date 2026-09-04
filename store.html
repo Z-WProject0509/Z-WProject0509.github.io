@@ -7,6 +7,7 @@
 <title>店铺数据 · 电商工作台</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
+<script src="assets/gate.js"></script>
 <style>
   .shop-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
   .shop-pick { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px; gap: 2px; }
@@ -37,6 +38,7 @@
   <div class="top-right">
     <span class="sync-pill" id="syncPill" title="数据每 15 分钟自动同步推送"></span>
     <button class="btn ghost" onclick="refreshNow()">⟳ 刷新</button>
+    <button class="btn ghost" onclick="logoutNow()" title="退出并切换公司账号">⇄ 退出</button>
   </div>
 </div></header>
 
@@ -82,7 +84,7 @@ var COLORS = { Shopee: '#3b6cf6', TikTok: '#10b981', all1: '#3b6cf6', all2: '#10
 var canvas, ctx, box, W = 0, H = 0, padL = 62, padR = 12, padT = 14, padB = 26;
 
 function loadData() {
-  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
+  fetch(dataUrl('sales_summary.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
     // 汇总 daily 成 每日期双平台
     var m = {};
     (a.daily || []).forEach(function (r) {
