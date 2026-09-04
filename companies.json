@@ -1,0 +1,9 @@
+{
+  "companies": [
+    { "corp": "a", "name": "公司A", "brand": "MULMUL", "prefix": "", "accent": "#3b6cf6", "enabled": true, "dataFiles": ["data.json", "tk.json"] },
+    { "corp": "b", "name": "公司B", "brand": "", "prefix": "b/", "accent": "#10b981", "enabled": false, "dataFiles": ["b/data.json", "b/tk.json"] }
+  ],
+  "accounts": [
+    { "user": "ZEROTH", "corp": "a", "name": "公司A · MULMUL", "hash": "98d738abd01713fc6497c05c62c09f5bf487907d4f8b20124fba83a447cee033" }
+  ]
+}
