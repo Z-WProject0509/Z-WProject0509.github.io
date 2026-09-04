@@ -7,6 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f4f8; color: #1f2d3d; padding: 20px; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
   h1.top { font-size: 22px; margin-bottom: 4px; }
   .sub { color: #7a8ba3; font-size: 13px; }
   .areanav { display: flex; gap: 8px; margin: 14px 0 14px; flex-wrap: wrap; }
@@ -15,7 +16,7 @@
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 16px; }
   .card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .card .k { font-size: 13px; color: #7a8ba3; }
-  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; word-break: break-all; }
+  .card .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: #0e2a47; }
   .card .v.red { color: #dc2626; } .card .v.green { color: #16a34a; } .card .v.amber { color: #d97706; }
   .card .m { font-size: 11px; color: #94a3b8; margin-top: 4px; line-height: 1.6; }
   .panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
@@ -23,24 +24,30 @@
   .panel h2 .tag { font-size: 12px; color: #7a8ba3; font-weight: 400; }
   .empty { color: #94a3b8; font-size: 13px; padding: 20px 0; text-align: center; }
   .upd { color: #94a3b8; font-size: 12px; margin-bottom: 10px; }
-  .fhead { overflow: hidden; background: #fafbfd; border-bottom: 2px solid #e2e8f0; }
-  .fbody { max-height: 60vh; overflow: auto; }
-  .fhead table, .fbody table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
-  .fhead th, .fbody td { padding: 7px 8px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
-  .fbody td { border-bottom: 1px solid #eef2f7; }
-  .ok { color: #16a34a; font-weight: 700; }
-  .pend { color: #d97706; font-weight: 700; }
-  .bad { color: #dc2626; font-weight: 700; }
+  /* 单表格 + 吸顶表头（防错位）；超宽横向滚动 */
+  .tblwrap { overflow: auto; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 64vh; }
+  .tblwrap table { width: 100%; min-width: 1060px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+  .tblwrap thead th { position: sticky; top: 0; z-index: 2; background: #f2f6fb; color: #4b5d71; font-size: 12.5px; font-weight: 700; padding: 9px 8px; text-align: left; white-space: nowrap; border-bottom: 1px solid #dde5ee; }
+  .tblwrap tbody td { padding: 7px 8px; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-bottom: 1px solid #f1f5f9; }
+  .tblwrap tbody tr:hover td { background: #f8fafc; }
+  .ok { color: #16a34a; font-weight: 600; }
+  .pend { color: #d97706; font-weight: 600; }
+  .bad { color: #dc2626; font-weight: 600; }
+  .dim { color: #94a3b8; font-weight: 400; font-size: 11.5px; }
+  .est { color: #7a8ba3; font-size: 11px; font-weight: 400; }
+  .amt-main { font-weight: 600; }
   .filt { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
   .filt button { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
   .filt button.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
   .plat-btns { display: flex; gap: 6px; margin-bottom: 10px; }
   .plat-btns .sp { border: 1px solid #d7dee8; background: #f8fafc; color: #0e2a47; border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
   .plat-btns .sp.on { background: #0e2a47; border-color: #0e2a47; color: #fff; }
+  .upd-foot { color: #94a3b8; font-size: 11.5px; margin-top: 8px; line-height: 1.7; }
   @media (max-width: 900px) { body { padding: 12px; } }
 </style>
 </head>
 <body>
+<div class="wrap">
 <h1 class="top">💰 财务 <span class="sub">以每笔订单真实进账为准 · 留存≥6个月 · 未到账持续跟踪</span></h1>
 <div class="areanav">
   <a class="an" href="index.html">📦 订单发货</a>
@@ -116,19 +123,25 @@ function renderCheck() {
   if (cFilt !== 'all') all = all.filter(function (o) { return o.check === cFilt; });
   all.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
   var rows = all.map(function (o) {
-    var cls = o.check === 'ok' ? 'ok' : o.check === 'cancelled' ? '' : o.check === 'abnormal' ? 'bad' : 'pend';
+    var cls = o.check === 'ok' ? 'ok' : o.check === 'cancelled' ? 'dim' : o.check === 'abnormal' ? 'bad' : 'pend';
     var amtTxt;
-    if (o.check === 'ok' && o.payAmt != null) amtTxt = fmtRp(o.payAmt);
-    else if (o.check === 'pending' && o.estIncome != null) amtTxt = '预估 ' + fmtRp(o.estIncome);
-    else amtTxt = '—';
-    var costTxt = o.cost != null ? fmtRp(o.cost) : '<span class="pend">待录成本</span>';
+    if (o.check === 'ok' && o.payAmt != null) amtTxt = '<span class="amt-main">' + fmtRp(o.payAmt) + '</span>';
+    else if (o.check === 'pending' && o.estIncome != null) amtTxt = '<span class="est">预 </span><span class="amt-main">' + fmtRp(o.estIncome) + '</span>';
+    else amtTxt = '<span class="dim">—</span>';
+    var costTxt = o.cost != null ? fmtRp(o.cost) : '<span class="dim">待录成本</span>';
     var profitTxt;
-    if (o.check === 'ok') profitTxt = o.profit != null ? '<span class="' + (o.profit >= 0 ? 'ok' : 'bad') + '">' + fmtRp(o.profit) + '</span>' : '<span class="pend">待补</span>';
-    else if (o.check === 'cancelled') profitTxt = '—';
-    else profitTxt = '<span class="pend">未到账</span>';
-    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td>' + esc(o.sn) + '</td><td>' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td class="' + cls + '">' + (o.check === 'ok' ? '已到账' : o.check === 'pending' ? '跟踪中' : o.check === 'abnormal' ? '⚠异常' : '取消') + '</td></tr>';
+    if (o.check === 'ok') profitTxt = o.profit != null ? '<span class="' + (o.profit >= 0 ? 'ok' : 'bad') + '">' + fmtRp(o.profit) + '</span>' : '<span class="dim">待补</span>';
+    else if (o.check === 'cancelled') profitTxt = '<span class="dim">—</span>';
+    else profitTxt = '<span class="est">未到账</span>';
+    var paySt = o.check === 'ok' ? '<span class="ok">✓ 已到账</span>' : o.check === 'pending' ? '<span class="pend">⏳ 跟踪中</span>' : o.check === 'abnormal' ? '<span class="bad">⚠ 异常</span>' : '<span class="dim">✕ 取消</span>';
+    return '<tr><td>' + o.platform + '</td><td>' + esc(o.date) + '</td><td>' + esc(o.sn) + '</td><td>' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td>' + paySt + '</td></tr>';
   }).join('');
-  box.innerHTML = sumHtml + '<div class="fhead"><table><thead><tr><th style="width:7%">平台</th><th style="width:9%">下单日</th><th style="width:13%">订单号</th><th style="width:12%">SKU</th><th style="width:4%">件</th><th style="width:10%">销售金额</th><th style="width:10%">真实到账</th><th style="width:9%">成本</th><th style="width:10%">利润</th><th style="width:11%">状态</th><th style="width:5%">进度</th></tr></thead></table></div><div class="fbody"><table><tbody>' + (rows || '<tr><td colspan="11"><div class="empty">无匹配订单</div></td></tr>') + '</tbody></table></div>';
+  box.innerHTML = sumHtml +
+    '<div class="tblwrap"><table><thead><tr>' +
+    '<th style="width:6%">平台</th><th style="width:9%">下单日</th><th style="width:13%">订单号</th><th style="width:11%">SKU</th><th style="width:4%">件</th>' +
+    '<th style="width:10%">销售金额</th><th style="width:11%">真实到账</th><th style="width:9%">成本</th><th style="width:10%">利润</th><th style="width:10%">状态</th><th style="width:7%">进度</th>' +
+    '</tr></thead><tbody>' + (rows || '<tr><td colspan="11" class="empty" style="text-align:center">无匹配订单</td></tr>') + '</tbody></table></div>' +
+    '<div class="upd-foot">“真实到账”中带 <span class="est">预</span> 的为预计收入（未确认放款）；已到账单 = 平台实际放款金额。成本按 SKU 单价×件数录入 cost_skus.json 后自动出利润；未到账订单持续保留跟踪，直到收款完成。</div>';
 }
 function renderAdsVs(adsSp, adsTk, ledger) {
   var box = document.getElementById('adsVsIncome');
@@ -176,5 +189,6 @@ document.getElementById('checkFilt').addEventListener('click', function (e) {
 loadAll();
 setInterval(loadAll, 5 * 60 * 1000);
 </script>
+</div>
 </body>
 </html>
