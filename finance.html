@@ -33,6 +33,7 @@
   .ok { color: #16a34a; font-weight: 600; }
   .pend { color: #d97706; font-weight: 600; }
   .bad { color: #dc2626; font-weight: 600; }
+  .auditbar { background: #fff7ed; border: 1px solid #fdba74; color: #9a3412; font-size: 13px; padding: 9px 12px; border-radius: 8px; margin-bottom: 12px; line-height: 1.7; }
   .dim { color: #94a3b8; font-weight: 400; font-size: 11.5px; }
   .est { color: #7a8ba3; font-size: 11px; font-weight: 400; }
   .amt-main { font-weight: 600; }
@@ -108,7 +109,13 @@ function renderCheck() {
   var box = document.getElementById('checkBox');
   if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty">暂无核对数据</div>'; return; }
   var s = ledger.summary;
-  var sumHtml = '<div class="cards" style="margin-bottom:10px">' +
+  var sumHtml = '';
+  if (s.pendingAuditSkus && s.pendingAuditSkus.length) {
+    sumHtml += '<div class="auditbar">⚠ 有 ' + s.pendingAuditSkus.length + ' 个订单货号未匹配成本表，<b>需你审核</b>：' +
+      s.pendingAuditSkus.map(function (a) { return esc(a.sku) + '×' + a.orders; }).join('　') +
+      ' <span class="dim">（去平台把货号改成成本表标准货号，改后自动出成本/利润）</span></div>';
+  }
+  sumHtml += '<div class="cards" style="margin-bottom:10px">' +
     '<div class="card"><div class="k">60天订单</div><div class="v">' + s.totalOrders + '</div></div>' +
     '<div class="card"><div class="k">💰 已到账</div><div class="v green">' + s.counts.ok + '</div><div class="m">实收 ' + fmtRp((s.realIncome ? s.realIncome.shopee : 0) + (s.realIncome ? s.realIncome.tk : 0)) + '</div></div>' +
     '<div class="card"><div class="k">📈 利润(已到账单)</div><div class="v green">' + fmtRp((s.profit ? s.profit.shopee : 0) + (s.profit ? s.profit.tk : 0)) + '</div><div class="m">= 到账 − 成本</div></div>' +
