@@ -85,54 +85,14 @@
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
     </div>
     <div class="upd" id="upd"></div>
-    <!-- 全局：店铺销售统计（可自选 日/周/月/任意区间） -->
+    <!-- 总订单预览：双平台当日订单 + 占比 -->
     <div class="panel">
-      <h2>📊 店铺每日销售统计 <span class="tag" id="salesTag">定型留存 · 自选区间</span></h2>
-      <div class="rg-head">
-        <div class="plat-btns" id="salesPlatBtns">
-          <button class="sp on" data-plat="all">双平台合计</button>
-          <button class="sp" data-plat="Shopee">Shopee</button>
-          <button class="sp" data-plat="TikTok">TikTok</button>
-        </div>
-        <div class="rg-presets" id="salesPresets">
-          <button class="rp on" data-p="yesterday">昨日</button>
-          <button class="rp" data-p="today">今天</button>
-          <button class="rp" data-p="thisWeek">本周</button>
-          <button class="rp" data-p="lastWeek">上周</button>
-          <button class="rp" data-p="thisMonth">本月</button>
-          <button class="rp" data-p="lastMonth">上月</button>
-          <button class="rp" data-p="7d">近7天</button>
-          <button class="rp" data-p="30d">近30天</button>
-        </div>
-        <div class="rg-custom">
-          <input type="date" id="salesFrom"> ~ <input type="date" id="salesTo">
-          <button class="rp apply" id="salesApply">查区间</button>
-        </div>
-      </div>
-      <div id="salesStats"></div>
+      <h2>📊 总订单预览 <span class="tag">当日出单 & 未发货占比 · 双平台</span></h2>
+      <div id="orderOverview"></div>
     </div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
-      <div class="panel"><h2>📢 Shopee 店铺广告 <span class="tag" id="adsTag">GMT+7 定型 · 留存半年</span></h2>
-        <div class="rg-head">
-          <div class="rg-presets" id="adsPresets">
-            <button class="rp on" data-p="yesterday">昨日</button>
-            <button class="rp" data-p="today">今天</button>
-            <button class="rp" data-p="thisWeek">本周</button>
-            <button class="rp" data-p="lastWeek">上周</button>
-            <button class="rp" data-p="thisMonth">本月</button>
-            <button class="rp" data-p="lastMonth">上月</button>
-            <button class="rp" data-p="7d">近7天</button>
-            <button class="rp" data-p="30d">近30天</button>
-          </div>
-          <div class="rg-custom">
-            <input type="date" id="adsFrom"> ~ <input type="date" id="adsTo">
-            <button class="rp apply" id="adsApply">查区间</button>
-          </div>
-        </div>
-        <div id="adsShopee"></div>
-      </div>
-      <div class="panel"><h2>🕐 最近订单 <span class="tag">待发货/取消标红</span></h2><div id="recentOrders-shopee"></div></div>
+      <div class="panel"><h2>🕐 最近订单 <span class="tag">当日新单</span></h2><div id="recentOrders-shopee"></div></div>
       <div class="panel"><h2>🚚 未发货订单（全店待发货） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-shopee"></div></div>
     </div>
     <div id="state-tk" class="state">
@@ -366,105 +326,58 @@ function rangeOk(rg) { return rg && rg.from && rg.to && rg.from <= rg.to; }
 // 明细行（按日排列区间内）
 function listDays(daily, rg) { return (daily || []).filter(function (r) { return r.date >= rg.from && r.date <= rg.to; }); }
 
-// ===== 店铺销售统计（sales_summary.json，本地按区间聚合）=====
-var salesSummary = null;
-var salesPlat = 'all';
-var salesPk = null;
-function salesCards(rows, rg, lbl) {
-  var a = rows.reduce(function (s, r) { s.orders += r.orders; s.qty += r.totalQty; s.rp += r.amountLocal; s.cny += r.amountCny || 0; s.inc += r.incomeLocal || 0; return s; }, { orders: 0, qty: 0, rp: 0, cny: 0, inc: 0 });
-  var days = rows.length;
-  var platNote = salesPlat === 'all' ? '双平台' : (salesPlat === 'Shopee' ? 'Shopee' : 'TikTok');
-  if (!days) return '<div class="empty">该区间暂无销售数据</div>';
-  var cards = [
-    ['销售单数', a.orders + ' 单', ''],
-    ['售出件数', a.qty + ' 件', ''],
-    ['销售金额', 'Rp ' + Math.round(a.rp).toLocaleString('en-US'), 'green'],
-    ['折合人民币', '≈¥ ' + Math.round(a.cny).toLocaleString('en-US'), 'green'],
-    ['应到账', a.inc ? 'Rp ' + Math.round(a.inc).toLocaleString('en-US') : '—', '']
-  ];
-  var detail = rows.slice().reverse().map(function (r) {
-    return '<div class="srow">' + r.date + ' · ' + r.platform + ' · <b>' + r.orders + '单 ' + r.totalQty + '件</b> · Rp ' + Math.round(r.amountLocal).toLocaleString('en-US') + (r.amountCny ? ' (≈¥' + Math.round(r.amountCny).toLocaleString('en-US') + ')' : '') + (r.incomeLocal ? ' · 应到账 Rp' + Math.round(r.incomeLocal).toLocaleString('en-US') : '') + '</div>';
+// ===== 总订单预览（双平台：当日出单 + 未发货 + 占比）=====
+var ovCache = {};
+function loadOverview() {
+  Promise.all([
+    fetch('data.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
+    fetch('tk.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; })
+  ]).then(function (arr) {
+    ovCache = { Shopee: arr[0], TikTok: arr[1] };
+    renderOverview();
+  });
+}
+function bar(pct) {
+  pct = Math.max(0, Math.min(100, Math.round(pct || 0)));
+  return '<div style="background:var(--surface-2);border-radius:6px;height:8px;margin-top:6px;overflow:hidden"><div style="width:' + pct + '%;height:100%;border-radius:6px;background:linear-gradient(90deg,#3b6cf6,#7c9bff)"></div></div>';
+}
+function renderOverview() {
+  var box = document.getElementById('orderOverview');
+  var sp = ovCache.Shopee, tk = ovCache.TikTok;
+  if (!sp && !tk) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  var mk = function (name, d, color) {
+    if (!d) return null;
+    var today = (d.orders && d.orders.count != null) ? d.orders.count : 0;
+    var toship = d.toshipCount || 0;
+    return { name: name, today: today, toship: toship, color: color };
+  };
+  var a = mk('Shopee', sp), b = mk('TikTok', tk);
+  var items = [a, b].filter(Boolean);
+  var todayTotal = items.reduce(function (s, x) { return s + x.today; }, 0);
+  var shipTotal = items.reduce(function (s, x) { return s + x.toship; }, 0);
+  var tot = todayTotal + shipTotal;
+  function pc(v) { return tot ? (v / tot * 100) : 0; }
+  var rows = items.map(function (x) {
+    var c = x.color;
+    return '<div class="srow" style="align-items:center">' +
+      '<b style="min-width:64px">' + x.name + '</b>' +
+      '<span class="aux">当日 ' + x.today + ' 单 · 未发货 ' + x.toship + ' 单</span>' +
+      '<span style="margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums">' + pc(x.today + x.toship).toFixed(1) + '%</span>' +
+      bar(pc(x.today + x.toship)) + '</div>';
   }).join('');
-  return '<div class="cards" style="margin:0">' + cards.map(function (x) {
-    return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
-  }).join('') + '</div><div class="upd" style="margin:8px 0 4px">' + lbl + '（' + platNote + ' · 覆盖 ' + days + ' 天：' + rg.from + ' ~ ' + rg.to + '）</div>' + detail;
+  box.innerHTML = '<div class="cards">' +
+    '<div class="card"><div class="k">📦 当日出单</div><div class="v">' + todayTotal + ' 单</div><div class="m">双平台今日合计</div></div>' +
+    '<div class="card"><div class="k">🚚 全部未发货</div><div class="v amber">' + shipTotal + ' 单</div><div class="m">发货后自动移除</div></div>' +
+    '<div class="card"><div class="k">🧾 总订单预览</div><div class="v">' + tot + ' 单</div><div class="m">当日 + 未发货</div></div>' +
+    '</div><div class="upd" style="margin-bottom:6px">平台占比（按 当日出单 + 未发货 总量）</div>' + rows;
 }
-function renderSales(rg, lbl) {
-  var box = document.getElementById('salesStats');
-  if (!salesSummary || !rangeOk(rg)) { box.innerHTML = '<div class="empty">暂无数据</div>'; return; }
-  var rows = listDays(salesSummary.daily, rg);
-  if (salesPlat !== 'all') rows = rows.filter(function (r) { return r.platform === salesPlat; });
-  box.innerHTML = salesCards(rows, rg, lbl);
-  document.getElementById('salesTag').textContent = (salesPlat === 'all' ? '双平台' : salesPlat) + ' ' + (lbl || (rg.from === rg.to ? '单日' : '区间')) + ' · 定型留存';
-}
-function loadSales() {
-  fetch('sales_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
-    salesSummary = a;
-    if (salesPk) salesPk.set('yesterday');
-    renderSales(presetRange('yesterday'), RANGE_LABEL['yesterday']);
-  }).catch(function () { var box = document.getElementById('salesStats'); if (box) box.innerHTML = '<div class="empty">销售数据加载失败</div>'; });
-}
-// 平台切换
-document.getElementById('salesPlatBtns').addEventListener('click', function (e) {
-  var b = e.target;
-  if (b.classList && b.classList.contains('sp')) {
-    document.querySelectorAll('.sp').forEach(function (x) { x.classList.remove('on'); });
-    b.classList.add('on');
-    salesPlat = b.getAttribute('data-plat');
-    var curBtn = document.querySelector('#salesPresets .rp.on');
-    if (curBtn) renderSales(presetRange(curBtn.getAttribute('data-p')), RANGE_LABEL[curBtn.getAttribute('data-p')]);
-  }
-});
-
-// ===== Shopee 广告面板（ads_summary.json daily 自选区间聚合）=====
-var adsSummary = null;
-function adsCards(rows, rg, lbl) {
-  if (!rows.length) return '<div class="empty">该区间暂无广告数据</div>';
-  var a = rows.reduce(function (s, r) { s.imp += r.impressions || 0; s.clk += r.clicks || 0; s.ord += r.orders || 0; s.item += r.itemsSold || 0; s.sales += r.sales || 0; s.exp += r.expense || 0; s.vou += r.voucherAmount || 0; return s; }, { imp: 0, clk: 0, ord: 0, item: 0, sales: 0, exp: 0, vou: 0 });
-  var roas = a.exp > 0 ? Math.round((a.sales / a.exp) * 100) / 100 : null;
-  var ctr = a.imp > 0 ? Math.round((a.clk / a.imp) * 10000) / 100 : null;
-  var cards = [
-    ['广告花费', 'Rp ' + a.exp.toLocaleString('en-US'), 'red'],
-    ['广告销售', 'Rp ' + Math.round(a.sales).toLocaleString('en-US'), 'green'],
-    ['ROAS(投产比)', roas != null ? roas : '—', roas != null && roas >= 1 ? 'green' : 'red'],
-    ['广告订单', a.ord + ' 单', ''],
-    ['曝光', fmtK(a.imp), ''],
-    ['点击', fmtK(a.clk) + (ctr != null ? ' (' + ctr + '%)' : ''), ''],
-    ['售出件数', a.item + ' 件', ''],
-    ['券抵扣', a.vou ? 'Rp ' + a.vou.toLocaleString('en-US') : '—', '']
-  ];
-  var detail = rows.slice().reverse().map(function (r) {
-    return '<div class="srow">' + r.date + ' · <b>花费Rp' + (r.expense || 0).toLocaleString('en-US') + ' / 销售Rp' + Math.round(r.sales || 0).toLocaleString('en-US') + '</b>' + (r.roas != null ? ' · ROAS ' + r.roas : '') + (r.impressions ? ' · 曝光' + fmtK(r.impressions) : '') + (r.orders ? ' · ' + r.orders + '单' : '') + '</div>';
-  }).join('');
-  return '<div class="cards" style="margin:0">' + cards.map(function (x) {
-    return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div></div>';
-  }).join('') + '</div><div class="upd" style="margin:8px 0 4px">' + lbl + '（覆盖 ' + rows.length + ' 天：' + rg.from + ' ~ ' + rg.to + '，GMT+7 自然日）</div>' + detail;
-}
-function renderAds(rg, lbl) {
-  var box = document.getElementById('adsShopee');
-  if (!adsSummary || !rangeOk(rg)) { if (box) box.innerHTML = '<div class="empty">暂无广告数据</div>'; return; }
-  var rows = listDays(adsSummary.daily, rg);
-  box.innerHTML = adsCards(rows, rg, lbl);
-  document.getElementById('adsTag').textContent = (lbl || '区间') + ' · GMT+7 定型留存（6个月）';
-}
-function loadAds() {
-  fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
-    adsSummary = a;
-    if (adsPk) adsPk.set('yesterday');
-    renderAds(presetRange('yesterday'), RANGE_LABEL['yesterday']);
-  }).catch(function () { var box = document.getElementById('adsShopee'); if (box) box.innerHTML = '<div class="empty">广告数据加载失败</div>'; });
-}
-// 初始化区间选择器（按钮点击后自动重渲染）
-var adsPk = makeRangePicker('#adsPresets .rp', 'adsFrom', 'adsTo', 'adsApply', function (rg) { renderAds(rg, rg.from === rg.to ? '单日' : '区间'); });
-var salesPk = makeRangePicker('#salesPresets .rp', 'salesFrom', 'salesTo', 'salesApply', function (rg) { renderSales(rg, rg.from === rg.to ? '单日' : '区间'); });
+// 每 5 分钟自动刷新
 load('shopee');
-loadAds();
-loadSales();
-// 每 5 分钟自动刷新当前平台
+loadOverview();
 setInterval(function () {
   var cur = document.querySelector('.tab.on');
   if (cur) { cache[cur.dataset.plat] = null; load(cur.dataset.plat); }
-  loadAds(); loadSales();
+  loadOverview();
 }, 5 * 60 * 1000);
 </script>
 </body>
