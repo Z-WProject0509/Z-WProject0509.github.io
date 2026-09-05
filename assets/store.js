@@ -21,7 +21,7 @@
   function message(text, error) { $('chartStatus').textContent = text; $('chartStatus').classList.toggle('error', !!error); }
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
-  function chipLabel(s) { return (/MULMUL/i.test(s) ? '🇮🇩 ' : s.indexOf('ZEROTH') >= 0 ? '🅖🇮🇩 ' : '') + s; }
+  function chipLabel(s) { return (/泰|THB|thai/i.test(s) ? '🅖🇹🇭 ' : /ZEROTH/i.test(s) ? '🅖🇮🇩 ' : '🇮🇩 ') + s; }
   function chips() {
     const mode = (singleMode
       ? '<button class="shop-mini" data-mo="multi">⇄ 多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">◉ 单选</button>'
