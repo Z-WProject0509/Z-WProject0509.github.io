@@ -108,11 +108,11 @@
   <div class="main">
     <div class="cty-row"><span class="cty-lbl">🌏 国家</span><div class="cty-chips" id="ctyChips"></div></div>
     <div class="tabs">
-      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">Shopee—MULMUL</button>
-      <button class="tab" data-plat="tk" onclick="switchTab('tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">TikTok—MULMUL</button>
-      <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH 虾皮</button>
-      <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">ZEROTH 抖店</button>
-      <button class="tab" data-plat="thsp" onclick="switchTab('thsp')" style="display:none"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH 泰国虾皮</button>
+      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">MULMUL</button>
+      <button class="tab" data-plat="tk" onclick="switchTab('tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">MULMUL</button>
+      <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH</button>
+      <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">ZEROTH</button>
+      <button class="tab" data-plat="thsp" onclick="switchTab('thsp')" style="display:none"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH·泰</button>
     </div>
     <div id="ctyGhost"></div>
     <div class="upd" id="upd"></div>
@@ -188,7 +188,7 @@ function stName(s) {
   return m[s] || s;
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
-var PLAT_NAME = { shopee: 'Shopee—MULMUL', tk: 'TikTok—MULMUL', thsp: 'ZEROTH 泰国虾皮' };
+var PLAT_NAME = { shopee: 'MULMUL', tk: 'MULMUL', thsp: 'ZEROTH·泰' };
 // ===== 店铺国家母分组(与 _site/stores.json 保持一致; 新店只改这里 = 母分组配置) =====
 var CTY_LIST = [
   { name: '印尼', emoji: '🇮🇩', note: 'Shopee .co.id · TikTok Shop .tokopedia.com · Lazada 印尼', stores: [
@@ -302,13 +302,14 @@ function renderSide(plat, d) {
   var curFx = fxItem(fx, cc);
   var cny = fx && c.amountLocal != null && curFx ? c.amountLocal * curFx.cnyPer : null;
   var sName = storeNameOf(plat, d);
+  var disp = (window.storeBrand ? window.storeBrand(sName) : sName); // 显示只留品牌名(平台由 logo 表示)
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
   // MULMUL 店名标签随数据刷新, 保持平台 logo; ZEROTH 标签保持静态短名(自带 logo)
-  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk' && plat !== 'thsp') tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">' : plat === 'tk' ? '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">' : '') + esc(sName);
-  document.getElementById('upd').textContent = sName + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
+  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk' && plat !== 'thsp') tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">' : plat === 'tk' ? '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">' : '') + esc(disp);
+  document.getElementById('upd').textContent = disp + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
-    '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(sName) + '</span></div>' +
+    '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(disp) + '</span></div>' +
     '<div class="snap-row"><span class="k">订单总数</span><span class="v">' + (c.count || 0) + ' 单</span></div>' +
     '<div class="snap-row"><span class="k">取消订单</span><span class="v' + (cancelled ? ' red' : '') + '">' + cancelled + ' 单</span></div>' +
     '<div class="snap-row"><span class="k">总销售额</span><span class="v">' + fmtM(c.amountLocal, cc) + '</span></div>' +
