@@ -1,25 +1,26 @@
 {
-  "generatedAt": "2026/9/5 17:40:22",
+  "generatedAt": "2026/9/5 18:00:42",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
+  "currency": "THB",
   "orders": {
     "count": 5,
     "totalQty": 5,
     "amountLocal": 2003
   },
   "window": {
-    "count": 80,
-    "amountLocal": 35621
+    "count": 407,
+    "amountLocal": 222710.18
   },
   "statusAgg": {
     "To Ship": 1,
     "Shipped": 7,
     "Unpaid": 1,
-    "Cancelled": 9,
+    "Cancelled": 51,
     "completed": 7,
     "Unknown": 15,
-    "Completed": 40
+    "Completed": 325
   },
   "toshipCount": 2,
   "recent": [
@@ -717,6 +718,2622 @@
       "sku": "63979-ZT7M-TH-BL-44-PC",
       "qty": 1,
       "amt": 564,
+      "st": "Completed"
+    },
+    {
+      "id": "2608138JVXYQAE",
+      "date": "2026-08-13",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 618,
+      "st": "Completed"
+    },
+    {
+      "id": "2608138JKXYRE7",
+      "date": "2026-08-13",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "2608138HNVQGAQ",
+      "date": "2026-08-13",
+      "sku": "63979-ZT7M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 450,
+      "st": "Completed"
+    },
+    {
+      "id": "2608138H8S1PD7",
+      "date": "2026-08-13",
+      "sku": "2608138H8S1PD7",
+      "qty": 1,
+      "amt": 601,
+      "st": "Completed"
+    },
+    {
+      "id": "260813870WNPSU",
+      "date": "2026-08-13",
+      "sku": "63979-ZT7M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 480,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2608101CW1EKYG",
+      "date": "2026-08-10",
+      "sku": "2608101CW1EKYG",
+      "qty": 2,
+      "amt": 3.172,
+      "st": "Completed"
+    },
+    {
+      "id": "260809VGTFFPV8",
+      "date": "2026-08-09",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260809V6QP9PF1",
+      "date": "2026-08-09",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260809UKFJ06H4",
+      "date": "2026-08-09",
+      "sku": "260809UKFJ06H4",
+      "qty": 1,
+      "amt": 551,
+      "st": "Completed"
+    },
+    {
+      "id": "260809UAPQHXEQ",
+      "date": "2026-08-09",
+      "sku": "260809UAPQHXEQ",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260808RYR16M8D",
+      "date": "2026-08-08",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 416,
+      "st": "Completed"
+    },
+    {
+      "id": "260808R30Q6MFD",
+      "date": "2026-08-08",
+      "sku": "260808R30Q6MFD",
+      "qty": 1,
+      "amt": 484,
+      "st": "Completed"
+    },
+    {
+      "id": "260808R2MJYPQ5",
+      "date": "2026-08-08",
+      "sku": "260808R2MJYPQ5",
+      "qty": 1,
+      "amt": 528,
+      "st": "Completed"
+    },
+    {
+      "id": "260807QNPR8M0M",
+      "date": "2026-08-07",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 613,
+      "st": "Completed"
+    },
+    {
+      "id": "260806N0UKUDY0",
+      "date": "2026-08-06",
+      "sku": "260806N0UKUDY0",
+      "qty": 1,
+      "amt": 601,
+      "st": "Completed"
+    },
+    {
+      "id": "260806MTUS0WBX",
+      "date": "2026-08-06",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 2,
+      "amt": 1.018,
+      "st": "Completed"
+    },
+    {
+      "id": "260806M1PCVVB3",
+      "date": "2026-08-06",
+      "sku": "260806M1PCVVB3",
+      "qty": 1,
+      "amt": 600,
+      "st": "Completed"
+    },
+    {
+      "id": "260806KH90HNW3",
+      "date": "2026-08-06",
+      "sku": "260806KH90HNW3",
+      "qty": 1,
+      "amt": 575,
+      "st": "Completed"
+    },
+    {
+      "id": "260802AWPN55V2",
+      "date": "2026-08-02",
+      "sku": "260802AWPN55V2",
+      "qty": 1,
+      "amt": 601,
+      "st": "Completed"
+    },
+    {
+      "id": "2608017VU9V280",
+      "date": "2026-08-01",
+      "sku": "2608017VU9V280",
+      "qty": 1,
+      "amt": 471,
+      "st": "Completed"
+    },
+    {
+      "id": "2607314U3DXC5K",
+      "date": "2026-07-31",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 590,
+      "st": "Completed"
+    },
+    {
+      "id": "2607303K61FTNP",
+      "date": "2026-07-30",
+      "sku": "2607303K61FTNP",
+      "qty": 1,
+      "amt": 525,
+      "st": "Completed"
+    },
+    {
+      "id": "260730396BE53V",
+      "date": "2026-07-30",
+      "sku": "260730396BE53V",
+      "qty": 1,
+      "amt": 585,
+      "st": "Completed"
+    },
+    {
+      "id": "2607302Y9KTGF7",
+      "date": "2026-07-30",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "2607302UWKQ69U",
+      "date": "2026-07-30",
+      "sku": "2607302UWKQ69U",
+      "qty": 1,
+      "amt": 1.055,
+      "st": "Completed"
+    },
+    {
+      "id": "2607302TWV019W",
+      "date": "2026-07-30",
+      "sku": "2607302TWV019W",
+      "qty": 1,
+      "amt": 1.076,
+      "st": "Cancelled"
+    },
+    {
+      "id": "26072906EBDT38",
+      "date": "2026-07-29",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 535,
+      "st": "Completed"
+    },
+    {
+      "id": "260729W207WKDB",
+      "date": "2026-07-29",
+      "sku": "260729W207WKDB",
+      "qty": 2,
+      "amt": 1.076,
+      "st": "Completed"
+    },
+    {
+      "id": "260729VWR0QQVS",
+      "date": "2026-07-29",
+      "sku": "260729VWR0QQVS",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "260728U9CH4XBW",
+      "date": "2026-07-28",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 712,
+      "st": "Completed"
+    },
+    {
+      "id": "260727S58EX23N",
+      "date": "2026-07-27",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 446,
+      "st": "Completed"
+    },
+    {
+      "id": "260727QT1AX65B",
+      "date": "2026-07-27",
+      "sku": "260727QT1AX65B",
+      "qty": 1,
+      "amt": 557,
+      "st": "Completed"
+    },
+    {
+      "id": "260727QSWGTEFK",
+      "date": "2026-07-27",
+      "sku": "260727QSWGTEFK",
+      "qty": 1,
+      "amt": 601,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260725KG3MMJEV",
+      "date": "2026-07-25",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 590,
+      "st": "Completed"
+    },
+    {
+      "id": "260725HVFA3D58",
+      "date": "2026-07-25",
+      "sku": "260725HVFA3D58",
+      "qty": 1,
+      "amt": 517,
+      "st": "Completed"
+    },
+    {
+      "id": "260722BJDGQ7N3",
+      "date": "2026-07-22",
+      "sku": "260722BJDGQ7N3",
+      "qty": 1,
+      "amt": 640,
+      "st": "Completed"
+    },
+    {
+      "id": "260722BHPFHM7S",
+      "date": "2026-07-22",
+      "sku": "260722BHPFHM7S",
+      "qty": 1,
+      "amt": 543,
+      "st": "Completed"
+    },
+    {
+      "id": "2607219YRU0W7T",
+      "date": "2026-07-21",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 639,
+      "st": "Completed"
+    },
+    {
+      "id": "26072191UYC2N4",
+      "date": "2026-07-21",
+      "sku": "26072191UYC2N4",
+      "qty": 1,
+      "amt": 517,
+      "st": "Completed"
+    },
+    {
+      "id": "2607206JMCSADF",
+      "date": "2026-07-20",
+      "sku": "2607206JMCSADF",
+      "qty": 1,
+      "amt": 518,
+      "st": "Completed"
+    },
+    {
+      "id": "2607206DWRWN20",
+      "date": "2026-07-20",
+      "sku": "2607206DWRWN20",
+      "qty": 1,
+      "amt": 569,
+      "st": "Completed"
+    },
+    {
+      "id": "2607206CV0BKT0",
+      "date": "2026-07-20",
+      "sku": "2607206CV0BKT0",
+      "qty": 1,
+      "amt": 591,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2607194110YU3Q",
+      "date": "2026-07-19",
+      "sku": "2607194110YU3Q",
+      "qty": 1,
+      "amt": 774,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260715Q4H9CRF2",
+      "date": "2026-07-15",
+      "sku": "260715Q4H9CRF2",
+      "qty": 1,
+      "amt": 458,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260715PTS6HTKH",
+      "date": "2026-07-15",
+      "sku": "260715PTS6HTKH",
+      "qty": 1,
+      "amt": 534,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260715PHTYD699",
+      "date": "2026-07-15",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 611,
+      "st": "Completed"
+    },
+    {
+      "id": "260715NSB04FT5",
+      "date": "2026-07-15",
+      "sku": "260715NSB04FT5",
+      "qty": 1,
+      "amt": 438,
+      "st": "Completed"
+    },
+    {
+      "id": "260713JW36E340",
+      "date": "2026-07-13",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "260713JHQJQ826",
+      "date": "2026-07-13",
+      "sku": "260713JHQJQ826",
+      "qty": 1,
+      "amt": 478,
+      "st": "Completed"
+    },
+    {
+      "id": "260713J6UA2SR8",
+      "date": "2026-07-13",
+      "sku": "260713J6UA2SR8",
+      "qty": 1,
+      "amt": 506,
+      "st": "Completed"
+    },
+    {
+      "id": "260712G50NNFW0",
+      "date": "2026-07-12",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260712F5JME6RX",
+      "date": "2026-07-12",
+      "sku": "260712F5JME6RX",
+      "qty": 1,
+      "amt": 666,
+      "st": "Completed"
+    },
+    {
+      "id": "260710BBY3JYFN",
+      "date": "2026-07-10",
+      "sku": "260710BBY3JYFN",
+      "qty": 1,
+      "amt": 458,
+      "st": "Completed"
+    },
+    {
+      "id": "2607097YA1E6RP",
+      "date": "2026-07-09",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "2607096SRTPD9K",
+      "date": "2026-07-09",
+      "sku": "2607096SRTPD9K",
+      "qty": 1,
+      "amt": 590,
+      "st": "Completed"
+    },
+    {
+      "id": "2607085DSH7CTM",
+      "date": "2026-07-08",
+      "sku": "2607085DSH7CTM",
+      "qty": 1,
+      "amt": 713,
+      "st": "Completed"
+    },
+    {
+      "id": "26070842E3UX65",
+      "date": "2026-07-08",
+      "sku": "26070842E3UX65",
+      "qty": 1,
+      "amt": 478,
+      "st": "Completed"
+    },
+    {
+      "id": "2607073Q6W7NCM",
+      "date": "2026-07-07",
+      "sku": "2607073Q6W7NCM",
+      "qty": 1,
+      "amt": 473,
+      "st": "Completed"
+    },
+    {
+      "id": "2607073DGGPBYE",
+      "date": "2026-07-07",
+      "sku": "2607073DGGPBYE",
+      "qty": 1,
+      "amt": 484,
+      "st": "Completed"
+    },
+    {
+      "id": "2607061DDX71J8",
+      "date": "2026-07-06",
+      "sku": "2607061DDX71J8",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "2607061DBSH75G",
+      "date": "2026-07-06",
+      "sku": "2607061DBSH75G",
+      "qty": 1,
+      "amt": 591,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2607060T9J3KXB",
+      "date": "2026-07-06",
+      "sku": "2607060T9J3KXB",
+      "qty": 1,
+      "amt": 608,
+      "st": "Completed"
+    },
+    {
+      "id": "2607060KARDYK3",
+      "date": "2026-07-06",
+      "sku": "2607060KARDYK3",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "2607060H50U8P0",
+      "date": "2026-07-06",
+      "sku": "2607060H50U8P0",
+      "qty": 1,
+      "amt": 478,
+      "st": "Completed"
+    },
+    {
+      "id": "26070606DJNFC3",
+      "date": "2026-07-06",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 575,
+      "st": "Cancelled"
+    },
+    {
+      "id": "26070600BBKRH6",
+      "date": "2026-07-06",
+      "sku": "26070600BBKRH6",
+      "qty": 2,
+      "amt": 1.153,
+      "st": "Completed"
+    },
+    {
+      "id": "260704R32Q3TG6",
+      "date": "2026-07-04",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 467,
+      "st": "Completed"
+    },
+    {
+      "id": "260704R0HBGP8G",
+      "date": "2026-07-04",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 587,
+      "st": "Completed"
+    },
+    {
+      "id": "260703NWUP6W3V",
+      "date": "2026-07-03",
+      "sku": "260703NWUP6W3V",
+      "qty": 1,
+      "amt": 478,
+      "st": "Completed"
+    },
+    {
+      "id": "260702MJ6SJY86",
+      "date": "2026-07-02",
+      "sku": "260702MJ6SJY86",
+      "qty": 1,
+      "amt": 465,
+      "st": "Completed"
+    },
+    {
+      "id": "260701HYXYFW5H",
+      "date": "2026-07-01",
+      "sku": "260701HYXYFW5H",
+      "qty": 1,
+      "amt": 442,
+      "st": "Completed"
+    },
+    {
+      "id": "260701HMG0YK09",
+      "date": "2026-07-01",
+      "sku": "260701HMG0YK09",
+      "qty": 1,
+      "amt": 442,
+      "st": "Completed"
+    },
+    {
+      "id": "260701HKRR4YPR",
+      "date": "2026-07-01",
+      "sku": "260701HKRR4YPR",
+      "qty": 1,
+      "amt": 956,
+      "st": "Completed"
+    },
+    {
+      "id": "260630F0RMUA5V",
+      "date": "2026-06-30",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 473,
+      "st": "Completed"
+    },
+    {
+      "id": "260630E7JFYKBH",
+      "date": "2026-06-30",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 491,
+      "st": "Completed"
+    },
+    {
+      "id": "260630DAG54ATJ",
+      "date": "2026-06-30",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "260629CRRXR2AN",
+      "date": "2026-06-29",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "260629BQRHW32Q",
+      "date": "2026-06-29",
+      "sku": "260629BQRHW32Q",
+      "qty": 1,
+      "amt": 448,
+      "st": "Completed"
+    },
+    {
+      "id": "26062882UMUSM9",
+      "date": "2026-06-28",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "26062882AUY0TN",
+      "date": "2026-06-28",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 545,
+      "st": "Completed"
+    },
+    {
+      "id": "2606277YM6MR18",
+      "date": "2026-06-27",
+      "sku": "2606277YM6MR18",
+      "qty": 1,
+      "amt": 465,
+      "st": "Completed"
+    },
+    {
+      "id": "2606264TWVGQNY",
+      "date": "2026-06-26",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 430,
+      "st": "Cancelled"
+    },
+    {
+      "id": "26062647CFN9Y3",
+      "date": "2026-06-26",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 510,
+      "st": "Completed"
+    },
+    {
+      "id": "2606263YSRXUH8",
+      "date": "2026-06-26",
+      "sku": "2606263YSRXUH8",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "26062527YKF2UX",
+      "date": "2026-06-25",
+      "sku": "26062527YKF2UX",
+      "qty": 1,
+      "amt": 505,
+      "st": "Completed"
+    },
+    {
+      "id": "2606251MASTVSS",
+      "date": "2026-06-25",
+      "sku": "2606251MASTVSS",
+      "qty": 1,
+      "amt": 495,
+      "st": "Completed"
+    },
+    {
+      "id": "2606251FV1QU51",
+      "date": "2026-06-25",
+      "sku": "2606251FV1QU51",
+      "qty": 1,
+      "amt": 458,
+      "st": "Completed"
+    },
+    {
+      "id": "260624VPRNWQVT",
+      "date": "2026-06-24",
+      "sku": "260624VPRNWQVT",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "260624VJMEF7FJ",
+      "date": "2026-06-24",
+      "sku": "260624VJMEF7FJ",
+      "qty": 1,
+      "amt": 528,
+      "st": "Completed"
+    },
+    {
+      "id": "260624UDNYEKS9",
+      "date": "2026-06-24",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 487,
+      "st": "Completed"
+    },
+    {
+      "id": "260623TYVKJU1R",
+      "date": "2026-06-23",
+      "sku": "260623TYVKJU1R",
+      "qty": 1,
+      "amt": 615,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260623SR1S58EK",
+      "date": "2026-06-23",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 501,
+      "st": "Completed"
+    },
+    {
+      "id": "260623SPP8UW1R",
+      "date": "2026-06-23",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 501,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260623SP9YXU1J",
+      "date": "2026-06-23",
+      "sku": "260623SP9YXU1J",
+      "qty": 1,
+      "amt": 522,
+      "st": "Completed"
+    },
+    {
+      "id": "260622PHUXW0GJ",
+      "date": "2026-06-22",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 615,
+      "st": "Completed"
+    },
+    {
+      "id": "260622P7BA5G8J",
+      "date": "2026-06-22",
+      "sku": "260622P7BA5G8J",
+      "qty": 1,
+      "amt": 535,
+      "st": "Completed"
+    },
+    {
+      "id": "260621N7Y61M3D",
+      "date": "2026-06-21",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 804,
+      "st": "Completed"
+    },
+    {
+      "id": "260621N160MJBM",
+      "date": "2026-06-21",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 662,
+      "st": "Completed"
+    },
+    {
+      "id": "260621MXUCMMQB",
+      "date": "2026-06-21",
+      "sku": "260621MXUCMMQB",
+      "qty": 1,
+      "amt": 538,
+      "st": "Completed"
+    },
+    {
+      "id": "260621MTY1WX1V",
+      "date": "2026-06-21",
+      "sku": "260621MTY1WX1V",
+      "qty": 1,
+      "amt": 692,
+      "st": "Completed"
+    },
+    {
+      "id": "260621MKW08929",
+      "date": "2026-06-21",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 547,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260621MHV60G6W",
+      "date": "2026-06-21",
+      "sku": "260621MHV60G6W",
+      "qty": 1,
+      "amt": 692,
+      "st": "Completed"
+    },
+    {
+      "id": "260620JQX7W96H",
+      "date": "2026-06-20",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 617,
+      "st": "Completed"
+    },
+    {
+      "id": "260620H76K8H8U",
+      "date": "2026-06-20",
+      "sku": "260620H76K8H8U",
+      "qty": 1,
+      "amt": 614,
+      "st": "Completed"
+    },
+    {
+      "id": "260619G6VXYDUV",
+      "date": "2026-06-19",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 561,
+      "st": "Completed"
+    },
+    {
+      "id": "260619FWGKSXVB",
+      "date": "2026-06-19",
+      "sku": "260619FWGKSXVB",
+      "qty": 1,
+      "amt": 520,
+      "st": "Completed"
+    },
+    {
+      "id": "260618DHKESTE0",
+      "date": "2026-06-18",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 529,
+      "st": "Completed"
+    },
+    {
+      "id": "260618DAW6SUV3",
+      "date": "2026-06-18",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 469,
+      "st": "Completed"
+    },
+    {
+      "id": "260618C2RX3CSW",
+      "date": "2026-06-18",
+      "sku": "260618C2RX3CSW",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "260617BDB8WTW9",
+      "date": "2026-06-17",
+      "sku": "260617BDB8WTW9",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260617B8X93AYT",
+      "date": "2026-06-17",
+      "sku": "260617B8X93AYT",
+      "qty": 1,
+      "amt": 533,
+      "st": "Completed"
+    },
+    {
+      "id": "260617B70J3859",
+      "date": "2026-06-17",
+      "sku": "260617B70J3859",
+      "qty": 1,
+      "amt": 533,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260617B465K748",
+      "date": "2026-06-17",
+      "sku": "260617B465K748",
+      "qty": 1,
+      "amt": 817,
+      "st": "Completed"
+    },
+    {
+      "id": "260617AXE7GA14",
+      "date": "2026-06-17",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 535,
+      "st": "Completed"
+    },
+    {
+      "id": "2606168UVVCN2B",
+      "date": "2026-06-16",
+      "sku": "2606168UVVCN2B",
+      "qty": 1,
+      "amt": 700,
+      "st": "Completed"
+    },
+    {
+      "id": "2606168AVCTDFD",
+      "date": "2026-06-16",
+      "sku": "2606168AVCTDFD",
+      "qty": 1,
+      "amt": 447,
+      "st": "Completed"
+    },
+    {
+      "id": "260616726N714Y",
+      "date": "2026-06-16",
+      "sku": "260616726N714Y",
+      "qty": 1,
+      "amt": 569,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2606156S7S3XUG",
+      "date": "2026-06-15",
+      "sku": "2606156S7S3XUG",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "2606156D1KNHN3",
+      "date": "2026-06-15",
+      "sku": "2606156D1KNHN3",
+      "qty": 1,
+      "amt": 468,
+      "st": "Completed"
+    },
+    {
+      "id": "2606154KFD87SF",
+      "date": "2026-06-15",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 472,
+      "st": "Completed"
+    },
+    {
+      "id": "2606143NPHDW7T",
+      "date": "2026-06-14",
+      "sku": "2606143NPHDW7T",
+      "qty": 1,
+      "amt": 540,
+      "st": "Completed"
+    },
+    {
+      "id": "2606131SGP18HF",
+      "date": "2026-06-13",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 489,
+      "st": "Completed"
+    },
+    {
+      "id": "2606131G5F49GG",
+      "date": "2026-06-13",
+      "sku": "2606131G5F49GG",
+      "qty": 1,
+      "amt": 545,
+      "st": "Completed"
+    },
+    {
+      "id": "2606130WXQX855",
+      "date": "2026-06-13",
+      "sku": "2606130WXQX855",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "260612V5VUY4EX",
+      "date": "2026-06-12",
+      "sku": "260612V5VUY4EX",
+      "qty": 1,
+      "amt": 599,
+      "st": "Completed"
+    },
+    {
+      "id": "260612U88ADFH0",
+      "date": "2026-06-12",
+      "sku": "260612U88ADFH0",
+      "qty": 1,
+      "amt": 492,
+      "st": "Completed"
+    },
+    {
+      "id": "260611SV9MYF25",
+      "date": "2026-06-11",
+      "sku": "260611SV9MYF25",
+      "qty": 1,
+      "amt": 568,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260611SSVE1PN6",
+      "date": "2026-06-11",
+      "sku": "260611SSVE1PN6",
+      "qty": 1,
+      "amt": 474,
+      "st": "Completed"
+    },
+    {
+      "id": "260611RJSUWCMK",
+      "date": "2026-06-11",
+      "sku": "260611RJSUWCMK",
+      "qty": 1,
+      "amt": 488,
+      "st": "Completed"
+    },
+    {
+      "id": "260610PMRC8W2M",
+      "date": "2026-06-10",
+      "sku": "260610PMRC8W2M",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "260610PAXXE0SQ",
+      "date": "2026-06-10",
+      "sku": "260610PAXXE0SQ",
+      "qty": 1,
+      "amt": 638,
+      "st": "Completed"
+    },
+    {
+      "id": "260610P85XS8GA",
+      "date": "2026-06-10",
+      "sku": "260610P85XS8GA",
+      "qty": 1,
+      "amt": 638,
+      "st": "Completed"
+    },
+    {
+      "id": "260610NPJ836AJ",
+      "date": "2026-06-10",
+      "sku": "260610NPJ836AJ",
+      "qty": 1,
+      "amt": 638,
+      "st": "Completed"
+    },
+    {
+      "id": "260610NP2JCNW8",
+      "date": "2026-06-10",
+      "sku": "260610NP2JCNW8",
+      "qty": 1,
+      "amt": 638,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260609KW68W3QC",
+      "date": "2026-06-09",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 488,
+      "st": "Completed"
+    },
+    {
+      "id": "260609KPQEF7WS",
+      "date": "2026-06-09",
+      "sku": "260609KPQEF7WS",
+      "qty": 1,
+      "amt": 613,
+      "st": "Completed"
+    },
+    {
+      "id": "260609KH56H0FM",
+      "date": "2026-06-09",
+      "sku": "260609KH56H0FM",
+      "qty": 1,
+      "amt": 474,
+      "st": "Completed"
+    },
+    {
+      "id": "260609JHAPQ7EM",
+      "date": "2026-06-09",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260608JE0S9UPQ",
+      "date": "2026-06-08",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 553,
+      "st": "Completed"
+    },
+    {
+      "id": "260608JB133H8M",
+      "date": "2026-06-08",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 426,
+      "st": "Completed"
+    },
+    {
+      "id": "260608J8SDF536",
+      "date": "2026-06-08",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 471,
+      "st": "Completed"
+    },
+    {
+      "id": "260608HS6B816K",
+      "date": "2026-06-08",
+      "sku": "260608HS6B816K",
+      "qty": 1,
+      "amt": 554,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260608HS2K2AE2",
+      "date": "2026-06-08",
+      "sku": "260608HS2K2AE2",
+      "qty": 1,
+      "amt": 539,
+      "st": "Completed"
+    },
+    {
+      "id": "260608HAHUFG32",
+      "date": "2026-06-08",
+      "sku": "260608HAHUFG32",
+      "qty": 1,
+      "amt": 613,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260608HA6F62K9",
+      "date": "2026-06-08",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 613,
+      "st": "Completed"
+    },
+    {
+      "id": "260607FMH5KSCP",
+      "date": "2026-06-07",
+      "sku": "260607FMH5KSCP",
+      "qty": 1,
+      "amt": 576,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260607FJPC1229",
+      "date": "2026-06-07",
+      "sku": "260607FJPC1229",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260607FJ7DA70W",
+      "date": "2026-06-07",
+      "sku": "260607FJ7DA70W",
+      "qty": 1,
+      "amt": 727,
+      "st": "Completed"
+    },
+    {
+      "id": "260607EWJS5C9X",
+      "date": "2026-06-07",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260607EKBMNNVN",
+      "date": "2026-06-07",
+      "sku": "260607EKBMNNVN",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "260607E3JJS8XQ",
+      "date": "2026-06-07",
+      "sku": "260607E3JJS8XQ",
+      "qty": 1,
+      "amt": 554,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260607DDME838K",
+      "date": "2026-06-07",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 525,
+      "st": "Completed"
+    },
+    {
+      "id": "260606DCNFC48G",
+      "date": "2026-06-06",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 501,
+      "st": "Completed"
+    },
+    {
+      "id": "260606DBS2F6D0",
+      "date": "2026-06-06",
+      "sku": "260606DBS2F6D0",
+      "qty": 1,
+      "amt": 635,
+      "st": "Completed"
+    },
+    {
+      "id": "260606D3RAJKBR",
+      "date": "2026-06-06",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260606D2T98TR1",
+      "date": "2026-06-06",
+      "sku": "260606D2T98TR1",
+      "qty": 1,
+      "amt": 472,
+      "st": "Completed"
+    },
+    {
+      "id": "260606CK3DWB4X",
+      "date": "2026-06-06",
+      "sku": "260606CK3DWB4X",
+      "qty": 1,
+      "amt": 527,
+      "st": "Completed"
+    },
+    {
+      "id": "260606C5K03534",
+      "date": "2026-06-06",
+      "sku": "260606C5K03534",
+      "qty": 1,
+      "amt": 466,
+      "st": "Completed"
+    },
+    {
+      "id": "260606BT98EP6U",
+      "date": "2026-06-06",
+      "sku": "260606BT98EP6U",
+      "qty": 1,
+      "amt": 484,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260606B0DG2WWN",
+      "date": "2026-06-06",
+      "sku": "260606B0DG2WWN",
+      "qty": 1,
+      "amt": 534,
+      "st": "Completed"
+    },
+    {
+      "id": "260605AA0ERP5E",
+      "date": "2026-06-05",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 490,
+      "st": "Completed"
+    },
+    {
+      "id": "2606059RGWG9DP",
+      "date": "2026-06-05",
+      "sku": "2606059RGWG9DP",
+      "qty": 1,
+      "amt": 787,
+      "st": "Completed"
+    },
+    {
+      "id": "2606059PDWM38V",
+      "date": "2026-06-05",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 501,
+      "st": "Completed"
+    },
+    {
+      "id": "2606059GXFB5N5",
+      "date": "2026-06-05",
+      "sku": "2606059GXFB5N5",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260605951FH9T3",
+      "date": "2026-06-05",
+      "sku": "260605951FH9T3",
+      "qty": 1,
+      "amt": 533,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2606047VWAP1NT",
+      "date": "2026-06-04",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 472,
+      "st": "Completed"
+    },
+    {
+      "id": "2606035CDT4Q5N",
+      "date": "2026-06-03",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "2606023917E6CV",
+      "date": "2026-06-02",
+      "sku": "2606023917E6CV",
+      "qty": 1,
+      "amt": 628,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260602387CJAHV",
+      "date": "2026-06-02",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "2606021PVHS61N",
+      "date": "2026-06-02",
+      "sku": "2606021PVHS61N",
+      "qty": 1,
+      "amt": 533,
+      "st": "Completed"
+    },
+    {
+      "id": "2606021PK78DHN",
+      "date": "2026-06-02",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 615,
+      "st": "Completed"
+    },
+    {
+      "id": "260531TQDTEEU9",
+      "date": "2026-05-31",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 540,
+      "st": "Completed"
+    },
+    {
+      "id": "260530RPEJJ3N2",
+      "date": "2026-05-30",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 552,
+      "st": "Completed"
+    },
+    {
+      "id": "260530RJ79S5YH",
+      "date": "2026-05-30",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 525,
+      "st": "Completed"
+    },
+    {
+      "id": "260530QP9F7DG8",
+      "date": "2026-05-30",
+      "sku": "260530QP9F7DG8",
+      "qty": 1,
+      "amt": 653,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260528JTYPDYW9",
+      "date": "2026-05-28",
+      "sku": "260528JTYPDYW9",
+      "qty": 1,
+      "amt": 460,
+      "st": "Completed"
+    },
+    {
+      "id": "260528JKXFGS2Y",
+      "date": "2026-05-28",
+      "sku": "260528JKXFGS2Y",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260528JDXKPRDP",
+      "date": "2026-05-28",
+      "sku": "260528JDXKPRDP",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260527G7A96N2B",
+      "date": "2026-05-27",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 457,
+      "st": "Completed"
+    },
+    {
+      "id": "260527FVVD69MV",
+      "date": "2026-05-27",
+      "sku": "260527FVVD69MV",
+      "qty": 1,
+      "amt": 472,
+      "st": "Completed"
+    },
+    {
+      "id": "260527FU1X3N4N",
+      "date": "2026-05-27",
+      "sku": "260527FU1X3N4N",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260527F5DKB0F1",
+      "date": "2026-05-27",
+      "sku": "260527F5DKB0F1",
+      "qty": 1,
+      "amt": 507,
+      "st": "Completed"
+    },
+    {
+      "id": "260526E9U24BX9",
+      "date": "2026-05-26",
+      "sku": "260526E9U24BX9",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260526E9RTMTH5",
+      "date": "2026-05-26",
+      "sku": "260526E9RTMTH5",
+      "qty": 1,
+      "amt": 501,
+      "st": "Completed"
+    },
+    {
+      "id": "260526DQSC2X5W",
+      "date": "2026-05-26",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 440,
+      "st": "Completed"
+    },
+    {
+      "id": "260525B52AR639",
+      "date": "2026-05-25",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 469,
+      "st": "Completed"
+    },
+    {
+      "id": "2605236RFWA6EV",
+      "date": "2026-05-23",
+      "sku": "2605236RFWA6EV",
+      "qty": 1,
+      "amt": 414,
+      "st": "Completed"
+    },
+    {
+      "id": "2605236K5JYSKX",
+      "date": "2026-05-23",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 519,
+      "st": "Completed"
+    },
+    {
+      "id": "2605236BEJX987",
+      "date": "2026-05-23",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 613,
+      "st": "Completed"
+    },
+    {
+      "id": "26052366EB1FB8",
+      "date": "2026-05-23",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 442,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2605211D3Q3W1M",
+      "date": "2026-05-21",
+      "sku": "2605211D3Q3W1M",
+      "qty": 1,
+      "amt": 560,
+      "st": "Completed"
+    },
+    {
+      "id": "26052118A6PSBU",
+      "date": "2026-05-21",
+      "sku": "26052118A6PSBU",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "2605210NPCT5CR",
+      "date": "2026-05-21",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 700,
+      "st": "Completed"
+    },
+    {
+      "id": "260518Q3ET0FD3",
+      "date": "2026-05-18",
+      "sku": "260518Q3ET0FD3",
+      "qty": 1,
+      "amt": 684,
+      "st": "Completed"
+    },
+    {
+      "id": "260518P9V2MNJ2",
+      "date": "2026-05-18",
+      "sku": "260518P9V2MNJ2",
+      "qty": 1,
+      "amt": 640,
+      "st": "Completed"
+    },
+    {
+      "id": "260516HQS3M04E",
+      "date": "2026-05-16",
+      "sku": "260516HQS3M04E",
+      "qty": 1,
+      "amt": 438,
+      "st": "Completed"
+    },
+    {
+      "id": "260516GCCE5E80",
+      "date": "2026-05-16",
+      "sku": "260516GCCE5E80",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260515F4N1EA5Q",
+      "date": "2026-05-15",
+      "sku": "260515F4N1EA5Q",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "260515F1XGXRHH",
+      "date": "2026-05-15",
+      "sku": "260515F1XGXRHH",
+      "qty": 1,
+      "amt": 676,
+      "st": "Completed"
+    },
+    {
+      "id": "260515EQ8U3E65",
+      "date": "2026-05-15",
+      "sku": "260515EQ8U3E65",
+      "qty": 2,
+      "amt": 1.045,
+      "st": "Completed"
+    },
+    {
+      "id": "260514CTK4ASTV",
+      "date": "2026-05-14",
+      "sku": "260514CTK4ASTV",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260514CG49UNN1",
+      "date": "2026-05-14",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 639,
+      "st": "Completed"
+    },
+    {
+      "id": "260514CFAPMY00",
+      "date": "2026-05-14",
+      "sku": "260514CFAPMY00",
+      "qty": 1,
+      "amt": 639,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260514C9EE7PP1",
+      "date": "2026-05-14",
+      "sku": "260514C9EE7PP1",
+      "qty": 1,
+      "amt": 611,
+      "st": "Completed"
+    },
+    {
+      "id": "260514C5V4VWQD",
+      "date": "2026-05-14",
+      "sku": "260514C5V4VWQD",
+      "qty": 1,
+      "amt": 635,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260513B5TF6V9Q",
+      "date": "2026-05-13",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 1.379,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2605128PX28PDQ",
+      "date": "2026-05-12",
+      "sku": "2605128PX28PDQ",
+      "qty": 1,
+      "amt": 547,
+      "st": "Completed"
+    },
+    {
+      "id": "2605126DTJT4FG",
+      "date": "2026-05-12",
+      "sku": "2605126DTJT4FG",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "2605103KTFRXA7",
+      "date": "2026-05-10",
+      "sku": "2605103KTFRXA7",
+      "qty": 1,
+      "amt": 713,
+      "st": "Completed"
+    },
+    {
+      "id": "2605102KEG3DCV",
+      "date": "2026-05-10",
+      "sku": "2605102KEG3DCV",
+      "qty": 1,
+      "amt": 1.206,
+      "st": "Completed"
+    },
+    {
+      "id": "26050913N2FQGQ",
+      "date": "2026-05-09",
+      "sku": "26050913N2FQGQ",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260506PGWAGTJ6",
+      "date": "2026-05-06",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "260506PGSP566G",
+      "date": "2026-05-06",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 554,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260506P7YFUVWM",
+      "date": "2026-05-06",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 629,
+      "st": "Completed"
+    },
+    {
+      "id": "260506P57W0A4H",
+      "date": "2026-05-06",
+      "sku": "260506P57W0A4H",
+      "qty": 1,
+      "amt": 676,
+      "st": "Completed"
+    },
+    {
+      "id": "260506P352VP4U",
+      "date": "2026-05-06",
+      "sku": "260506P352VP4U",
+      "qty": 1,
+      "amt": 676,
+      "st": "Completed"
+    },
+    {
+      "id": "260506NXQ2MCK6",
+      "date": "2026-05-06",
+      "sku": "260506NXQ2MCK6",
+      "qty": 1,
+      "amt": 563,
+      "st": "Completed"
+    },
+    {
+      "id": "260506NNW6SAYB",
+      "date": "2026-05-06",
+      "sku": "260506NNW6SAYB",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260505K3B6JJG2",
+      "date": "2026-05-05",
+      "sku": "260505K3B6JJG2",
+      "qty": 1,
+      "amt": 492,
+      "st": "Completed"
+    },
+    {
+      "id": "260505JURKMM5U",
+      "date": "2026-05-05",
+      "sku": "260505JURKMM5U",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260503ENU09UM3",
+      "date": "2026-05-03",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260503EMTW8DDG",
+      "date": "2026-05-03",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 639,
+      "st": "Completed"
+    },
+    {
+      "id": "260503ECQTXHYJ",
+      "date": "2026-05-03",
+      "sku": "260503ECQTXHYJ",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "260503ECAQC4UB",
+      "date": "2026-05-03",
+      "sku": "260503ECAQC4UB",
+      "qty": 1,
+      "amt": 497,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260503EC6HU8AR",
+      "date": "2026-05-03",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 546,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260503EC3UY5VP",
+      "date": "2026-05-03",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 575,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260503DXA0T7F5",
+      "date": "2026-05-03",
+      "sku": "260503DXA0T7F5",
+      "qty": 1,
+      "amt": 593,
+      "st": "Completed"
+    },
+    {
+      "id": "260502BNCYAMFD",
+      "date": "2026-05-02",
+      "sku": "260502BNCYAMFD",
+      "qty": 1,
+      "amt": 622,
+      "st": "Completed"
+    },
+    {
+      "id": "2605019VB3K4RW",
+      "date": "2026-05-01",
+      "sku": "2605019VB3K4RW",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "2605019S7K7PK4",
+      "date": "2026-05-01",
+      "sku": "2605019S7K7PK4",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "2605019QXD9PMF",
+      "date": "2026-05-01",
+      "sku": "2605019QXD9PMF",
+      "qty": 1,
+      "amt": 665,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2605018RP09J4J",
+      "date": "2026-05-01",
+      "sku": "2605018RP09J4J",
+      "qty": 1,
+      "amt": 532,
+      "st": "Completed"
+    },
+    {
+      "id": "2605018JMJXRPU",
+      "date": "2026-05-01",
+      "sku": "2605018JMJXRPU",
+      "qty": 1,
+      "amt": 627,
+      "st": "Completed"
+    },
+    {
+      "id": "2605018395SGCK",
+      "date": "2026-05-01",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 562,
+      "st": "Completed"
+    },
+    {
+      "id": "26043075UQ8JDC",
+      "date": "2026-04-30",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 611,
+      "st": "Completed"
+    },
+    {
+      "id": "2604306PFVRS57",
+      "date": "2026-04-30",
+      "sku": "2604306PFVRS57",
+      "qty": 1,
+      "amt": 590,
+      "st": "Completed"
+    },
+    {
+      "id": "2604294620QFSK",
+      "date": "2026-04-29",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "2604293D611J5V",
+      "date": "2026-04-29",
+      "sku": "2604293D611J5V",
+      "qty": 1,
+      "amt": 626,
+      "st": "Completed"
+    },
+    {
+      "id": "26042824MD17AS",
+      "date": "2026-04-28",
+      "sku": "26042824MD17AS",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "26042822EMFQWN",
+      "date": "2026-04-28",
+      "sku": "26042822EMFQWN",
+      "qty": 1,
+      "amt": 535,
+      "st": "Completed"
+    },
+    {
+      "id": "2604281TUS1NDP",
+      "date": "2026-04-28",
+      "sku": "2604281TUS1NDP",
+      "qty": 1,
+      "amt": 500,
+      "st": "Completed"
+    },
+    {
+      "id": "2604281HQ6RUB0",
+      "date": "2026-04-28",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "2604281GABJ7V0",
+      "date": "2026-04-28",
+      "sku": "2604281GABJ7V0",
+      "qty": 1,
+      "amt": 519,
+      "st": "Completed"
+    },
+    {
+      "id": "2604280VK7HAFF",
+      "date": "2026-04-28",
+      "sku": "2604280VK7HAFF",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "26042807PE4Q32",
+      "date": "2026-04-28",
+      "sku": "26042807PE4Q32",
+      "qty": 1,
+      "amt": 601,
+      "st": "Completed"
+    },
+    {
+      "id": "260427VP9264JF",
+      "date": "2026-04-27",
+      "sku": "260427VP9264JF",
+      "qty": 1,
+      "amt": 713,
+      "st": "Completed"
+    },
+    {
+      "id": "260427VBY23E78",
+      "date": "2026-04-27",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 619,
+      "st": "Completed"
+    },
+    {
+      "id": "260427V3FYFN3R",
+      "date": "2026-04-27",
+      "sku": "260427V3FYFN3R",
+      "qty": 1,
+      "amt": 433,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260427TR7CQAMW",
+      "date": "2026-04-27",
+      "sku": "260427TR7CQAMW",
+      "qty": 1,
+      "amt": 787,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260426T1NA5KDQ",
+      "date": "2026-04-26",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "260426SV44HMC7",
+      "date": "2026-04-26",
+      "sku": "260426SV44HMC7",
+      "qty": 1,
+      "amt": 809,
+      "st": "Completed"
+    },
+    {
+      "id": "260425NUPU6XYX",
+      "date": "2026-04-25",
+      "sku": "260425NUPU6XYX",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "260424MHVCP77Q",
+      "date": "2026-04-24",
+      "sku": "260424MHVCP77Q",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "260424KDM0FY61",
+      "date": "2026-04-24",
+      "sku": "260424KDM0FY61",
+      "qty": 1,
+      "amt": 628,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260423JFQRU41G",
+      "date": "2026-04-23",
+      "sku": "260423JFQRU41G",
+      "qty": 1,
+      "amt": 574,
+      "st": "Completed"
+    },
+    {
+      "id": "260423HPH8FNY1",
+      "date": "2026-04-23",
+      "sku": "260423HPH8FNY1",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260422ETVJ6NBU",
+      "date": "2026-04-22",
+      "sku": "260422ETVJ6NBU",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "260421D6V7AWBC",
+      "date": "2026-04-21",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 483,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260421CVMY03JE",
+      "date": "2026-04-21",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 620,
+      "st": "Completed"
+    },
+    {
+      "id": "260421CPHMN75K",
+      "date": "2026-04-21",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 749,
+      "st": "Completed"
+    },
+    {
+      "id": "260420BJCM586H",
+      "date": "2026-04-20",
+      "sku": "260420BJCM586H",
+      "qty": 1,
+      "amt": 500,
+      "st": "Completed"
+    },
+    {
+      "id": "2604198EU1UT8K",
+      "date": "2026-04-19",
+      "sku": "2604198EU1UT8K",
+      "qty": 1,
+      "amt": 628,
+      "st": "Completed"
+    },
+    {
+      "id": "260419756VNF7F",
+      "date": "2026-04-19",
+      "sku": "260419756VNF7F",
+      "qty": 1,
+      "amt": 546,
+      "st": "Completed"
+    },
+    {
+      "id": "260416124JWR8W",
+      "date": "2026-04-16",
+      "sku": "260416124JWR8W",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260415TDPCHSHV",
+      "date": "2026-04-15",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "260415T211VAU1",
+      "date": "2026-04-15",
+      "sku": "260415T211VAU1",
+      "qty": 1,
+      "amt": 615,
+      "st": "Completed"
+    },
+    {
+      "id": "260414RQTBG470",
+      "date": "2026-04-14",
+      "sku": "260414RQTBG470",
+      "qty": 1,
+      "amt": 660,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260414RQDXQDVB",
+      "date": "2026-04-14",
+      "sku": "260414RQDXQDVB",
+      "qty": 1,
+      "amt": 609,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260414R888QC83",
+      "date": "2026-04-14",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 604,
+      "st": "Completed"
+    },
+    {
+      "id": "260413PJ59CAUM",
+      "date": "2026-04-13",
+      "sku": "260413PJ59CAUM",
+      "qty": 1,
+      "amt": 545,
+      "st": "Completed"
+    },
+    {
+      "id": "260413NQD64Y1P",
+      "date": "2026-04-13",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 713,
+      "st": "Completed"
+    },
+    {
+      "id": "260412MAYB9XEW",
+      "date": "2026-04-12",
+      "sku": "260412MAYB9XEW",
+      "qty": 1,
+      "amt": 592,
+      "st": "Completed"
+    },
+    {
+      "id": "260412KRR5UT9W",
+      "date": "2026-04-12",
+      "sku": "260412KRR5UT9W",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260411GPFJTQGH",
+      "date": "2026-04-11",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260411FYDAEUD5",
+      "date": "2026-04-11",
+      "sku": "260411FYDAEUD5",
+      "qty": 1,
+      "amt": 609,
+      "st": "Completed"
+    },
+    {
+      "id": "2604089Q3HYYC2",
+      "date": "2026-04-08",
+      "sku": "2604089Q3HYYC2",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "26040888BVUX2N",
+      "date": "2026-04-08",
+      "sku": "26040888BVUX2N",
+      "qty": 1,
+      "amt": 700,
+      "st": "Cancelled"
+    },
+    {
+      "id": "2604077408N3Y3",
+      "date": "2026-04-07",
+      "sku": "63979-ZT1M-TH-BL-40-PC",
+      "qty": 1,
+      "amt": 591,
+      "st": "Completed"
+    },
+    {
+      "id": "2604076QXWMDRQ",
+      "date": "2026-04-07",
+      "sku": "2604076QXWMDRQ",
+      "qty": 1,
+      "amt": 687,
+      "st": "Completed"
+    },
+    {
+      "id": "2604075NJJ3148",
+      "date": "2026-04-07",
+      "sku": "2604075NJJ3148",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "26040653RXHDWP",
+      "date": "2026-04-06",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 647,
+      "st": "Completed"
+    },
+    {
+      "id": "26040650C9CVG5",
+      "date": "2026-04-06",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 637,
+      "st": "Completed"
+    },
+    {
+      "id": "2604064TRGV357",
+      "date": "2026-04-06",
+      "sku": "2604064TRGV357",
+      "qty": 1,
+      "amt": 497,
+      "st": "Completed"
+    },
+    {
+      "id": "2604052SQKHWSV",
+      "date": "2026-04-05",
+      "sku": "2604052SQKHWSV",
+      "qty": 1,
+      "amt": 713,
+      "st": "Completed"
+    },
+    {
+      "id": "26040527EHWAXC",
+      "date": "2026-04-05",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 774,
+      "st": "Completed"
+    },
+    {
+      "id": "26040526GGNQ3A",
+      "date": "2026-04-05",
+      "sku": "26040526GGNQ3A",
+      "qty": 1,
+      "amt": 576,
+      "st": "Completed"
+    },
+    {
+      "id": "26040520GRQA0G",
+      "date": "2026-04-05",
+      "sku": "26040520GRQA0G",
+      "qty": 1,
+      "amt": 553,
+      "st": "Completed"
+    },
+    {
+      "id": "2604051SXTY9QQ",
+      "date": "2026-04-05",
+      "sku": "2604051SXTY9QQ",
+      "qty": 1,
+      "amt": 630,
+      "st": "Completed"
+    },
+    {
+      "id": "2604040DCPTN49",
+      "date": "2026-04-04",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 531,
+      "st": "Completed"
+    },
+    {
+      "id": "26040406XURYBQ",
+      "date": "2026-04-04",
+      "sku": "26040406XURYBQ",
+      "qty": 1,
+      "amt": 554,
+      "st": "Completed"
+    },
+    {
+      "id": "260404014VWG1X",
+      "date": "2026-04-04",
+      "sku": "260404014VWG1X",
+      "qty": 1,
+      "amt": 531,
+      "st": "Completed"
+    },
+    {
+      "id": "260404VVW2KBH2",
+      "date": "2026-04-04",
+      "sku": "260404VVW2KBH2",
+      "qty": 1,
+      "amt": 586,
+      "st": "Completed"
+    },
+    {
+      "id": "260404VMYNFT3X",
+      "date": "2026-04-04",
+      "sku": "260404VMYNFT3X",
+      "qty": 1,
+      "amt": 688,
+      "st": "Completed"
+    },
+    {
+      "id": "260404V9G4SP28",
+      "date": "2026-04-04",
+      "sku": "260404V9G4SP28",
+      "qty": 1,
+      "amt": 675,
+      "st": "Completed"
+    },
+    {
+      "id": "260404V123H5KP",
+      "date": "2026-04-04",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 577,
+      "st": "Completed"
+    },
+    {
+      "id": "260404U9J7B6MU",
+      "date": "2026-04-04",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 574,
+      "st": "Completed"
+    },
+    {
+      "id": "260403SPMAV2NY",
+      "date": "2026-04-03",
+      "sku": "260403SPMAV2NY",
+      "qty": 1,
+      "amt": 660,
+      "st": "Completed"
+    },
+    {
+      "id": "260403RVYA2A4E",
+      "date": "2026-04-03",
+      "sku": "260403RVYA2A4E",
+      "qty": 1,
+      "amt": 578,
+      "st": "Completed"
+    },
+    {
+      "id": "260331J63SJTXW",
+      "date": "2026-03-31",
+      "sku": "260331J63SJTXW",
+      "qty": 1,
+      "amt": 575,
+      "st": "Completed"
+    },
+    {
+      "id": "260331J18WBJNY",
+      "date": "2026-03-31",
+      "sku": "260331J18WBJNY",
+      "qty": 1,
+      "amt": 620,
+      "st": "Completed"
+    },
+    {
+      "id": "260331HP5GQXNP",
+      "date": "2026-03-31",
+      "sku": "260331HP5GQXNP",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260330GXPYE87G",
+      "date": "2026-03-30",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260330FKJ3VS91",
+      "date": "2026-03-30",
+      "sku": "63979-ZT1M-TH-BL-42-PC",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260328AQS3S74H",
+      "date": "2026-03-28",
+      "sku": "260328AQS3S74H",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "26032547KNHT3Y",
+      "date": "2026-03-25",
+      "sku": "26032547KNHT3Y",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "26032542M0P7R5",
+      "date": "2026-03-25",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 583,
+      "st": "Completed"
+    },
+    {
+      "id": "2603241UNJXMQ6",
+      "date": "2026-03-24",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "2603240WHDNCQX",
+      "date": "2026-03-24",
+      "sku": "63979-ZT1M-TH-BL-43-PC",
+      "qty": 1,
+      "amt": 665,
+      "st": "Completed"
+    },
+    {
+      "id": "260322RB5Y38CF",
+      "date": "2026-03-22",
+      "sku": "63979-ZT1M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 605,
+      "st": "Cancelled"
+    },
+    {
+      "id": "260321PG78TD9B",
+      "date": "2026-03-21",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260321PFFT882F",
+      "date": "2026-03-21",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260320KK06R68Y",
+      "date": "2026-03-20",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260320KGUENJS6",
+      "date": "2026-03-20",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260319H6SEMSMK",
+      "date": "2026-03-19",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260319H1506DY3",
+      "date": "2026-03-19",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260318ENCTD809",
+      "date": "2026-03-18",
+      "sku": "63979-ZT1M-TH-BL-41-PC",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260318EF05GT2M",
+      "date": "2026-03-18",
+      "sku": "260318EF05GT2M",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260317C248AAAP",
+      "date": "2026-03-17",
+      "sku": "260317C248AAAP",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260317C0TQT3SK",
+      "date": "2026-03-17",
+      "sku": "260317C0TQT3SK",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "260317BXN5XCEV",
+      "date": "2026-03-17",
+      "sku": "260317BXN5XCEV",
+      "qty": 1,
+      "amt": 739,
+      "st": "Completed"
+    },
+    {
+      "id": "2603169DV4690F",
+      "date": "2026-03-16",
+      "sku": "2603169DV4690F",
+      "qty": 1,
+      "amt": 774,
+      "st": "Completed"
+    },
+    {
+      "id": "2603169DBH1DHH",
+      "date": "2026-03-16",
+      "sku": "2603169DBH1DHH",
+      "qty": 1,
+      "amt": 787,
+      "st": "Completed"
+    },
+    {
+      "id": "2603156WMGE7HW",
+      "date": "2026-03-15",
+      "sku": "2603156WMGE7HW",
+      "qty": 1,
+      "amt": 774,
+      "st": "Completed"
+    },
+    {
+      "id": "2603156V4KVDS6",
+      "date": "2026-03-15",
+      "sku": "2603156V4KVDS6",
+      "qty": 1,
+      "amt": 774,
+      "st": "Completed"
+    },
+    {
+      "id": "2603144DATU8KW",
+      "date": "2026-03-14",
+      "sku": "2603144DATU8KW",
+      "qty": 1,
+      "amt": 787,
+      "st": "Completed"
+    },
+    {
+      "id": "2603144C9BU7AX",
+      "date": "2026-03-14",
+      "sku": "2603144C9BU7AX",
+      "qty": 1,
+      "amt": 787,
+      "st": "Completed"
+    },
+    {
+      "id": "2603132G6HQHV3",
+      "date": "2026-03-13",
+      "sku": "2603132G6HQHV3",
+      "qty": 1,
+      "amt": 787,
       "st": "Completed"
     }
   ],
