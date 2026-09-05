@@ -69,7 +69,7 @@
       var next = new Date(now); next.setMinutes((Math.floor(now.getMinutes() / 15) + 1) * 15, 0, 0);
       var sec = Math.max(0, Math.floor((next - now) / 1000));
       var m = Math.floor(sec / 60), s = sec % 60;
-      el.innerHTML = '<span class="dot"></span>自动更新 <b>' + m + ':' + String(s).padStart(2, '0') + '</b>';
+      el.innerHTML = '<span class="dot"></span>下次计划同步 <b>' + m + ':' + String(s).padStart(2, '0') + '</b>';
     }
     tick(); setInterval(tick, 1000);
   };
