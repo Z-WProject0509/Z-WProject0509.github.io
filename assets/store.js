@@ -62,8 +62,13 @@
       const previous=visibleDates(); const oldShops=new Set(shops);
       rows=clean.rows;skipped=clean.skipped;
       shops=[...new Set(rows.map(r=>r.store))];
-      if (initial) chosen=new Set(shops);
-      else { chosen=new Set([...chosen].filter(s=>shops.includes(s))); shops.filter(s=>!oldShops.has(s)).forEach(s=>chosen.add(s)); if (!chosen.size && shops.length) chosen.add(shops[0]); }
+      if (initial) {
+        // 默认只选同币种组(通常印尼 IDR), 避免一打开就是"多币种不可相加"; 混币种可自行勾选
+        const curBy = new Map(rows.map(r => [r.store, r.currency || 'IDR']));
+        const groups = {};
+        shops.forEach(s => { const c = curBy.get(s) || 'IDR'; (groups[c] = groups[c] || []).push(s); });
+        chosen = new Set(groups['IDR'] || groups[Object.keys(groups)[0]] || shops);
+      } else { chosen=new Set([...chosen].filter(s=>shops.includes(s))); shops.filter(s=>!oldShops.has(s)).forEach(s=>chosen.add(s)); if (!chosen.size && shops.length) chosen.add(shops[0]); }
       chips(); $('footTime').textContent=data.updatedAt || '未提供更新时间';
       if (!rows.length) {
         axis=[];range=null;plot=null;view={start:0,end:0};hover=-1;
