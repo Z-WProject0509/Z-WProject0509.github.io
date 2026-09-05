@@ -50,6 +50,7 @@
 
   <div class="panel">
     <h2>🔍 订单 · 到账 · 利润跟踪 <span class="badge-new">近60天＋历史未结清</span><span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
+    <div class="plat-btns" id="finCty" style="margin-bottom:6px;align-items:center"><span style="font-size:12px;color:var(--text-3);font-weight:700;margin-right:6px">🌏 国家</span><button class="btn on" data-cty="印尼">🇮🇩 印尼</button><button class="btn" data-cty="泰国">🇹🇭 泰国</button><span class="aux" id="finCtyNote" style="margin-left:8px"></span></div>
     <div class="plat-btns" id="checkPlat" style="margin-bottom:8px"><button class="btn on" data-plat="all">📚 全部店铺</button></div>
     <div class="rg-head">
       <div class="rg-presets" id="checkFilt">
@@ -79,7 +80,7 @@
 <script src="assets/app.js"></script>
 <script>
 var CHECK_LABEL = { ok: ['ok','已到账'], pending: ['pend','跟踪中'], abnormal: ['bad','⚠ 异常'], cancelled: ['dim','✕ 取消'] };
-var ledger = null, cPlat = 'all', cFilt = 'all';
+var ledger = null, cPlat = 'all', cFilt = 'all', cCty = '印尼';
 
 function renderIncome(inc) {
   var box = document.getElementById('incomeOverview');
@@ -103,8 +104,18 @@ function stBucket(st) {
   if (/completed|done|finished|settle/i.test(st)) return 'done';
   return 'other';
 }
+function ctyRefresh() {
+  var btns = document.querySelectorAll('#finCty .btn');
+  btns.forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-cty') === cCty); x.setAttribute('aria-pressed', x.getAttribute('data-cty') === cCty); });
+  var note = document.getElementById('finCtyNote');
+  if (note) note.textContent = cCty === '印尼' ? '当前账本：MULMUL 印尼（Shopee/TikTok 真实到账+利润）' : '待接入：ZEROTH 泰国店财务（需放款流水/成本源，Shopee TH 已登录）';
+}
 function renderProfit() {
   var box = document.getElementById('profitBox');
+  if (cCty === '泰国') {
+    box.innerHTML = '<div class="empty"><span class="big">🇹🇭</span>泰国店铺利润汇报待接入<br><span class="aux">ZEROTH 泰国店放款流水与成本表接入后自动出现（目前 Shopee TH 已登录、Lazada TH 已登录）</span></div>';
+    return;
+  }
   if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty"><span class="big">📊</span>暂无账本数据</div>'; return; }
   // 全量跟踪单（去重），跟随顶部店铺筛选
   var seen = {}, all = [];
@@ -156,7 +167,12 @@ function renderProfit() {
 
 function renderCheck() {
   var box = document.getElementById('checkBox');
+  ctyRefresh();
   if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty"><span class="big">📊</span>暂无核对数据</div>'; return; }
+  if (cCty === '泰国') {
+    box.innerHTML = '<div class="empty"><span class="big">🇹🇭</span>泰国店铺订单账本待接入<br><span class="aux">泰国店订单/放款同步器接入后自动出现（Shopee TH 已登录 · Lazada TH 已登录）</span></div>';
+    return;
+  }
   // 动态店铺按钮：按数据里实际出现的店铺(平台)生成(以后加店自动多一个选项)
   var platEl = document.getElementById('checkPlat');
   var plats = [];
@@ -266,6 +282,11 @@ function loadAll() {
     ]).then(function (arr) { renderAds(arr[0], arr[1]); });
   }).catch(function () { document.getElementById('checkBox').innerHTML = '<div class="empty">核对数据加载失败</div>'; });
 }
+document.getElementById('finCty').addEventListener('click', function (e) {
+  var b = e.target.closest('.btn'); if (!b || !b.dataset.cty) return;
+  cCty = b.getAttribute('data-cty');
+  renderProfit(); renderCheck();
+});
 document.getElementById('checkPlat').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
   cPlat = b.getAttribute('data-plat');
