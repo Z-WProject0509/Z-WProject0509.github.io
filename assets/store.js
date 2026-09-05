@@ -9,7 +9,7 @@
   let metric = 'amount', gran = 'day', range = null, activePreset = '30d', view = {start:0,end:0};
   let hover = -1, drag = null, initial = true, loading = false, skipped = 0;
   let ctyF = 'all'; // 国家母分组: all / 印尼 / 泰国(与订单发货页一致)
-  const metrics = new Set(['amount','orders','qty']); // 指标可多选(默认全选 → 相对走势对比)
+  const metrics = new Set(['amount']); // 默认只选销售额 → 折线=每家店各自的真实金额; 勾选≥2个指标时才切"相对走势"
   function metricList() { return METS.filter(m => metrics.has(m)); }
   function multiMode() { return metrics.size > 1; }
   let singleMode = false;                        // false=多选(点哪家加/减), true=单选(点谁只看谁)
@@ -116,9 +116,15 @@
       : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">多选</button><button class="shop-mini" data-mo="single">单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
     const vis = visibleShops();
-    // 第一行: 店铺工具(多选/单选/全选/清空); 第二行: 店铺 chip 单独换行, 整齐
+    // 第一行: 店铺工具(多选/单选/全选/清空); 第二行起: 虾皮一排/TikTok一排(排内品牌首字母 A→Z)
     const ctrl = $('shopCtrl'); if (ctrl) ctrl.innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts;
-    $('shopGrp').innerHTML = vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
+    if (window.storeGroup) {
+      const items = vis.map(s => ({ key: s, label: lbl(s), pend: false }));
+      const act = {}; vis.forEach(s => { if (chosen.has(s)) act[s] = true; });
+      $('shopGrp').innerHTML = window.storeGroup(items, act);
+    } else {
+      $('shopGrp').innerHTML = vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
+    }
     // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
     $('legend').innerHTML = multiMode()
       ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
