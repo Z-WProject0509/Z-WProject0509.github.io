@@ -1,25 +1,34 @@
 {
-  "generatedAt": "2026/9/5 17:54:20",
+  "generatedAt": "2026/9/5 18:22:41",
   "platform": "shopee",
   "storeName": "【印尼ZEROTH】虾皮",
   "storeId": "27748602739309",
   "currency": "IDR",
   "orders": {
-    "count": 3,
-    "totalQty": 3,
-    "amountLocal": 1030957
+    "count": 4,
+    "totalQty": 4,
+    "amountLocal": 1324226
   },
   "window": {
-    "count": 71,
-    "amountLocal": 26399210
+    "count": 72,
+    "amountLocal": 26692479
   },
   "statusAgg": {
+    "To Ship": 1,
     "Cancelled": 26,
     "Shipped": 5,
     "Completed": 40
   },
-  "toshipCount": 0,
+  "toshipCount": 1,
   "recent": [
+    {
+      "d": "2026-09-05",
+      "id": "2609058SSC9AWJ",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 293269,
+      "st": "To Ship"
+    },
     {
       "d": "2026-09-05",
       "id": "2609057YQ0B3WE",
@@ -45,8 +54,23 @@
       "st": "Shipped"
     }
   ],
-  "toship": [],
+  "toship": [
+    {
+      "d": "2026-09-05",
+      "id": "2609058SSC9AWJ",
+      "st": "To Ship",
+      "sku": "ZT1"
+    }
+  ],
   "allOrders": [
+    {
+      "id": "2609058SSC9AWJ",
+      "date": "2026-09-05",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 293269,
+      "st": "To Ship"
+    },
     {
       "id": "2609057YQ0B3WE",
       "date": "2026-09-05",
