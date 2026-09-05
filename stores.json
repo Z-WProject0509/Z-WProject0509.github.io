@@ -1,0 +1,111 @@
+{
+  "title": "店铺注册表(按国家母分组)",
+  "updatedAt": "2026/9/5",
+  "note": "国家=店铺的母分组, 判定依据: 紫鸟/站斧店清单的站点域名与 platformName(如 Shopee-印尼-本土=seller.shopee.co.id、TikTok Shop-印尼-本土=seller-id.tokopedia.com、Shopee-泰国-本土=seller.shopee.co.th)。live=true 表示已接入看板(订单发货+店铺数据+财务); live=false 表示待接入(确认后在同步器注册即可整套点亮)。品牌归属: MULMUL、ZEROTH 等均按母品牌, 不按公司A/B。",
+  "countries": [
+    { "name": "印尼", "emoji": "🇮🇩", "currency": "IDR" },
+    { "name": "泰国", "emoji": "🇹🇭", "currency": "THB" }
+  ],
+  "stores": [
+    {
+      "key": "shopee",
+      "country": "印尼",
+      "brand": "MULMUL",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "Shopee—MULMUL",
+      "storeName": "Shopee—MULMUL",
+      "site": "seller.shopee.co.id",
+      "file": "data.json",
+      "live": true
+    },
+    {
+      "key": "tk",
+      "country": "印尼",
+      "brand": "MULMUL",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "TikTok—MULMUL",
+      "storeName": "Tiktok—MULMUL",
+      "site": "seller-id.tokopedia.com",
+      "file": "tk.json",
+      "live": true
+    },
+    {
+      "key": "zeroth",
+      "country": "印尼",
+      "brand": "ZEROTH",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "ZEROTH 虾皮",
+      "storeName": "【印尼ZEROTH】虾皮",
+      "site": "seller.shopee.co.id",
+      "file": "zeroth_shopee.json",
+      "live": true
+    },
+    {
+      "key": "zeroth-tk",
+      "country": "印尼",
+      "brand": "ZEROTH",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "ZEROTH 抖店",
+      "storeName": "【印尼ZEROTH】抖店",
+      "site": "seller-id.tokopedia.com",
+      "file": "zeroth_tk.json",
+      "live": true
+    },
+    {
+      "key": "zt-lzd-id",
+      "country": "印尼",
+      "brand": "ZEROTH",
+      "platform": "Lazada",
+      "platformName": "Lazada-印尼",
+      "label": "ZEROTH 拉赞达",
+      "storeName": "【印尼ZEROTH】拉赞达",
+      "site": "Lazada-印尼",
+      "file": null,
+      "live": false,
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+    },
+    {
+      "key": "zt-sp",
+      "country": "泰国",
+      "brand": "ZEROTH",
+      "platform": "Shopee",
+      "platformName": "Shopee-泰国-本土",
+      "label": "ZEROTH 虾皮",
+      "storeName": "【泰国ZEROTH】虾皮",
+      "site": "seller.shopee.co.th",
+      "file": null,
+      "live": false,
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+    },
+    {
+      "key": "zt-tk",
+      "country": "泰国",
+      "brand": "ZEROTH",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-泰国-本土",
+      "label": "ZEROTH 抖店",
+      "storeName": "【泰国ZEROTH】抖店",
+      "site": "TikTok Shop-泰国-本土",
+      "file": null,
+      "live": false,
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+    },
+    {
+      "key": "zt-lzd",
+      "country": "泰国",
+      "brand": "ZEROTH",
+      "platform": "Lazada",
+      "platformName": "Lazada-泰国",
+      "label": "ZEROTH 拉赞达",
+      "storeName": "【泰国ZEROTH】拉赞达",
+      "site": "Lazada-泰国",
+      "file": null,
+      "live": false,
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+    }
+  ]
+}
