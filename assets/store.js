@@ -100,7 +100,9 @@
       : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">多选</button><button class="shop-mini" data-mo="single">单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
     const vis = visibleShops();
-    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
+    // 第一行: 店铺工具(多选/单选/全选/清空); 第二行: 店铺 chip 单独换行, 整齐
+    const ctrl = $('shopCtrl'); if (ctrl) ctrl.innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts;
+    $('shopGrp').innerHTML = vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
     // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
     $('legend').innerHTML = multiMode()
       ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
@@ -357,6 +359,7 @@
     if (b.dataset.s) toggleStore(b.dataset.s);
   }
   $('shopGrp').addEventListener('click', shopGrpClick);
+  const shopCtrl = $('shopCtrl'); if (shopCtrl) shopCtrl.addEventListener('click', shopGrpClick);
   $('ctyGrp').addEventListener('click', function (e) {
     const b = e.target.closest('button[data-cty]'); if (!b) return;
     ctyF = b.dataset.cty;
