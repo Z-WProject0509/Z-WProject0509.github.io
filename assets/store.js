@@ -169,10 +169,10 @@
     const ss = selected(), cur = currency(), multi = metric === 'amount' && !cur;
     const vd = visibleDates();
     $('tableHead').innerHTML = '📋 每日一览：<b>' + names[metric] + '</b> · ' + ss.length + ' 家店铺 · ' + (vd ? vd.from + ' 至 ' + vd.to : '') +
-      (multi ? ' · ⚠ 币种不同仅逐店看' : '') + ' · 每格小标=较上一周期 ▲升 ▼降';
-    let html = '<table><thead><tr><th>周期</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + esc(s) + '</th>').join('') +
+      (multi ? ' · ⚠ 币种不同仅逐店看' : '') + ' · 最新日期在最上 · 每格小标 = 较前一个日期 ▲升 ▼降';
+    let html = '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + esc(s) + '</th>').join('') +
       (multi ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
-    for (let i = view.start; i <= view.end; i++) {
+    for (let i = view.end; i >= view.start; i--) {
       const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
       html += '<tr><td>' + lab + '</td>';
       let sum = 0, any = false;
