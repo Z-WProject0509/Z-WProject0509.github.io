@@ -73,6 +73,22 @@
   .chart-status { font-size:13px;color:#725300;margin:10px 0 4px; }
   .chart-status.error { color:#b42318; }
   button:focus-visible,canvas:focus-visible,input:focus-visible { outline:3px solid #98b5ff;outline-offset:3px; }
+  /* ===== 模块自选 / 店铺单选多选 / 明细表 ===== */
+  .shop-mini { border:0;background:transparent;padding:2px 9px;border-radius:8px;font-size:12px;font-weight:650;color:var(--text-3);cursor:pointer;font-family:inherit; }
+  .shop-mini:hover { color:var(--primary); }
+  .shop-mini.sep { border-left:1px solid var(--border-strong);border-radius:0;margin-left:2px;padding-left:10px; }
+  .mod-note { font-size:11.5px;color:var(--text-3);margin:-8px 0 6px;line-height:1.6; }
+  .tblzone { margin-top:14px;border-top:1px dashed var(--border);padding-top:10px; }
+  .tbl-head { font-size:12.5px;color:var(--text-2);margin:0 0 6px; }
+  .tbl-head b { color:var(--text); }
+  .tbl-scroll { overflow:auto;max-height:320px;border:1px solid var(--border);border-radius:10px;background:#fff; }
+  .tbl-scroll table { border-collapse:separate;border-spacing:0;min-width:520px;width:100%;font-size:12.5px; }
+  .tbl-scroll th { position:sticky;top:0;z-index:2;background:#f6f8fc;color:var(--text-2);font-weight:700;padding:7px 9px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--border-strong); }
+  .tbl-scroll td { padding:5px 9px;border-bottom:1px solid #f0f3f8;white-space:nowrap;font-variant-numeric:tabular-nums; }
+  .tbl-scroll td.na { color:var(--text-3); }
+  .tbl-scroll td.cov { color:var(--amber); }
+  .tbl-scroll tbody tr:hover td { background:#f7f9fd; }
+  button:focus-visible,canvas:focus-visible,input:focus-visible { outline:3px solid #98b5ff;outline-offset:3px; }
   @media(max-width:600px) {
     .wrap { padding:14px 10px 30px; }.panel { padding:14px 12px; }
     .sum-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -124,10 +140,19 @@
       </div>
     </div>
 
+    <!-- 模块自选：要哪块点哪块，可多选，即点即显 -->
+    <div class="ctl-row">
+      <div class="grp" id="modGrp"><span class="gl">🧩 看什么模块（可多选）</span>
+        <button data-mod="sum" class="on">🧮 汇总卡</button>
+        <button data-mod="chart" class="on">📈 趋势图</button>
+        <button data-mod="table" class="on">📋 每日一览</button>
+      </div>
+    </div>
+
     <!-- 汇总：随所选店铺+当前可见区间实时变 -->
     <div class="sum-strip" id="sumStrip"></div>
 
-    <div class="chart-heading"><div><h2 id="chartTitle">销售额趋势</h2><span id="chartUnit">单位：IDR</span></div><div class="chart-actions"><label><input type="checkbox" id="showValues"> 显示数值</label><button class="btn ghost" id="resetView">恢复所选范围</button></div></div>
+    <div class="chart-heading" id="chartHead"><div><h2 id="chartTitle">销售额趋势</h2><span id="chartUnit">单位：IDR</span></div><div class="chart-actions"><label><input type="checkbox" id="showValues"> 显示数值</label><button class="btn ghost" id="resetView">恢复所选范围</button></div></div>
     <div class="chartbox" id="chartbox">
       <canvas id="chart" height="360" tabindex="0" role="img" aria-label="店铺趋势折线图" aria-describedby="pointDetail chartHint">店铺销售趋势。图表下方提供所选日期的数值。</canvas>
     </div>
@@ -137,6 +162,12 @@
     <div id="labelHint" class="ch-hint"></div>
     <div id="chartStatus" class="chart-status" role="status">正在加载…</div>
     <div id="rangeTag" class="aux" style="margin-top:4px"></div>
+
+    <!-- 每日一览：逐日逐店数值（含环比增降） -->
+    <div class="tblzone" id="tableZone" style="display:none">
+      <div class="tbl-head" id="tableHead"></div>
+      <div class="tbl-scroll" id="tableBody"></div>
+    </div>
   </div>
 
   <div class="footer">
