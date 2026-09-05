@@ -92,4 +92,27 @@
     if (/(?:抖店|TikTok|Tiktok|Tokopedia)/i.test(s)) return '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">';
     return '';
   };
+  // 店铺选择条(三页共用): 虾皮一排 / TikTok 一排, 排内按品牌首字母 A→Z
+  // items = [{key,label,pend}]; activeKeys = 已选key集合(仅非pend可on)
+  window.storeGroup = function (items, activeKeys) {
+    var act = activeKeys || {};
+    var by = { Shopee: [], TikTok: [] };
+    (items || []).forEach(function (it) {
+      var p = /抖店|TikTok|Tiktok|Tokopedia/i.test(it.key || '') ? 'TikTok' : 'Shopee';
+      by[p].push(it);
+    });
+    function sortRow(a, b) { return String(a.label || '').localeCompare(String(b.label || ''), 'zh-CN'); }
+    by.Shopee.sort(sortRow); by.TikTok.sort(sortRow);
+    function rowOf(p, logoP) {
+      var arr = by[p];
+      if (!arr.length) return '';
+      var cls = p === 'Shopee' ? 'spill2' : 'spill2';
+      var btns = arr.map(function (it) {
+        var on = !it.pend && act[it.key];
+        return '<button type="button" class="spill2' + (on ? ' on' : '') + (it.pend ? ' pend' : '') + '" data-key="' + it.key + '">' + (it.label || '') + (it.pend ? '<span class="n">待接入</span>' : '') + '</button>';
+      }).join('');
+      return '<div class="shop-line"><span class="sl-t">' + window.platLogo(logoP) + p + '店</span>' + btns + '</div>';
+    }
+    return rowOf('Shopee', 'Shopee') + rowOf('TikTok', 'TikTok');
+  };
 })();
