@@ -8,6 +8,7 @@
   let rows = [], shops = [], chosen = new Set(), axis = [], values = Object.create(null);
   let metric = 'amount', gran = 'day', range = null, activePreset = '30d', view = {start:0,end:0};
   let hover = -1, drag = null, initial = true, loading = false, skipped = 0;
+  let ctyF = 'all'; // 国家母分组: all / 印尼 / 泰国(与订单发货页一致)
   const metrics = new Set(['amount','orders','qty']); // 指标可多选(默认全选 → 相对走势对比)
   function metricList() { return METS.filter(m => metrics.has(m)); }
   function multiMode() { return metrics.size > 1; }
@@ -64,6 +65,14 @@
   }
   let W = 0, H = 360, plot = null;
   function selected() { return shops.filter(s => chosen.has(s)); }
+  function shopCountry(s) { return /泰|THB|thai/i.test(s || '') ? '泰国' : '印尼'; }
+  function visibleShops() { return ctyF === 'all' ? shops : shops.filter(s => shopCountry(s) === ctyF); }
+  function ctySync() {
+    const btns = document.querySelectorAll('#ctyGrp button');
+    btns.forEach(b => { const on = b.dataset.cty === ctyF; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    const nId = shops.filter(s => shopCountry(s) === '印尼').length, nTh = shops.length - nId;
+    const note = $('ctyNote'); if (note) note.textContent = '🇮🇩 印尼 ' + nId + ' 店 · 🇹🇭 泰国 ' + nTh + ' 店' + (ctyF !== 'all' ? ' · 当前只看 ' + ctyF : '');
+  }
   function currency() {
     const codes = new Set(rows.filter(r => chosen.has(r.store) && range && r.date >= range.from && r.date <= range.to).map(r => r.currency));
     return codes.size > 1 ? null : [...codes][0] || 'IDR';
@@ -89,12 +98,14 @@
       ? '<button class="shop-mini" data-mo="multi">多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">单选</button>'
       : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">多选</button><button class="shop-mini" data-mo="single">单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
-    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(s) + '</button>').join('');
+    const vis = visibleShops();
+    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(s) + '</button>').join('');
     // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
     $('legend').innerHTML = multiMode()
       ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
-      : shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
+      : vis.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
     metricSync();
+    ctySync();
   }
   function rangeButtons() { document.querySelectorAll('#rangeGrp button').forEach(b => { b.classList.toggle('on', b.dataset.r === activePreset); b.setAttribute('aria-pressed',b.dataset.r === activePreset); }); }
   function rebuild() {
@@ -135,6 +146,7 @@
         shops.forEach(s => { const c = curBy.get(s) || 'IDR'; (groups[c] = groups[c] || []).push(s); });
         chosen = new Set(groups['IDR'] || groups[Object.keys(groups)[0]] || shops);
       } else { chosen=new Set([...chosen].filter(s=>shops.includes(s))); shops.filter(s=>!oldShops.has(s)).forEach(s=>chosen.add(s)); if (!chosen.size && shops.length) chosen.add(shops[0]); }
+      if (ctyF !== 'all') { chosen = new Set([...chosen].filter(s => shopCountry(s) === ctyF)); if (!chosen.size) chosen = new Set(visibleShops()); }
       chips(); $('footTime').textContent=data.updatedAt || '未提供更新时间';
       if (!rows.length) {
         axis=[];range=null;plot=null;view={start:0,end:0};hover=-1;
@@ -344,6 +356,14 @@
     if (b.dataset.s) toggleStore(b.dataset.s);
   }
   $('shopGrp').addEventListener('click', shopGrpClick);
+  $('ctyGrp').addEventListener('click', function (e) {
+    const b = e.target.closest('button[data-cty]'); if (!b) return;
+    ctyF = b.dataset.cty;
+    const vis = visibleShops();
+    if (ctyF === 'all') { const idr = vis.filter(s => shopCountry(s) === '印尼'); chosen = new Set(idr.length ? idr : vis); }
+    else { chosen = new Set(vis.filter(s => chosen.has(s) && shopCountry(s) === ctyF)); if (!chosen.size) chosen = new Set(vis); }
+    chips(); render();
+  });
   function toggleMetricMM(m) {
     if (metrics.has(m)) { if (metrics.size === 1) return; metrics.delete(m); } else metrics.add(m);
     if (metrics.size === 1) metric = [...metrics][0];
