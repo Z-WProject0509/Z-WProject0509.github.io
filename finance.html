@@ -9,6 +9,18 @@
 <link rel="stylesheet" href="assets/style.css">
 <style>
   .tblwrap table { min-width: 1120px; }
+  /* 利润汇报：订单状态漏斗 */
+  .pf { margin-top: 2px; }
+  .pf-flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; margin: 2px 0 12px; }
+  .pf-step { flex: 1 1 128px; min-width: 128px; background: #fff; border: 1px solid var(--border); border-left: 3px solid var(--pf-c, var(--primary)); border-radius: 12px; padding: 9px 12px; }
+  .pf-ar { align-self: center; color: var(--text-3); font-size: 18px; padding: 0 4px; }
+  .pf-step .sk { font-size: 11.5px; color: var(--text-2); font-weight: 650; }
+  .pf-step .sv { font-size: 17px; font-weight: 750; color: var(--text); font-variant-numeric: tabular-nums; margin-top: 3px; letter-spacing: -.3px; }
+  .pf-step .sv small { font-size: 11px; font-weight: 600; color: var(--text-3); }
+  .pf-sub { font-size: 12px; color: var(--text-2); line-height: 1.8; margin-bottom: 8px; }
+  .pf-plat { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pf-plat .pp { flex: 1 1 200px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; font-size: 12px; line-height: 1.9; }
+  .pf-plat .pp b { color: var(--text); }
 </style>
 </head>
 <body>
@@ -29,6 +41,11 @@
   <div class="panel">
     <h2>📌 真实进账总览 <span class="tag">My Income 放款流水 · 每日 09:30 / 21:30 低频同步 · 到账时间随明细标记</span></h2>
     <div id="incomeOverview"></div>
+  </div>
+
+  <div class="panel">
+    <h2>📈 利润汇报 <span class="tag">按订单状态：出单 → 发货 → 收款 → 利润 · 只认真实到账 · 成本=SKU单价×件数</span></h2>
+    <div id="profitBox"><div class="empty">等待账本数据…</div></div>
   </div>
 
   <div class="panel">
@@ -76,6 +93,65 @@ function renderIncome(inc) {
       '<div class="card"><div class="k">📅 最近放款日</div><div class="v">' + (days.pop() || '—') + '</div><div class="m">快照 ' + relTime(inc.generatedAt) + '</div></div>' +
       '</div><div class="upd">Released / Pending 明细每日快照累积，历史逐单核对随天数自然补全</div>';
   } else box.innerHTML = '<div class="empty"><span class="big">📭</span>暂无 My Income 快照<br><span class="aux">每日 09:30 / 21:30 同步后自动积累</span></div>';
+}
+
+function stBucket(st) {
+  st = String(st || '');
+  if (/cancel|return|refund/i.test(st)) return 'cancelled';
+  if (/to ship|to process|awaiting shipment|pending|unpaid|to arrange/i.test(st)) return 'wait';
+  if (/shipped|to receive|delivered|in transit|packed|arrange shipment/i.test(st)) return 'ship';
+  if (/completed|done|finished|settle/i.test(st)) return 'done';
+  return 'other';
+}
+function renderProfit() {
+  var box = document.getElementById('profitBox');
+  if (!ledger || !ledger.summary) { box.innerHTML = '<div class="empty"><span class="big">📊</span>暂无账本数据</div>'; return; }
+  // 全量跟踪单（去重），跟随顶部店铺筛选
+  var seen = {}, all = [];
+  [].concat(ledger.released || [], ledger.pending || [], ledger.abnormal || [], ledger.cancelled || []).forEach(function (o) {
+    var key = o.platform + ':' + o.sn; if (seen[key]) return; seen[key] = 1; all.push(o);
+  });
+  if (cPlat !== 'all') all = all.filter(function (o) { return o.platform === cPlat; });
+  if (!all.length) { box.innerHTML = '<div class="empty">该店铺暂无跟踪订单</div>'; return; }
+  // 状态漏斗（已到账单不再重复计入等待/在途/完成）
+  var b = { cancelled: 0, wait: 0, ship: 0, done: 0, abn: 0, other: 0 };
+  var okN = 0, okPay = 0, okCost = 0, okProfit = 0, okMissCost = 0;
+  var pendN = 0, pendEst = 0, salesEff = 0;
+  all.forEach(function (o) {
+    if (o.check === 'cancelled') { b.cancelled++; return; }
+    salesEff += o.amount || 0;
+    if (o.check === 'ok') { okN++; if (o.payAmt != null) okPay += o.payAmt; if (o.cost != null) okCost += o.cost; else okMissCost++; if (o.profit != null) okProfit += o.profit; return; }
+    if (o.check === 'abnormal') { b.abn++; return; }
+    if (o.check === 'pending') { pendN++; pendEst += o.estIncome || 0; b[stBucket(o.status)]++; }
+  });
+  var eff = all.length - b.cancelled;
+  var step = function (c, k, v) {
+    return '<div class="pf-step" style="--pf-c:' + c + '"><div class="sk">' + k + '</div><div class="sv">' + v + '</div></div>';
+  };
+  var flow =
+    step('#94a3b8', '📦 有效订单（去取消）', eff + ' 单') + '<span class="pf-ar">→</span>' +
+    step('#64748b', '🚚 待处理 / 待发货', (b.wait + b.ship) + ' 单') + '<span class="pf-ar">→</span>' +
+    step('#3b6cf6', '✅ 已完成', (b.done + okN) + ' 单') + '<span class="pf-ar">→</span>' +
+    step('#16a34a', '💰 已到账', okN + ' 单<br><small>' + fmtRp(okPay) + '</small>') + '<span class="pf-ar">→</span>' +
+    step('#7c3aed', '🧾 利润（到账−成本）', fmtRp(okProfit) + (okMissCost ? '<br><small>' + okMissCost + ' 单成本待录</small>' : ''));
+  var sub =
+    '订单状态：取消 ' + b.cancelled + ' 单已排除 · 待放款跟踪 ' + pendN + ' 单（预计 ' + fmtRp(pendEst) + '）· ⚠ 异常待核对 ' + b.abn + ' 单 · 商品成本合计 ' + fmtRp(okCost) + (okMissCost ? '（另 ' + okMissCost + ' 单成本未录，未计入利润）' : '') + ' · 有效订单销售金额 ' + fmtRp(salesEff) + (b.other ? ' · 另有 ' + b.other + ' 单状态待识别（仍持续跟踪）' : '');
+  var platBox = '';
+  if (cPlat === 'all') {
+    var plats = [], sp = {};
+    all.forEach(function (o) { if (!sp[o.platform]) { sp[o.platform] = 1; plats.push(o.platform); } });
+    platBox = '<div class="pf-plat">' + plats.map(function (p) {
+      var pay = 0, cost = 0, profit = 0, okp = 0, miss = 0, abnp = 0;
+      all.forEach(function (o) {
+        if (o.platform !== p) return;
+        if (o.check === 'ok') { okp++; if (o.payAmt != null) pay += o.payAmt; if (o.cost != null) cost += o.cost; else miss++; if (o.profit != null) profit += o.profit; }
+        if (o.check === 'abnormal') abnp++;
+      });
+      return '<div class="pp"><b>' + esc(p) + '</b><br>已到账 ' + okp + ' 单 · ' + fmtRp(pay) + '<br>商品成本 ' + fmtRp(cost) + (miss ? '（' + miss + ' 待录）' : '') + '<br>🧾 利润 <b>' + fmtRp(profit) + '</b>' + (abnp ? ' · ⚠ 异常 ' + abnp : '') + '</div>';
+    }).join('') + '</div>';
+  }
+  box.innerHTML = '<div class="pf"><div class="pf-flow">' + flow + '</div><div class="pf-sub">' + sub + '</div>' + platBox +
+    '<div class="upd">利润 = 已录全成本订单的真实到账 − 商品成本；广告费在下方“广告支出”单列、尚未分摊（不代表净利润）；取消/退款不计入收入；未到账订单持续跟踪到收款完成。</div></div>';
 }
 
 function renderCheck() {
@@ -182,7 +258,7 @@ function renderAds(adsSp, adsTk) {
 function loadAll() {
   fetch('finance_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(renderIncome).catch(function () { document.getElementById('incomeOverview').innerHTML = '<div class="empty">加载失败，稍后自动重试</div>'; });
   fetch('finance_orders.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
-    ledger = a; renderCheck();
+    ledger = a; renderProfit(); renderCheck();
     document.getElementById('footTime').textContent = relTime(a.summary.generatedAt);
     return Promise.all([
       fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
@@ -194,7 +270,7 @@ document.getElementById('checkPlat').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
   cPlat = b.getAttribute('data-plat');
   document.querySelectorAll('#checkPlat .btn').forEach(function (x) { x.classList.toggle('on', x === b); });
-  renderCheck();
+  renderProfit(); renderCheck();
 });
 document.getElementById('checkFilt').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
