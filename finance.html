@@ -32,7 +32,7 @@
   </div>
 
   <div class="panel">
-    <h2>🔍 订单 · 到账 · 利润跟踪 <span class="badge-new">60天窗口</span><span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
+    <h2>🔍 订单 · 到账 · 利润跟踪 <span class="badge-new">近60天＋历史未结清</span><span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
     <div class="plat-btns" id="checkPlat" style="margin-bottom:8px"><button class="btn on" data-plat="all">📚 全部店铺</button></div>
     <div class="rg-head">
       <div class="rg-presets" id="checkFilt">
@@ -54,7 +54,7 @@
   </div>
 
   <div class="footer">
-    财务口径：<b>以每笔订单真实进账为准</b>（不采信平台余额汇总）· 报表 = 订单真实进账 − 广告花费 − 平台费用 − 成本<br>
+    财务口径：<b>以每笔订单真实进账为准</b>（不采信平台余额汇总）· 本页收益 = 已录全成本订单的到账 − 商品成本；广告单列展示，尚未分摊到订单，不代表净利润。平台已从到账扣除的费用不重复扣减<br>
     数据留存 ≥ 6 个月 · 未到账订单持续跟踪至收款完成 · 更新于 <span id="footTime">—</span>
   </div>
 </div>
@@ -97,21 +97,23 @@ function renderCheck() {
   if (s.pendingAuditSkus && s.pendingAuditSkus.length) {
     sumHtml += '<div class="auditbar">⚠ <b>' + s.pendingAuditSkus.length + ' 个订单货号未匹配成本表，需你审核</b>：' +
       s.pendingAuditSkus.map(function (a) { return '<b>' + esc(a.sku) + '</b> ×' + a.orders; }).join('　') +
-      '　<span class="aux">→ 去平台把货号改成成本表标准货号，改后自动出成本/利润</span></div>';
+      '　<span class="aux">→ 核对成本表或本地货号别名后重新生成账本</span></div>';
   }
+  if (s.missingCostOrders) sumHtml += '<div class="auditbar">另有 ' + s.missingCostOrders + ' 笔已到账订单成本未核全，未计入收益合计。</div>';
+  if (s.costIssueOrders) sumHtml += '<div class="aux">共 ' + s.costIssueOrders + ' 笔订单需要核对成本或件数；将鼠标移到“待核成本”查看原因。</div>';
   var totProfit = (s.profit ? s.profit.shopee : 0) + (s.profit ? s.profit.tk : 0);
   var totReal = (s.realIncome ? s.realIncome.shopee : 0) + (s.realIncome ? s.realIncome.tk : 0);
   sumHtml += '<div class="cards">' +
-    '<div class="card"><div class="k">📦 60天订单</div><div class="v">' + s.totalOrders + '</div><div class="m">双平台合计</div></div>' +
+    '<div class="card"><div class="k">📦 跟踪订单</div><div class="v">' + s.totalOrders + '</div><div class="m">双平台合计</div></div>' +
     '<div class="card"><div class="k">💰 已到账</div><div class="v green">' + s.counts.ok + '</div><div class="m">实收 ' + fmtRp(totReal) + '</div></div>' +
-    '<div class="card"><div class="k">📈 利润（已到账单）</div><div class="v ' + (totProfit >= 0 ? 'green' : 'red') + '">' + fmtRp(totProfit) + '</div><div class="m">= 到账 − 成本</div></div>' +
+    '<div class="card"><div class="k">📈 到账减商品成本</div><div class="v ' + (totProfit >= 0 ? 'green' : 'red') + '">' + fmtRp(totProfit) + '</div><div class="m">= 已录全成本订单的到账 − 商品成本</div></div>' +
     '<div class="card"><div class="k">⏳ 未到账·跟踪</div><div class="v amber">' + s.counts.pending + '</div><div class="m">持续跟踪至收款</div></div>' +
     '<div class="card"><div class="k">⚠ 异常待核对</div><div class="v red">' + s.counts.abnormal + '</div><div class="m">超宽限期未放款</div></div>' +
     '<div class="card"><div class="k">✖ 取消</div><div class="v dim">' + s.counts.cancelled + '</div><div class="m">不计收入</div></div>' +
     '</div>';
   var all = (ledger.released || []).concat(ledger.pending || [], ledger.abnormal || [], ledger.cancelled || []);
   var seen = {};
-  all = all.filter(function (o) { if (seen[o.sn]) return false; seen[o.sn] = 1; return true; });
+  all = all.filter(function (o) { var key = o.platform + ':' + o.sn; if (seen[key]) return false; seen[key] = 1; return true; });
   if (cPlat !== 'all') all = all.filter(function (o) { return o.platform === cPlat; });
   if (cFilt !== 'all') all = all.filter(function (o) { return o.check === cFilt; });
   all.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
@@ -121,7 +123,7 @@ function renderCheck() {
     if (o.check === 'ok' && o.payAmt != null) amtTxt = '<span class="amt-main">' + fmtRp(o.payAmt) + '</span>';
     else if (o.check === 'pending' && o.estIncome != null) amtTxt = '<span class="aux">预</span> ' + fmtRp(o.estIncome);
     else amtTxt = '<span class="dim">—</span>';
-    var costTxt = o.cost != null ? fmtRp(o.cost) : '<span class="aux">待录成本</span>';
+    var costTxt = o.cost != null ? fmtRp(o.cost) : '<span class="aux" title="' + esc(o.costIssue || '待录成本') + '">待核成本</span>';
     var profitTxt;
     if (o.check === 'ok') profitTxt = o.profit != null ? '<span class="' + (o.profit >= 0 ? 'ok' : 'bad') + '">' + fmtRp(o.profit) + '</span>' : '<span class="aux">待补</span>';
     else if (o.check === 'cancelled') profitTxt = '<span class="dim">—</span>';
@@ -173,7 +175,7 @@ function renderAds(adsSp, adsTk) {
   box.innerHTML = '<div class="cards">' +
     '<div class="card"><div class="k">🟠 Shopee 广告（昨日）</div><div class="v red">' + (sp ? fmtRp(sp.cost) : '—') + '</div><div class="m">广告销售 ' + (sp ? fmtRp(sp.sales) : '—') + '</div></div>' +
     '<div class="card"><div class="k">⚫ TikTok 广告（昨日）</div><div class="v red">' + (tk ? fmtRp(tk.cost) : '—') + '</div><div class="m">广告销售 ' + (tk ? fmtRp(tk.sales) : '—') + '</div></div>' +
-    '<div class="card"><div class="k">🧾 双平台合计（昨日）</div><div class="v red">' + fmtRp(tot) + '</div><div class="m">财务 = 到账 − 广告 − 费用 − 成本</div></div>' +
+    '<div class="card"><div class="k">🧾 双平台合计（昨日）</div><div class="v red">' + fmtRp(tot) + '</div><div class="m">昨日广告支出合计，未计入上方订单收益</div></div>' +
     '</div><div class="upd">广告按 GMT+7 自然日定型，留存 180 天（半年）</div>';
 }
 
