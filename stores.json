@@ -1,10 +1,18 @@
 {
   "title": "店铺注册表(按国家母分组)",
-  "updatedAt": "2026/9/5",
+  "updatedAt": "2026/9/5 17:30:34",
   "note": "国家=店铺的母分组, 判定依据: 紫鸟/站斧店清单的站点域名与 platformName(如 Shopee-印尼-本土=seller.shopee.co.id、TikTok Shop-印尼-本土=seller-id.tokopedia.com、Shopee-泰国-本土=seller.shopee.co.th)。live=true 表示已接入看板(订单发货+店铺数据+财务); live=false 表示待接入(确认后在同步器注册即可整套点亮)。品牌归属: MULMUL、ZEROTH 等均按母品牌, 不按公司A/B。",
   "countries": [
-    { "name": "印尼", "emoji": "🇮🇩", "currency": "IDR" },
-    { "name": "泰国", "emoji": "🇹🇭", "currency": "THB" }
+    {
+      "name": "印尼",
+      "emoji": "🇮🇩",
+      "currency": "IDR"
+    },
+    {
+      "name": "泰国",
+      "emoji": "🇹🇭",
+      "currency": "THB"
+    }
   ],
   "stores": [
     {
@@ -66,7 +74,8 @@
       "site": "Lazada-印尼",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
+      "storeId": "27787308234296"
     },
     {
       "key": "zt-sp",
@@ -79,7 +88,8 @@
       "site": "seller.shopee.co.th",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
+      "storeId": "27722617464774"
     },
     {
       "key": "zt-tk",
@@ -92,7 +102,8 @@
       "site": "TikTok Shop-泰国-本土",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
+      "storeId": "27719292977580"
     },
     {
       "key": "zt-lzd",
@@ -105,7 +116,8 @@
       "site": "Lazada-泰国",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)"
+      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
+      "storeId": "27719306929337"
     }
   ]
 }
