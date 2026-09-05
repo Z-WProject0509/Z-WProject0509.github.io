@@ -21,7 +21,7 @@
   function message(text, error) { $('chartStatus').textContent = text; $('chartStatus').classList.toggle('error', !!error); }
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
-  function chipIcon(s) { return /Shopee|虾皮/i.test(s) ? window.platLogo('Shopee') : /TikTok|Tiktok|抖店/i.test(s) ? window.platLogo('TikTok') : ''; }
+  function chipIcon(s) { return window.platLogo ? window.platLogo(s) : ''; } // 按店名自动识别平台(品牌-平台命名)
   function chips() {
     const mode = (singleMode
       ? '<button class="shop-mini" data-mo="multi">⇄ 多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">◉ 单选</button>'
