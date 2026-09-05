@@ -3,9 +3,14 @@
   const D = window.StoreTrend, $ = id => document.getElementById(id);
   const COLORS = ['#3b6cf6','#059669','#d97706','#db2777','#7c3aed','#0891b2'];
   const names = { amount:'销售额',orders:'订单数',qty:'销售件数' };
+  const METS = ['amount','orders','qty'];
+  const MCOL = { amount:'#3b6cf6', orders:'#059669', qty:'#d97706' };
   let rows = [], shops = [], chosen = new Set(), axis = [], values = Object.create(null);
   let metric = 'amount', gran = 'day', range = null, activePreset = '30d', view = {start:0,end:0};
   let hover = -1, drag = null, initial = true, loading = false, skipped = 0;
+  const metrics = new Set(['amount','orders','qty']); // 指标可多选(默认全选 → 相对走势对比)
+  function metricList() { return METS.filter(m => metrics.has(m)); }
+  function multiMode() { return metrics.size > 1; }
   let singleMode = false;                        // false=多选(点哪家加/减), true=单选(点谁只看谁)
   const mods = new Set(['sum','chart','table']); // 模块自选: 汇总卡/趋势图/每日一览
   const canvas = $('chart'), ctx = canvas.getContext('2d');
@@ -16,6 +21,18 @@
   function tipContent(i) {
     if (i == null || !axis.length || !plot || i < view.start || i > view.end) return '';
     const ss = selected(); if (!ss.length) return '';
+    const tipDate = '<div class="tip-d">' + axis[i].label + '</div>';
+    if (multiMode()) {
+      const mixed = metricList().includes('amount') && !currency();
+      const rows = metricList().map(m => {
+        const a = metricAt(m, i), base = metricBase(m);
+        const idx = (a.sum != null && base) ? (a.sum / base.base * 100).toFixed(0) + '%' : '—';
+        const rawTxt = a.sum == null ? '—' : (m === 'amount' && mixed ? Math.round(a.sum).toLocaleString('en-US') : fmtMetricVal(m, a.sum));
+        return '<div class="tip-row"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '<b>' + idx + '</b><small>' + rawTxt + '</small></div>';
+      }).join('');
+      const note = mixed ? '<div class="tip-note">币种不同：销售额只列原值、不合并</div>' : '<div class="tip-note">相对走势 · 区间首日=100 · 数值为实际合计</div>';
+      return tipDate + rows + note;
+    }
     const multi = metric === 'amount' && !currency();
     const rows = ss.map(s => {
       const v = values[s][i], val = v[metric];
@@ -24,7 +41,7 @@
       return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(s) + '<b>' + txt + '</b>' + cov + '</div>';
     }).join('');
     const note = multi ? '<div class="tip-note">多币种仅逐店显示，不可相加</div>' : '';
-    return '<div class="tip-d">' + axis[i].label + '</div>' + rows + note;
+    return tipDate + rows + note;
   }
   function placeTip(clientX, clientY, i) {
     const html = tipContent(i);
@@ -54,17 +71,30 @@
   function money(n) { return n == null ? '—' : (currency() === 'IDR' ? 'Rp ' : (currency() || '') + ' ') + Math.round(n).toLocaleString('en-US'); }
   function format(v, key = metric) { return v == null ? '未采集' : key === 'amount' ? money(v) : Math.round(v).toLocaleString('zh-CN') + (key === 'orders' ? ' 单' : ' 件'); }
   function color(s) { return COLORS[shops.indexOf(s) % COLORS.length]; }
+  // 多指标聚合助手: 某日某指标 在所选店铺上的合计(同币种才可加)与覆盖
+  function metricAt(m, i) { let sum = null; const ss = selected(); for (const s of ss) { const v = values[s][i][m]; if (v != null) sum = sum == null ? v : sum + v; } return { sum }; }
+  function metricBase(m) { for (let i = view.start; i <= view.end; i++) { const a = metricAt(m, i); if (a.sum != null) return { i, base: a.sum }; } return null; }
+  function fmtMetricVal(m, v) {
+    if (v == null) return '—';
+    if (m === 'amount') return currency() ? money(v) : Math.round(v).toLocaleString('en-US');
+    return Math.round(v).toLocaleString('zh-CN') + (m === 'orders' ? ' 单' : ' 件');
+  }
   function message(text, error) { $('chartStatus').textContent = text; $('chartStatus').classList.toggle('error', !!error); }
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
   function chipIcon(s) { return window.platLogo ? window.platLogo(s) : ''; } // 按店名自动识别平台(品牌-平台命名)
+  function metricSync() { document.querySelectorAll('#metricGrp button[data-m]').forEach(b => { const on = metrics.has(b.dataset.m); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); }
   function chips() {
     const mode = (singleMode
-      ? '<button class="shop-mini" data-mo="multi">⇄ 多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">◉ 单选</button>'
-      : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">⇄ 多选</button><button class="shop-mini" data-mo="single">◉ 单选</button>');
+      ? '<button class="shop-mini" data-mo="multi">多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">单选</button>'
+      : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">多选</button><button class="shop-mini" data-mo="single">单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
     $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(s) + '</button>').join('');
-    $('legend').innerHTML = shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
+    // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
+    $('legend').innerHTML = multiMode()
+      ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
+      : shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
+    metricSync();
   }
   function rangeButtons() { document.querySelectorAll('#rangeGrp button').forEach(b => { b.classList.toggle('on', b.dataset.r === activePreset); b.setAttribute('aria-pressed',b.dataset.r === activePreset); }); }
   function rebuild() {
@@ -125,19 +155,25 @@
   function renderSummary() {
     if (!axis.length)return;
     const ss=selected(),dates=visibleDates();
-    const cards=['amount','orders','qty'].map(key=>{
+    const ml=metricList(), mm=multiMode();
+    const cards=ml.map(key=>{
       let total=null,covered=0,expected=0;
       ss.forEach(s=>{const a=sumFor(s,key);if(a.total!=null)total=(total||0)+a.total;covered+=a.count;expected+=a.expected;});
       return '<div class="tot-card"><div class="tk">'+names[key]+'合计</div><div class="tv">'+(key==='amount'&&!currency()?'多币种不可相加':format(total,key))+'</div><div class="ts">'+(covered<expected?'仅汇总已采集数据':'所选店铺 · 当前区间')+'</div></div>';
     });
-    ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(s)+'</div><div class="tv">'+(metric==='amount'&&!currency()?'请选择相同币种':format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
+    if (!mm && ss.length) {
+      ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(s)+'</div><div class="tv">'+(metric==='amount'&&!currency()?'请选择相同币种':format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
+    } else if (mm) {
+      cards.push('<div class="tot-card"><div class="tk">📈 相对走势</div><div class="tv" style="font-size:14px">多指标同图对比</div><div class="ts">以区间首日=100 归一</div></div>');
+    }
     $('sumStrip').innerHTML=cards.join('');
-    $('rangeTag').textContent=dates.from+' 至 '+dates.to+' · 按'+{day:'日',week:'周',month:'月'}[gran]+'统计 · '+ss.length+' 家店铺';
-    $('chartTitle').textContent=names[metric]+'趋势';
-    $('chartUnit').textContent=metric==='amount'?'单位：'+(currency()||'多币种'):'单位：'+(metric==='orders'?'单':'件');
-    const missing=ss.some(s=>{const a=sumFor(s,metric);return a.count<a.expected;});
+    $('rangeTag').textContent=dates.from+' 至 '+dates.to+' · 按'+{day:'日',week:'周',month:'月'}[gran]+'统计 · '+ss.length+' 家店铺 · '+(mm?('指标 '+ml.length+' 项'):names[metric]);
+    const calLblEl=$('calLbl'); if (calLblEl) calLblEl.textContent=(dates.from||'').slice(5).replace('-','/')+' ~ '+(dates.to||'').slice(5).replace('-','/');
+    $('chartTitle').textContent=mm?'指标相对走势（区间首日=100）':names[metric]+'趋势';
+    $('chartUnit').textContent=mm?'相对指数':'单位：'+(metric==='amount'?(currency()||'多币种'):(metric==='orders'?'单':'件'));
+    let missing=false; ml.forEach(k=>{ ss.forEach(s=>{ const a=sumFor(s,k); if(a.count<a.expected) missing=true; }); });
     message((missing?'部分日期未采集：缺失日期留空，周／月数值仅汇总已采集天数。':'数据已覆盖当前区间。')+(dates.to>=todayLocal()?' 今日数据尚未结束。':'')+(skipped?' 已跳过 '+skipped+' 条无效记录。':''),false);
-    canvas.setAttribute('aria-label',names[metric]+'折线图，'+$('rangeTag').textContent+'。使用左右方向键查看各点数值。');
+    canvas.setAttribute('aria-label',$('chartTitle').textContent+'，'+$('rangeTag').textContent+'。使用左右方向键查看各点数值。');
   }
   function resize() {
     const width=Math.max(220,$('chartbox').clientWidth-2);
@@ -152,6 +188,7 @@
     ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);plot=null;
     const showText=t=>{ctx.fillStyle='#5c6b82';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText(t,W/2,H/2);};
     if(!axis.length){showText('等待店铺日报数据');return;}
+    if(multiMode()){ drawMulti(showText); return; }
     if(metric==='amount'&&!currency()){showText('请选择相同币种的店铺进行比较');return;}
     const all=[];selected().forEach(s=>{for(let i=view.start;i<=view.end;i++)if(values[s][i][metric]!=null)all.push(values[s][i][metric]);});
     if(!all.length){showText('该区间暂无已采集数据');return;}
@@ -186,11 +223,64 @@
     });
     if(hover>=view.start&&hover<=view.end){ctx.strokeStyle='#a3afc0';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(X(hover),top);ctx.lineTo(X(hover),H-bottom);ctx.stroke();ctx.setLineDash([]);}
   }
+  // 多指标同图: 各指标=所选店铺合计 → 区间首日=100 的相对走势
+  function drawMulti(showText) {
+    const ss = selected(); if (!ss.length) { showText('请先选择店铺'); return; }
+    if (metricList().includes('amount') && !currency()) { showText('币种不同不能合并销售额；可去掉金额指标或只选同币种店铺'); return; }
+    const series = [];
+    for (const m of metricList()) {
+      const raw = new Array(axis.length).fill(null); let has = false;
+      for (let i = view.start; i <= view.end; i++) { const a = metricAt(m, i); raw[i] = a.sum; if (a.sum != null) has = true; }
+      if (!has) continue;
+      const base = metricBase(m).base || 1;
+      const idx = new Array(axis.length).fill(null);
+      for (let i = view.start; i <= view.end; i++) if (raw[i] != null) idx[i] = raw[i] / base * 100;
+      series.push({ m, color: MCOL[m], raw, idx });
+    }
+    if (!series.length) { showText('该区间暂无已采集数据'); return; }
+    const vals = [];
+    series.forEach(sr => { for (let i = view.start; i <= view.end; i++) if (sr.idx[i] != null) vals.push(sr.idx[i]); });
+    let low = Math.min(0, ...vals), high = Math.max(0, ...vals); if (high === low) high = low + 1;
+    const rawRange = (high - low) / 5, power = Math.pow(10, Math.floor(Math.log10(rawRange))), unit = rawRange / power;
+    let step = (unit <= 1 ? 1 : unit <= 2 ? 2 : unit <= 5 ? 5 : 10) * power; step = Math.max(1, step);
+    low = Math.floor(low / step) * step; high = Math.ceil(high / step) * step;
+    const left = W < 520 ? 52 : 66, right = 22, top = 30, bottom = 38, n = view.end - view.start + 1;
+    const X = i => n === 1 ? (left + W - right) / 2 : left + (i - view.start) / (n - 1) * (W - left - right);
+    const Y = v => top + (high - v) / (high - low) * (H - top - bottom);
+    plot = { left, right, top, bottom, X, Y };
+    ctx.lineWidth = 1; ctx.font = '12px sans-serif';
+    for (let v = low; v <= high + step * .01; v += step) { const y = Y(v); ctx.strokeStyle = '#e9eef5'; ctx.beginPath(); ctx.moveTo(left, y); ctx.lineTo(W - right, y); ctx.stroke(); ctx.fillStyle = '#66758c'; ctx.textAlign = 'right'; ctx.fillText(Math.round(v), left - 9, y + 4); }
+    ctx.textAlign = 'center';
+    const stride = Math.max(1, Math.ceil(n / Math.max(2, Math.floor((W - left - right) / 85))));
+    for (let i = view.start; i <= view.end; i += stride) ctx.fillText(axis[i].label, X(i), H - 12);
+    const showLabels = $('showValues').checked && n <= 14;
+    series.forEach(sr => {
+      ctx.strokeStyle = sr.color; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.beginPath(); let started = false;
+      for (let i = view.start; i <= view.end; i++) { const v = sr.idx[i]; if (v == null) { started = false; continue; } if (!started) { ctx.moveTo(X(i), Y(v)); started = true; } else ctx.lineTo(X(i), Y(v)); }
+      ctx.stroke();
+      for (let i = view.start; i <= view.end; i++) {
+        const v = sr.idx[i]; if (v == null) continue;
+        if (n <= 45 || i === hover) { ctx.beginPath(); ctx.arc(X(i), Y(v), i === hover ? 5 : 3.5, 0, Math.PI * 2); ctx.fillStyle = sr.color; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
+        if (showLabels) { ctx.font = '12px sans-serif'; ctx.textAlign = i === view.start ? 'left' : i === view.end ? 'right' : 'center'; ctx.fillStyle = sr.color; ctx.fillText(Math.round(v), X(i), Y(v) - 11); }
+      }
+    });
+    if (hover >= view.start && hover <= view.end) { ctx.strokeStyle = '#a3afc0'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(X(hover), top); ctx.lineTo(X(hover), H - bottom); ctx.stroke(); ctx.setLineDash([]); }
+    $('labelHint').textContent = $('showValues').checked && n > 14 ? '放大到14个点以内可显示数值' : '';
+  }
   function detail() {
-    if(!axis.length)return;
-    const i=hover>=view.start&&hover<=view.end?hover:view.end,p=axis[i];
-    $('pointDetail').innerHTML='<strong>'+p.start+(p.end!==p.start?' 至 '+p.end:'')+'</strong>'+selected().map(s=>{
-      const v=values[s][i];return '<span><i style="background:'+color(s)+'"></i>'+esc(s)+' <b>'+(metric==='amount'&&!currency()?'币种不同':format(v[metric]))+'</b>'+(v[metric]!=null&&v.coverage[metric]<v.expected?' <small>仅'+v.coverage[metric]+'/'+v.expected+'天</small>':'')+'</span>';
+    if (!axis.length) return;
+    const i = hover >= view.start && hover <= view.end ? hover : view.end, p = axis[i];
+    if (multiMode()) {
+      $('pointDetail').innerHTML = '<strong>' + p.start + (p.end !== p.start ? ' 至 ' + p.end : '') + '</strong>' + metricList().map(m => {
+        const a = metricAt(m, i), base = metricBase(m);
+        const idx = (a.sum != null && base) ? (a.sum / base.base * 100).toFixed(0) + '%' : '—';
+        return '<span><i style="background:' + MCOL[m] + '"></i>' + names[m] + ' <b>' + idx + '</b><small>' + (m === 'amount' && !currency() ? '多币种' : fmtMetricVal(m, a.sum)) + '</small></span>';
+      }).join('');
+      return;
+    }
+    $('pointDetail').innerHTML = '<strong>' + p.start + (p.end !== p.start ? ' 至 ' + p.end : '') + '</strong>' + selected().map(s => {
+      const v = values[s][i]; return '<span><i style="background:' + color(s) + '"></i>' + esc(s) + ' <b>' + (metric === 'amount' && !currency() ? '币种不同' : format(v[metric])) + '</b>' + (v[metric] != null && v.coverage[metric] < v.expected ? ' <small>仅' + v.coverage[metric] + '/' + v.expected + '天</small>' : '') + '</span>';
     }).join('');
   }
   function applyMods() {
@@ -204,31 +294,38 @@
     const d = v - p, up = d > 0;
     return ' <small style="color:' + (up ? 'var(--green)' : 'var(--red)') + '">' + (up ? '▲' : '▼') + Math.abs(d / p * 100).toFixed(0) + '%</small>';
   }
+  function tableForMetric(m) {
+    const ss = selected(), cur = currency(), mixed = m === 'amount' && !cur;
+    let h = '<div class="tbl-sub" style="font-weight:750;color:var(--text);margin:10px 0 4px;font-size:13px">' +
+      (multiMode() ? '<i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + MCOL[m] + ';margin-right:6px"></i>' : '') + names[m] +
+      (multiMode() ? '（所选店铺合计/逐店）' : '') + '</div>';
+    h += '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + chipIcon(s) + esc(s) + '</th>').join('') +
+      (mixed ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
+    for (let i = view.end; i >= view.start; i--) {
+      const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
+      h += '<tr><td>' + lab + '</td>';
+      let sum = 0, any = false;
+      ss.forEach(s => {
+        const v = values[s][i][m], p = i > view.start ? values[s][i - 1][m] : null;
+        if (v == null) { h += '<td class="na">—</td>'; return; }
+        const cov = values[s][i].coverage[m] < values[s][i].expected;
+        any = true; if (!mixed) sum += v;
+        h += '<td class="' + (cov ? 'cov' : '') + '">' + (mixed ? Math.round(v).toLocaleString('en-US') : format(v, m)) + pctCell(v, p) + '</td>';
+      });
+      h += (mixed || !any) ? '<td class="na">—</td>' : '<td><b>' + format(sum, m) + '</b></td>';
+      h += '</tr>';
+    }
+    h += '</tbody></table>';
+    return h;
+  }
   function renderTable() {
     const zone = $('tableZone');
     if (!mods.has('table') || !axis.length) { if (zone) zone.style.display = 'none'; return; }
-    const ss = selected(), cur = currency(), multi = metric === 'amount' && !cur;
-    const vd = visibleDates();
-    $('tableHead').innerHTML = '📋 每日一览：<b>' + names[metric] + '</b> · ' + ss.length + ' 家店铺 · ' + (vd ? vd.from + ' 至 ' + vd.to : '') +
-      (multi ? ' · ⚠ 币种不同仅逐店看' : '') + ' · 最新日期在最上 · 每格小标 = 较前一个日期 ▲升 ▼降';
-    let html = '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + chipIcon(s) + esc(s) + '</th>').join('') +
-      (multi ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
-    for (let i = view.end; i >= view.start; i--) {
-      const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
-      html += '<tr><td>' + lab + '</td>';
-      let sum = 0, any = false;
-      ss.forEach(s => {
-        const v = values[s][i][metric], p = i > view.start ? values[s][i - 1][metric] : null;
-        if (v == null) { html += '<td class="na">—</td>'; return; }
-        const cov = values[s][i].coverage[metric] < values[s][i].expected;
-        any = true; if (!multi) sum += v;
-        html += '<td class="' + (cov ? 'cov' : '') + '">' + (multi ? Math.round(v).toLocaleString('en-US') : format(v)) + pctCell(v, p) + '</td>';
-      });
-      html += (multi || !any) ? '<td class="na">—</td>' : '<td><b>' + format(sum) + '</b></td>';
-      html += '</tr>';
-    }
-    html += '</tbody></table>';
-    $('tableBody').innerHTML = html;
+    const ss = selected(), ml = metricList(), vd = visibleDates();
+    $('tableHead').innerHTML = '📋 每日一览：' + (multiMode() ? ml.map(m => names[m]).join(' · ') : names[metric]) +
+      ' · ' + ss.length + ' 家店铺 · ' + (vd ? vd.from + ' 至 ' + vd.to : '') +
+      (metricList().includes('amount') && !currency() ? ' · ⚠ 币种不同仅逐店看金额' : '') + ' · 最新日期在最上 · 每格小标 = 较前一个日期 ▲升 ▼降';
+    $('tableBody').innerHTML = ml.map(m => tableForMetric(m)).join('');
   }
   function render() { renderSummary(); draw(); detail(); renderTable(); applyMods(); hideTip(); }
   function toggleStore(s) {
@@ -247,14 +344,28 @@
     if (b.dataset.s) toggleStore(b.dataset.s);
   }
   $('shopGrp').addEventListener('click', shopGrpClick);
-  $('legend').addEventListener('click', function (event) { const b = event.target.closest('button[data-s]'); if (b) toggleStore(b.dataset.s); });
-  ['metric','gran'].forEach(kind=>$(kind==='metric'?'metricGrp':'granGrp').addEventListener('click',e=>{
-    const b=e.target.closest('button');if(!b)return;
-    if(kind==='metric')metric=b.dataset.m;
-    else {gran=b.dataset.g;if(axis.length){range=visibleDates();rebuild();}}
-    e.currentTarget.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});render();
-  }));
-  $('rangeGrp').addEventListener('click',e=>{const b=e.target.closest('button');if(b)applyPreset(b.dataset.r);});
+  function toggleMetricMM(m) {
+    if (metrics.has(m)) { if (metrics.size === 1) return; metrics.delete(m); } else metrics.add(m);
+    if (metrics.size === 1) metric = [...metrics][0];
+    else if (!metrics.has(metric)) metric = [...metrics][0];
+    chips(); render();
+  }
+  $('legend').addEventListener('click', function (event) {
+    const b = event.target.closest('button'); if (!b) return;
+    if (b.dataset.mm) toggleMetricMM(b.dataset.mm);
+    else if (b.dataset.s && !multiMode()) toggleStore(b.dataset.s);
+  });
+  $('metricGrp').addEventListener('click', function (e) {
+    const b = e.target.closest('button[data-m]'); if (!b) return;
+    toggleMetricMM(b.dataset.m);
+  });
+  $('granGrp').addEventListener('click', function (e) {
+    const b = e.target.closest('button'); if (!b) return;
+    gran = b.dataset.g;
+    if (axis.length) { range = visibleDates(); rebuild(); }
+    document.querySelectorAll('#granGrp button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+    render();
+  });
   $('modGrp').addEventListener('click',function (event) {
     const b = event.target.closest('button'); if (!b || !b.dataset.mod) return;
     const m = b.dataset.mod;
