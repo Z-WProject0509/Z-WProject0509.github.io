@@ -112,6 +112,7 @@
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
       <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')">🅖 ZEROTH 虾皮</button>
       <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')">🅖 ZEROTH 抖店</button>
+      <button class="tab" data-plat="thsp" onclick="switchTab('thsp')" style="display:none">🅖 ZEROTH 泰国虾皮</button>
     </div>
     <div id="ctyGhost"></div>
     <div class="upd" id="upd"></div>
@@ -134,6 +135,11 @@
       <div class="cards" id="cards-zeroth-tk"></div>
       <div class="panel"><h2>🕐 最近订单（ZEROTH 抖店） <span class="tag">当日新单 · 状态标红</span></h2><div id="recentOrders-zeroth-tk"></div></div>
       <div class="panel"><h2>🚚 待处理（ZEROTH 抖店 · To ship） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-zeroth-tk"></div></div>
+    </div>
+    <div id="state-thsp" class="state">
+      <div class="cards" id="cards-thsp"></div>
+      <div class="panel"><h2>🕐 最近订单（泰国ZEROTH 虾皮） <span class="tag">当日新单 · 状态标红</span></h2><div id="recentOrders-thsp"></div></div>
+      <div class="panel"><h2>🚚 待处理（泰国ZEROTH 虾皮） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-thsp"></div></div>
     </div>
   </div>
 
@@ -182,7 +188,7 @@ function stName(s) {
   return m[s] || s;
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
-var PLAT_NAME = { shopee: 'Shopee—MULMUL', tk: 'TikTok—MULMUL' };
+var PLAT_NAME = { shopee: 'Shopee—MULMUL', tk: 'TikTok—MULMUL', thsp: 'ZEROTH 泰国虾皮' };
 // ===== 店铺国家母分组(与 _site/stores.json 保持一致; 新店只改这里 = 母分组配置) =====
 var CTY_LIST = [
   { name: '印尼', emoji: '🇮🇩', note: 'Shopee .co.id · TikTok Shop .tokopedia.com · Lazada 印尼', stores: [
@@ -193,7 +199,7 @@ var CTY_LIST = [
     { key: 'zt-lzd-id', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
   ]},
   { name: '泰国', emoji: '🇹🇭', note: 'Shopee .co.th · TikTok Shop 泰国 · Lazada 泰国', stores: [
-    { key: 'zt-sp', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 虾皮', live: false },
+    { key: 'zt-sp', plat: 'thsp', brand: 'ZEROTH', label: '🅖 ZEROTH 泰国虾皮', live: true },
     { key: 'zt-tk', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 抖店', live: false },
     { key: 'zt-lzd', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
   ]}
@@ -249,6 +255,7 @@ function setCty(name) {
 function initCty() { buildCtyBar(); setCty(curCty); }
 var cache = {};
 function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
+function fmtM(n, cc) { cc = cc || 'IDR'; return n == null ? '—' : (cc === 'THB' ? '฿' : cc === 'IDR' ? 'Rp ' : cc + ' ') + Math.round(n).toLocaleString('en-US'); }
 function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
 function storeNameOf(plat, d) { return (d && d.storeName) ? d.storeName : PLAT_NAME[plat]; }
 // 订单号单元格：样品单（Free sample）在订单号后加红色"样品"角标
@@ -290,19 +297,20 @@ function renderSide(plat, d) {
   var c = d.orders || {};
   var st = d.statusAgg || {};
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
-  var fx = d.fx || null;
-  var idrFx = fxItem(fx, 'IDR');
-  var cny = fx && c.amountLocal != null && idrFx ? c.amountLocal * idrFx.cnyPer : null;
+  var fx = d.fx || window.__lastFx || null; if (d.fx) window.__lastFx = d.fx;
+  var cc = d.currency || 'IDR';
+  var curFx = fxItem(fx, cc);
+  var cny = fx && c.amountLocal != null && curFx ? c.amountLocal * curFx.cnyPer : null;
   var sName = storeNameOf(plat, d);
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
-  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk') tabEl.textContent = sName;  // ZEROTH tab 保持短名
+  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk' && plat !== 'thsp') tabEl.textContent = sName;  // ZEROTH tab 保持短名
   document.getElementById('upd').textContent = sName + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
     '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(sName) + '</span></div>' +
     '<div class="snap-row"><span class="k">订单总数</span><span class="v">' + (c.count || 0) + ' 单</span></div>' +
     '<div class="snap-row"><span class="k">取消订单</span><span class="v' + (cancelled ? ' red' : '') + '">' + cancelled + ' 单</span></div>' +
-    '<div class="snap-row"><span class="k">总销售额</span><span class="v">' + fmtRp(c.amountLocal) + '</span></div>' +
+    '<div class="snap-row"><span class="k">总销售额</span><span class="v">' + fmtM(c.amountLocal, cc) + '</span></div>' +
     '<div class="snap-row"><span class="k">折合人民币</span><span class="v green">' + fmtCny(cny) + '</span></div>' +
     '<div class="snap-row"><span class="k">已售件数</span><span class="v">' + (c.totalQty || 0) + ' 件</span></div>' +
     '<div class="snap-row"><span class="k">待处理</span><span class="v' + ((d.toshipCount || 0) ? ' red' : '') + '">' + (d.toshipCount || 0) + ' 单</span></div>';
@@ -332,19 +340,20 @@ function render(plat, d) {
   var st = d.statusAgg || {};
   var cancelled = (st.Cancelled || 0) + (st.Canceled || 0);
   var toShip = d.toshipCount || 0;
-  var fx = d.fx || null;
-  var idrFx = fxItem(fx, 'IDR');
-  var cny = fx && c.amountLocal != null && idrFx ? c.amountLocal * idrFx.cnyPer : null;
+  var fx = d.fx || window.__lastFx || null; if (d.fx) window.__lastFx = d.fx;
+  var cc = d.currency || 'IDR';
+  var curFx = fxItem(fx, cc);
+  var cny = fx && c.amountLocal != null && curFx ? c.amountLocal * curFx.cnyPer : null;
   var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) : '';
   document.getElementById('cards-' + plat).innerHTML = [
     ['订单总数', (c.count || 0) + ' 单', ''],
     ['取消订单', cancelled + ' 单', cancelled ? 'red' : ''],
-    ['总销售额', fmtRp(c.amountLocal), 'green'],
+    ['总销售额', fmtM(c.amountLocal, cc), 'green'],
     ['折合人民币', fmtCny(cny), cny ? 'green' : ''],
     ['已售件数', (c.totalQty || 0) + ' 件', ''],
     ['待处理', toShip + ' 单', toShip ? 'red' : '']
   ].map(function (x) {
-    var extra = x[0] === '折合人民币' && fx && idrFx ? '<div class="m">¥1 ≈ Rp ' + idrFx.perCny.toLocaleString('en-US') + '<br>' + esc(fxNote) + '</div>' : '';
+    var extra = x[0] === '折合人民币' && fx && curFx ? '<div class="m">¥1 ≈ ' + esc(curFx.symbol) + ' ' + curFx.perCny.toLocaleString('en-US') + '<br>' + esc(fxNote) + '</div>' : '';
     return '<div class="card"><div class="k">' + x[0] + '</div><div class="v ' + x[2] + '">' + x[1] + '</div>' + extra + '</div>';
   }).join('');
   // 待处理名单(To Process: 已付款待打面单发货) = data.json toship 里那批
@@ -358,10 +367,10 @@ function render(plat, d) {
   function isProc(o) { return !!(o.id && processSet[o.id]); }
   document.getElementById('recentOrders-' + plat).innerHTML = fixedTable(['#', '下单时间', '订单号', 'SKU', '件数', '销售金额', '应到账', '状态'],
     (d.recent || []).map(function (o, i) {
-      var amtCell = o.amt != null && o.amt !== '' ? fmtRp(o.amt) : '—';
+      var amtCell = o.amt != null && o.amt !== '' ? fmtM(o.amt, cc) : '—';
       var incCell;
-      if (o.inc != null && o.inc !== '') incCell = fmtRp(o.inc);
-      else if (o.inc === 0) incCell = 'Rp 0';
+      if (o.inc != null && o.inc !== '') incCell = fmtM(o.inc, cc);
+      else if (o.inc === 0) incCell = fmtM(0, cc);
       else incCell = (plat === 'tk') ? '<span class="fx-unknown">未知</span>' : '—';   // TK 新单应到账未出 → 未知
       return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.d) + '</td><td>' + idCell(o) + '</td><td>' + esc(o.sku) + '</td><td>' + (o.qty || '') + '</td><td>' + amtCell + '</td><td>' + incCell + '</td><td' + ((isProc(o) || isBad(o.st)) ? ' class="st-red"' : '') + '>' + esc(stateTxt(o)) + '</td></tr>';
     }).join(''), 'w8');
@@ -370,7 +379,7 @@ function render(plat, d) {
     : '<div class="empty">🎉 暂无待处理订单（全部已打面单发货）</div>';
 }
 function load(plat) {
-  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : 'data.json';
+  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : plat === 'thsp' ? 'zeroth_th_shopee.json' : 'data.json';
   if (cache[plat]) { render(plat, cache[plat]); return; }
   fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     cache[plat] = d; render(plat, d);
