@@ -1,7 +1,7 @@
 {
   "title": "店铺注册表(按国家母分组)",
   "namingRule": "店名 = 品牌-平台, 自动识别: 虾皮=Shopee / 抖店=TikTok / 拉赞达=Lazada; 名字含 泰 = 泰国站(THB), 否则印尼(IDR)。加新店只需补 storeName=品牌+平台后缀 的同步文件并在 _auto/zeroth_daily.mjs 的 Z_STORES 加一行。",
-  "updatedAt": "2026/9/5 17:30:34",
+  "updatedAt": "2026/9/5 19:04:21",
   "note": "国家=店铺的母分组, 判定依据: 紫鸟/站斧店清单的站点域名与 platformName(如 Shopee-印尼-本土=seller.shopee.co.id、TikTok Shop-印尼-本土=seller-id.tokopedia.com、Shopee-泰国-本土=seller.shopee.co.th)。live=true 表示已接入看板(订单发货+店铺数据+财务); live=false 表示待接入(确认后在同步器注册即可整套点亮)。品牌归属: MULMUL、ZEROTH 等均按母品牌, 不按公司A/B。",
   "countries": [
     {
@@ -119,6 +119,116 @@
       "live": false,
       "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
       "storeId": "27719306929337"
+    },
+    {
+      "key": "zeewalk-sp",
+      "country": "印尼",
+      "brand": "ZEEWALK",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "ZEEWALK-虾皮",
+      "storeName": "【印尼ZEEWALK】虾皮",
+      "site": "seller.shopee.co.id",
+      "storeId": "27775383969695",
+      "file": "st_zeewalk_shopee.json",
+      "live": true
+    },
+    {
+      "key": "zeewalk-tk",
+      "country": "印尼",
+      "brand": "ZEEWALK",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "ZEEWALK-抖店",
+      "storeName": "【印尼ZEEWALK】抖店",
+      "site": "seller-id.tokopedia.com",
+      "storeId": "27774718283400",
+      "file": "st_zeewalk_tk.json",
+      "live": true
+    },
+    {
+      "key": "kaki-sp",
+      "country": "印尼",
+      "brand": "KAKI CILIK",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "KAKI CILIK-虾皮",
+      "storeName": "【印尼KAKI CILIK】虾皮",
+      "site": "seller.shopee.co.id",
+      "storeId": "27794326145550",
+      "file": "st_kaki_shopee.json",
+      "live": true
+    },
+    {
+      "key": "kaki-tk",
+      "country": "印尼",
+      "brand": "KAKI CILIK",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "KAKI CILIK-抖店",
+      "storeName": "【印尼KAKI CILIK】抖店",
+      "site": "seller-id.tokopedia.com",
+      "storeId": "27795182675582",
+      "file": "st_kaki_tk.json",
+      "live": true
+    },
+    {
+      "key": "al1-sp",
+      "country": "印尼",
+      "brand": "ALIBABA",
+      "alias": "一店",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "ALIBABA一店-虾皮",
+      "storeName": "【印尼ALIBABA一店】虾皮",
+      "site": "seller.shopee.co.id",
+      "storeId": "27823692361118",
+      "file": "st_al1_shopee.json",
+      "live": true
+    },
+    {
+      "key": "al1-tk",
+      "country": "印尼",
+      "brand": "ALIBABA",
+      "alias": "一店",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "ALIBABA一店-抖店",
+      "storeName": "【印尼ALIBABA一店】抖店",
+      "site": "seller-id.tokopedia.com",
+      "storeId": "27827140475426",
+      "file": "st_al1_tk.json",
+      "live": true
+    },
+    {
+      "key": "al2-sp",
+      "country": "印尼",
+      "brand": "ALIBABA",
+      "alias": "二店",
+      "platform": "Shopee",
+      "platformName": "Shopee-印尼-本土",
+      "label": "ALIBABA二店-虾皮",
+      "storeName": "【印尼ALIBABA二店】虾皮",
+      "site": "seller.shopee.co.id",
+      "storeId": "27836768846423",
+      "file": "st_al2_shopee.json",
+      "live": false,
+      "note": "该店不存在(无实际店铺)，暂不使用"
+    },
+    {
+      "key": "al2-tk",
+      "country": "印尼",
+      "brand": "ALIBABA",
+      "alias": "二店",
+      "platform": "TikTok Shop",
+      "platformName": "TikTok Shop-印尼-本土",
+      "label": "ALIBABA二店-抖店",
+      "storeName": "【印尼ALIBABA二店】抖店",
+      "site": "seller-id.tokopedia.com",
+      "storeId": "27836769221097",
+      "file": "st_al2_tk.json",
+      "live": false,
+      "note": "该店不存在(无实际店铺)，暂不使用"
     }
   ]
 }
