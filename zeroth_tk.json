@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026/9/5 16:15:25",
+  "platform": "tk",
+  "storeName": "【印尼ZEROTH】抖店",
+  "storeId": "27748571249582",
+  "orders": {
+    "count": 20,
+    "totalQty": 20,
+    "amountLocal": 7688724
+  },
+  "statusAgg": {
+    "Shipped": 14,
+    "Cancelled": 3,
+    "Delivered": 3
+  },
+  "toshipCount": 0,
+  "recent": [
+    {
+      "d": "2026-09-05",
+      "id": "585898746594887647",
+      "sku": "63979-ZT1M-ID-BL-41-PC",
+      "qty": 1,
+      "amt": 403899,
+      "st": "Shipped"
+    },
+    {
+      "d": "2026-09-05",
+      "id": "585897392837199568",
+      "sku": "63979-ZT1M-ID-BL-42-PC",
+      "qty": 1,
+      "amt": 395011,
+      "st": "Shipped"
+    },
+    {
+      "d": "2026-09-05",
+      "id": "585896793074861363",
+      "sku": "63979-ZT1M-ID-BR-42-PC",
+      "qty": 1,
+      "amt": 398041,
+      "st": "Shipped"
+    }
+  ],
+  "toship": [],
+  "note": "第1页最近订单(全量翻页待完善)"
+}
