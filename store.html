@@ -95,6 +95,29 @@
   .tbl-scroll td.na { color:var(--text-3); }
   .tbl-scroll td.cov { color:var(--amber); }
   .tbl-scroll tbody tr:hover td { background:#f7f9fd; }
+  /* 日历区间弹层 */
+  .hid-in { position:absolute; left:-9999px; opacity:0; pointer-events:none; }
+  #calBtn { min-height:36px; font-weight:650; }
+  .calpop { position:absolute; z-index:40; background:#fff; border:1px solid var(--border-strong); border-radius:14px; box-shadow:0 10px 30px rgba(16,24,40,.16); padding:12px; width:300px; margin-top:6px; }
+  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .cal-title { font-weight:750; color:var(--text); font-size:14px; }
+  .cal-nav { border:1px solid var(--border-strong); background:var(--surface); border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer; color:var(--text-2); font-family:inherit; }
+  .cal-nav:hover { border-color:var(--primary); color:var(--primary); }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+  .cal-grid .cw { text-align:center; font-size:11px; color:var(--text-3); padding:2px 0; font-weight:700; }
+  .cal-d { border:0; background:transparent; border-radius:8px; padding:5px 0; font-size:12.5px; cursor:pointer; color:var(--text); font-family:inherit; }
+  .cal-d:hover { background:var(--primary-weak); color:var(--primary); }
+  .cal-d.blank { pointer-events:none; }
+  .cal-d.in { background:var(--primary-weak); color:var(--primary); border-radius:0; }
+  .cal-d.sel { background:var(--primary); color:#fff; font-weight:750; box-shadow:0 2px 6px rgba(59,108,246,.35); border-radius:8px; }
+  .cal-d.today { outline:1.5px solid var(--primary); outline-offset:-1px; }
+  .cal-qt { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .cal-qt .btn { padding:4px 10px; font-size:12px; }
+  .cal-tip { font-size:11px; color:var(--text-3); margin-top:8px; line-height:1.6; }
+  /* 店铺工具缩小(次要控件) */
+  .shop-mini { font-size:11px; padding:1px 6px; color:var(--text-3); }
+  .shop-mini.on { color:var(--primary); }
+  .shop-mini.sep { margin-left:0; padding-left:6px; }
   button:focus-visible,canvas:focus-visible,input:focus-visible { outline:3px solid #98b5ff;outline-offset:3px; }
   @media(max-width:600px) {
     .wrap { padding:14px 10px 30px; }.panel { padding:14px 12px; }
@@ -123,28 +146,41 @@
 <div class="wrap">
   <div class="panel">
     <div class="trend-heading"><div><h1>店铺趋势</h1><p>查看销售变化，对比各店铺表现</p></div><button class="btn" id="retryData">刷新数据</button></div>
-    <!-- 控制行：店铺多选 / 指标 / 粒度 / 日期区间 -->
+    <!-- 控制行：店铺多选 / 指标(可多选) / 粒度 / 日历日期区间 -->
     <div class="ctl-row">
       <div class="grp shop" id="shopGrp"><span class="gl">🏪 店铺</span></div>
-      <div class="grp" id="metricGrp"><span class="gl">📊 指标</span>
+    </div>
+    <div class="ctl-row">
+      <div class="grp" id="metricGrp"><span class="gl">📊 指标 <span class="aux">可多选 · 多选=相对走势</span></span>
         <button data-m="amount" class="on">💰 销售额</button>
-        <button data-m="orders">🧾 订单数</button>
-        <button data-m="qty">👟 销售件数</button>
+        <button data-m="orders" class="on">🧾 订单数</button>
+        <button data-m="qty" class="on">👟 销售件数</button>
       </div>
       <div class="grp" id="granGrp"><span class="gl">⏱ 粒度</span>
         <button data-g="day" class="on">日</button>
         <button data-g="week">周</button>
         <button data-g="month">月</button>
       </div>
-      <div class="grp" id="rangeGrp"><span class="gl">📅 区间</span>
-        <button data-r="7d">近7天</button>
-        <button data-r="30d">近30天</button>
-        <button data-r="90d">近90天</button>
-        <button data-r="all">全部</button>
+      <button class="btn ghost" id="calBtn" type="button" title="点开日历选任意日期区间">📅 <span id="calLbl">—</span> ▾</button>
+      <input type="date" id="fromD" class="hid-in" aria-label="开始日期">
+      <input type="date" id="toD" class="hid-in" aria-label="结束日期">
+    </div>
+    <!-- 日历区间弹层 -->
+    <div class="calpop" id="calPop" hidden>
+      <div class="cal-head">
+        <button class="cal-nav" id="calPrevM" type="button">‹ 上月</button>
+        <span class="cal-title" id="calTitle">—</span>
+        <button class="cal-nav" id="calNextM" type="button">下月 ›</button>
       </div>
-      <div class="datepick">
-        <input type="date" id="fromD" aria-label="开始日期"><span>至</span><input type="date" id="toD" aria-label="结束日期">
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-qt">
+        <button class="btn" data-q="today" type="button">今天</button>
+        <button class="btn" data-q="yest" type="button">昨天</button>
+        <button class="btn" data-q="month" type="button">本月</button>
+        <button class="btn" data-q="lmonth" type="button">上月</button>
+        <button class="btn ghost" id="calClose" type="button">收起</button>
       </div>
+      <div class="cal-tip" id="calTip">先点开始日期，再点结束日期＝整段区间；同一日期点两下＝只看那天</div>
     </div>
 
     <!-- 模块自选：要哪块点哪块，可多选，即点即显 -->
@@ -185,5 +221,102 @@
 <script src="assets/app.js"></script>
 <script src="assets/store-data.js"></script>
 <script src="assets/store.js"></script>
+<script>
+// ===== 日历日期区间(替换原近7/30/90预设): 任意区间 / 单日 / 本月 / 上月 =====
+(function () {
+  var btn = document.getElementById('calBtn'), pop = document.getElementById('calPop');
+  if (!btn || !pop) return;
+  var grid = document.getElementById('calGrid'), title = document.getElementById('calTitle');
+  var fromD = document.getElementById('fromD'), toD = document.getElementById('toD'), lbl = document.getElementById('calLbl');
+  var tipEl = document.getElementById('calTip');
+  var WK = ['日', '一', '二', '三', '四', '五', '六'];
+  var vY = 0, vM = 0, pick = null; // pick: 已点开始日 {y,m,d}
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  var dstr = function (y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); };
+  function daysIn(y, m) { return new Date(y, m + 1, 0).getDate(); }
+  function monthRange(y, m) { return { from: dstr(y, m, 1), to: dstr(y, m, daysIn(y, m)) }; }
+  function fmtLabel(s) { return s ? s.slice(5).replace('-', '/') : ''; }
+  function curRange() { return { from: fromD.value || '', to: toD.value || '' }; }
+  function refreshLbl() {
+    var r = curRange();
+    lbl.textContent = (r.from ? fmtLabel(r.from) : '?') + ' ~ ' + (r.to ? fmtLabel(r.to) : '?');
+  }
+  function apply(from, to) {
+    if (!from || !to) return;
+    if (to < from) { var t = from; from = to; to = t; }
+    fromD.value = from; toD.value = to;
+    fromD.dispatchEvent(new Event('change')); // store.js useDates 处理 → 重绘
+    refreshLbl();
+  }
+  function render() {
+    title.textContent = vY + ' 年 ' + (vM + 1) + ' 月';
+    var first = new Date(vY, vM, 1), days = new Date(vY, vM + 1, 0).getDate();
+    var startDow = first.getDay(); // 0=周日
+    var h = '';
+    for (var w = 0; w < 7; w++) h += '<span class="cw">' + WK[w] + '</span>';
+    var r = curRange();
+    for (var i = 0; i < startDow; i++) h += '<span class="cal-d blank"></span>';
+    for (var d = 1; d <= days; d++) {
+      var ds = dstr(vY, vM, d);
+      var cls = 'cal-d';
+      var inSel = false, isSel = false;
+      if (r.from && r.to && r.from <= ds && ds <= r.to) {
+        inSel = true;
+        if (ds === r.from || ds === r.to) isSel = true;
+      } else if (pick && pick.y === vY && pick.m === vM && pick.d === d) isSel = true;
+      var t = new Date();
+      var isToday = t.getFullYear() === vY && t.getMonth() === vM && t.getDate() === d;
+      cls += inSel && !isSel ? ' in' : '';
+      cls += isSel ? ' sel' : '';
+      cls += isToday ? ' today' : '';
+      h += '<button type="button" class="' + cls + '" data-ymd="' + ds + '">' + d + '</button>';
+    }
+    grid.innerHTML = h;
+  }
+  grid.addEventListener('click', function (e) {
+    var b = e.target.closest('.cal-d[data-ymd]'); if (!b) return;
+    var ds = b.dataset.ymd;
+    var cur = curRange();
+    if (!pick && !cur.from) { pick = { y: +ds.slice(0, 4), m: +ds.slice(5, 7) - 1, d: +ds.slice(8, 10) }; tipEl.textContent = '已选开始 ' + ds + '，再点一天＝区间；再点同一天＝只看这天'; }
+    else if (pick) {
+      var p = dstr(pick.y, pick.m, pick.d);
+      if (p === ds) { apply(ds, ds); }           // 同一天两下 → 单日
+      else { apply(p, ds); }
+      pick = null; tipEl.textContent = '先点开始日期，再点结束日期＝整段区间；同一日期点两下＝只看那天';
+    } else { // 已有区间, 再点=新起点(重新选)
+      pick = { y: +ds.slice(0, 4), m: +ds.slice(5, 7) - 1, d: +ds.slice(8, 10) };
+      tipEl.textContent = '已选开始 ' + ds + '，再点一天＝区间；再点同一天＝只看这天';
+    }
+    render();
+  });
+  function navMonth(dm) { vM += dm; if (vM < 0) { vM = 11; vY--; } if (vM > 11) { vM = 0; vY++; } render(); }
+  document.getElementById('calPrevM').addEventListener('click', function () { navMonth(-1); });
+  document.getElementById('calNextM').addEventListener('click', function () { navMonth(1); });
+  document.querySelectorAll('.cal-qt [data-q]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = new Date();
+      if (b.dataset.q === 'today') { apply(dstr(t.getFullYear(), t.getMonth(), t.getDate()), dstr(t.getFullYear(), t.getMonth(), t.getDate())); }
+      else if (b.dataset.q === 'yest') { var y = new Date(t.getFullYear(), t.getMonth(), t.getDate() - 1); apply(dstr(y.getFullYear(), y.getMonth(), y.getDate()), dstr(y.getFullYear(), y.getMonth(), y.getDate())); }
+      else if (b.dataset.q === 'month') { var mr = monthRange(t.getFullYear(), t.getMonth()); apply(mr.from, mr.to); }
+      else if (b.dataset.q === 'lmonth') { var lm = new Date(t.getFullYear(), t.getMonth() - 1, 1); var lr = monthRange(lm.getFullYear(), lm.getMonth()); apply(lr.from, lr.to); }
+      hide();
+    });
+  });
+  document.getElementById('calClose').addEventListener('click', hide);
+  function hide() { pop.hidden = true; pick = null; }
+  function show() {
+    var t = new Date();
+    var r = curRange();
+    var anchor = r.from ? new Date(r.from) : t;
+    if (!vY) { vY = anchor.getFullYear(); vM = anchor.getMonth(); }
+    pick = null;
+    render();
+    pop.hidden = false;
+  }
+  btn.addEventListener('click', function (e) { e.stopPropagation(); pop.hidden ? show() : hide(); });
+  document.addEventListener('click', function (e) { if (!pop.hidden && !pop.contains(e.target) && e.target !== btn && !btn.contains(e.target)) hide(); });
+  refreshLbl();
+})();
+</script>
 </body>
 </html>
