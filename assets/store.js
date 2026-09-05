@@ -9,6 +9,42 @@
   let singleMode = false;                        // false=多选(点哪家加/减), true=单选(点谁只看谁)
   const mods = new Set(['sum','chart','table']); // 模块自选: 汇总卡/趋势图/每日一览
   const canvas = $('chart'), ctx = canvas.getContext('2d');
+  // 浮动数据提示框(跟随鼠标/键盘)
+  const chartbox = $('chartbox'), tip = document.createElement('div');
+  tip.className = 'chart-tip'; chartbox.appendChild(tip);
+  function hideTip() { tip.style.display = 'none'; }
+  function tipContent(i) {
+    if (i == null || !axis.length || !plot || i < view.start || i > view.end) return '';
+    const ss = selected(); if (!ss.length) return '';
+    const multi = metric === 'amount' && !currency();
+    const rows = ss.map(s => {
+      const v = values[s][i], val = v[metric];
+      const txt = val == null ? '—' : (multi ? Math.round(val).toLocaleString('en-US') : format(val));
+      const cov = v.coverage[metric] < v.expected ? ' <small>·' + v.coverage[metric] + '/' + v.expected + '天</small>' : '';
+      return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(s) + '<b>' + txt + '</b>' + cov + '</div>';
+    }).join('');
+    const note = multi ? '<div class="tip-note">多币种仅逐店显示，不可相加</div>' : '';
+    return '<div class="tip-d">' + axis[i].label + '</div>' + rows + note;
+  }
+  function placeTip(clientX, clientY, i) {
+    const html = tipContent(i);
+    if (!html) { hideTip(); return; }
+    tip.innerHTML = html; tip.style.display = '';
+    const r = chartbox.getBoundingClientRect();
+    let x = clientX - r.left + 16, y = clientY - r.top + 14;
+    if (x + tip.offsetWidth > r.width - 4) x = clientX - r.left - tip.offsetWidth - 16;
+    if (y + tip.offsetHeight > r.height - 4) y = Math.max(4, r.height - tip.offsetHeight - 4);
+    tip.style.left = Math.max(4, x) + 'px'; tip.style.top = Math.max(2, y) + 'px';
+  }
+  function placeTipAtPoint(i) { // 键盘逐点时把框放在该数据点旁
+    if (!plot || !tipContent(i)) { hideTip(); return; }
+    tip.innerHTML = tipContent(i); tip.style.display = '';
+    const r = chartbox.getBoundingClientRect();
+    const px = plot.X(i), py = plot.top + 2;
+    let lx = px + 10;
+    if (lx + tip.offsetWidth > r.width - 4) lx = px - tip.offsetWidth - 10;
+    tip.style.left = Math.max(4, lx) + 'px'; tip.style.top = Math.max(2, py) + 'px';
+  }
   let W = 0, H = 360, plot = null;
   function selected() { return shops.filter(s => chosen.has(s)); }
   function currency() {
@@ -194,7 +230,7 @@
     html += '</tbody></table>';
     $('tableBody').innerHTML = html;
   }
-  function render() { renderSummary(); draw(); detail(); renderTable(); applyMods(); }
+  function render() { renderSummary(); draw(); detail(); renderTable(); applyMods(); hideTip(); }
   function toggleStore(s) {
     if (singleMode) { chosen = new Set([s]); }
     else if (chosen.has(s)) { if (chosen.size === 1) return; chosen.delete(s); }
@@ -236,15 +272,15 @@
     if(!plot)return -1;
     return Math.max(view.start,Math.min(view.end,Math.round(view.start+(x-plot.left)/(W-plot.left-plot.right)*(view.end-view.start))));
   }
-  canvas.addEventListener('pointerdown',e=>{if(!plot)return;hover=indexAt(e);detail();draw();if(e.pointerType==='mouse'&&e.button===0){drag={x:e.clientX,start:view.start,end:view.end};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';}});
+  canvas.addEventListener('pointerdown',e=>{if(!plot)return;hideTip();hover=indexAt(e);detail();draw();if(e.pointerType==='mouse'&&e.button===0){drag={x:e.clientX,start:view.start,end:view.end};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';}});
   canvas.addEventListener('pointermove',e=>{
     if(!plot)return;
-    if(drag){const span=drag.end-drag.start+1,shift=Math.round((drag.x-e.clientX)/Math.max(1,W-plot.left-plot.right)*Math.max(1,span-1));const start=Math.max(0,Math.min(axis.length-span,drag.start+shift));view={start,end:start+span-1};activePreset='';rangeButtons();hover=-1;syncInputs();render();}
-    else {hover=indexAt(e);draw();detail();}
+    if(drag){const span=drag.end-drag.start+1,shift=Math.round((drag.x-e.clientX)/Math.max(1,W-plot.left-plot.right)*Math.max(1,span-1));const start=Math.max(0,Math.min(axis.length-span,drag.start+shift));view={start,end:start+span-1};activePreset='';rangeButtons();hover=-1;hideTip();syncInputs();render();}
+    else {hover=indexAt(e);draw();detail();placeTip(e.clientX,e.clientY,hover);}
   });
   function endDrag(){drag=null;canvas.style.cursor='crosshair';}
   canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);canvas.addEventListener('lostpointercapture',endDrag);
-  canvas.addEventListener('pointerleave',()=>{if(!drag){hover=-1;draw();detail();}});
+  canvas.addEventListener('pointerleave',()=>{hideTip();if(!drag){hover=-1;draw();detail();}});
   canvas.addEventListener('wheel',e=>{
     if(!plot||axis.length<2)return;e.preventDefault();
     const old=view.end-view.start+1,anchor=indexAt(e),ratio=old>1?(anchor-view.start)/(old-1):.5;
@@ -252,7 +288,7 @@
     const start=Math.max(0,Math.min(axis.length-count,Math.round(anchor-ratio*(count-1))));
     view={start,end:start+count-1};hover=-1;activePreset='';rangeButtons();syncInputs();render();
   },{passive:false});
-  canvas.addEventListener('keydown',e=>{if(!axis.length||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const current=hover<0?view.end:hover;hover=e.key==='Home'?view.start:e.key==='End'?view.end:Math.max(view.start,Math.min(view.end,current+(e.key==='ArrowRight'?1:-1)));draw();detail();});
+  canvas.addEventListener('keydown',e=>{if(!axis.length||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const current=hover<0?view.end:hover;hover=e.key==='Home'?view.start:e.key==='End'?view.end:Math.max(view.start,Math.min(view.end,current+(e.key==='ArrowRight'?1:-1)));draw();detail();placeTipAtPoint(hover);});
   window.addEventListener('resize',resize);
   if(window.ResizeObserver)new ResizeObserver(resize).observe($('chartbox'));
   initSyncPill();resize();loadData();setInterval(loadData,5*60*1000);
