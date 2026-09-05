@@ -97,8 +97,9 @@
   .tbl-scroll tbody tr:hover td { background:#f7f9fd; }
   /* 日历区间弹层 */
   .hid-in { position:absolute; left:-9999px; opacity:0; pointer-events:none; }
+  .cal-wrap { position: relative; display: inline-flex; }
   #calBtn { min-height:36px; font-weight:650; }
-  .calpop { position:absolute; z-index:40; background:#fff; border:1px solid var(--border-strong); border-radius:14px; box-shadow:0 10px 30px rgba(16,24,40,.16); padding:12px; width:300px; margin-top:6px; }
+  .calpop { position: absolute; top: calc(100% + 6px); left: 0; z-index: 60; background:#fff; border:1px solid var(--border-strong); border-radius:14px; box-shadow:0 10px 30px rgba(16,24,40,.16); padding:12px; width:300px; }
   .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
   .cal-title { font-weight:750; color:var(--text); font-size:14px; }
   .cal-nav { border:1px solid var(--border-strong); background:var(--surface); border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer; color:var(--text-2); font-family:inherit; }
@@ -146,7 +147,15 @@
 <div class="wrap">
   <div class="panel">
     <div class="trend-heading"><div><h1>店铺趋势</h1><p>查看销售变化，对比各店铺表现</p></div><button class="btn" id="retryData">刷新数据</button></div>
-    <!-- 控制行：店铺多选 / 指标(可多选) / 粒度 / 日历日期区间 -->
+    <!-- 控制行：国家母分组 / 店铺多选 / 指标(可多选) / 粒度 / 日历日期区间 -->
+    <div class="ctl-row" id="ctyRow">
+      <div class="grp" id="ctyGrp"><span class="gl">🌏 国家</span>
+        <button data-cty="all" class="on">全部</button>
+        <button data-cty="印尼">🇮🇩 印尼</button>
+        <button data-cty="泰国">🇹🇭 泰国</button>
+      </div>
+      <span class="aux" id="ctyNote"></span>
+    </div>
     <div class="ctl-row">
       <div class="grp shop" id="shopGrp"><span class="gl">🏪 店铺</span></div>
     </div>
@@ -161,9 +170,27 @@
         <button data-g="week">周</button>
         <button data-g="month">月</button>
       </div>
-      <button class="btn ghost" id="calBtn" type="button" title="点开日历选任意日期区间">📅 <span id="calLbl">—</span> ▾</button>
-      <input type="date" id="fromD" class="hid-in" aria-label="开始日期">
-      <input type="date" id="toD" class="hid-in" aria-label="结束日期">
+      <span class="cal-wrap" id="calWrap">
+        <button class="btn ghost" id="calBtn" type="button" title="点开日历选任意日期区间">📅 <span id="calLbl">—</span> ▾</button>
+        <div class="calpop" id="calPop" hidden>
+          <div class="cal-head">
+            <button class="cal-nav" id="calPrevM" type="button">‹ 上月</button>
+            <span class="cal-title" id="calTitle">—</span>
+            <button class="cal-nav" id="calNextM" type="button">下月 ›</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="cal-qt">
+            <button class="btn" data-q="today" type="button">今天</button>
+            <button class="btn" data-q="yest" type="button">昨天</button>
+            <button class="btn" data-q="month" type="button">本月</button>
+            <button class="btn" data-q="lmonth" type="button">上月</button>
+            <button class="btn ghost" id="calClose" type="button">收起</button>
+          </div>
+          <div class="cal-tip" id="calTip">先点开始日期，再点结束日期＝整段区间；同一日期点两下＝只看那天</div>
+        </div>
+        <input type="date" id="fromD" class="hid-in" aria-label="开始日期">
+        <input type="date" id="toD" class="hid-in" aria-label="结束日期">
+      </span>
     </div>
     <!-- 日历区间弹层 -->
     <div class="calpop" id="calPop" hidden>
@@ -274,6 +301,7 @@
     grid.innerHTML = h;
   }
   grid.addEventListener('click', function (e) {
+    e.stopPropagation(); // 日历内部点击不冒泡到"点外部收起"监听(重绘后旧节点会误判为外部)
     var b = e.target.closest('.cal-d[data-ymd]'); if (!b) return;
     var ds = b.dataset.ymd;
     var cur = curRange();
@@ -290,10 +318,11 @@
     render();
   });
   function navMonth(dm) { vM += dm; if (vM < 0) { vM = 11; vY--; } if (vM > 11) { vM = 0; vY++; } render(); }
-  document.getElementById('calPrevM').addEventListener('click', function () { navMonth(-1); });
-  document.getElementById('calNextM').addEventListener('click', function () { navMonth(1); });
+  document.getElementById('calPrevM').addEventListener('click', function (e) { e.stopPropagation(); navMonth(-1); });
+  document.getElementById('calNextM').addEventListener('click', function (e) { e.stopPropagation(); navMonth(1); });
   document.querySelectorAll('.cal-qt [data-q]').forEach(function (b) {
-    b.addEventListener('click', function () {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
       var t = new Date();
       if (b.dataset.q === 'today') { apply(dstr(t.getFullYear(), t.getMonth(), t.getDate()), dstr(t.getFullYear(), t.getMonth(), t.getDate())); }
       else if (b.dataset.q === 'yest') { var y = new Date(t.getFullYear(), t.getMonth(), t.getDate() - 1); apply(dstr(y.getFullYear(), y.getMonth(), y.getDate()), dstr(y.getFullYear(), y.getMonth(), y.getDate())); }
@@ -302,7 +331,7 @@
       hide();
     });
   });
-  document.getElementById('calClose').addEventListener('click', hide);
+  document.getElementById('calClose').addEventListener('click', function (e) { e.stopPropagation(); hide(); });
   function hide() { pop.hidden = true; pick = null; }
   function show() {
     var t = new Date();
