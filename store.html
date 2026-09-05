@@ -33,6 +33,54 @@
   .lg i { width: 9px; height: 9px; border-radius: 3px; }
   .lg.off { opacity: .4; }
   .sum-strip { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 2px; }
+
+  .topbar { margin: 0; }
+  .trend-heading,.chart-heading { display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap; }
+  .trend-heading { margin-bottom:24px; }
+  .trend-heading h1 { font-size:24px;letter-spacing:-.5px; }
+  .trend-heading p { color:var(--text-2);margin-top:4px;font-size:14px; }
+  .ctl-row { gap:10px;margin-bottom:18px; }
+  .grp { border-radius:12px;flex-wrap:wrap;max-width:100%;padding:5px 8px; }
+  .grp > .gl { font-size:14px;padding:0 4px; }
+  .grp button { font-size:14px;min-height:36px;padding:6px 12px; }
+  .grp.shop { flex-basis:100%;border:0;background:none;padding-left:0; }
+  .grp.shop button { color:var(--text-2);border:1px solid var(--border-strong); }
+  .grp.shop button.on { background:var(--shop-color);color:#fff;border-color:var(--shop-color); }
+  .grp:not(.shop) button.on { background:#eaf0ff;color:#214dcc;box-shadow:none; }
+  .datepick { border-radius:10px;min-height:42px;flex-wrap:wrap;max-width:100%; }
+  .datepick input { font-size:14px;width:128px; }
+  .sum-strip { display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:0 0 28px; }
+  .tot-card { min-width:0;padding:14px 16px;background:#f8faff; }
+  .tot-card .tk { font-size:13px;color:var(--text-2);overflow-wrap:anywhere; }
+  .tot-card .tv { font-size:22px;line-height:1.5;overflow-wrap:anywhere; }
+  .tot-card .ts { font-size:12px;color:var(--text-2); }
+  .shop-total { border-top:3px solid var(--shop-color);background:#fff; }
+  .chart-heading { margin-bottom:12px; }
+  .chart-heading h2 { margin:0;font-size:18px; }
+  .chart-heading span { font-size:12px;color:var(--text-2); }
+  .chart-actions { display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:14px; }
+  .chart-actions label { display:flex;gap:7px;align-items:center;cursor:pointer; }
+  .chart-actions input { width:16px;height:16px;accent-color:var(--primary); }
+  .chartbox canvas { touch-action:pan-y;cursor:crosshair; }
+  .point-detail { display:flex;align-items:center;gap:12px 24px;flex-wrap:wrap;min-height:60px;margin-top:14px;padding:14px 16px;border-radius:10px;background:#f4f7fc;font-size:14px; }
+  .point-detail span { display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap; }
+  .point-detail i { width:8px;height:8px;border-radius:50%; }
+  .point-detail b { font-variant-numeric:tabular-nums; }
+  .point-detail small { font-size:12px;color:#8a5700; }
+  .lg { font-family:inherit;font-size:14px;padding:6px 12px; }
+  .lg.off { opacity:1;color:#65748b;background:#f1f3f7;text-decoration:line-through; }
+  .ch-hint { font-size:12px;color:var(--text-2);margin-top:10px; }
+  .chart-status { font-size:13px;color:#725300;margin:10px 0 4px; }
+  .chart-status.error { color:#b42318; }
+  button:focus-visible,canvas:focus-visible,input:focus-visible { outline:3px solid #98b5ff;outline-offset:3px; }
+  @media(max-width:600px) {
+    .wrap { padding:14px 10px 30px; }.panel { padding:14px 12px; }
+    .sum-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tot-card .tv { font-size:19px; }.trend-heading h1 { font-size:22px; }
+    .topbar { padding:10px; }.brand small { display:none; }.areanav { max-width:100%;flex-wrap:wrap;border-radius:12px; }
+    .areanav a.an { padding:6px 10px; }.top-right { margin-left:0; }
+    .chart-actions { gap:10px; }.point-detail { align-items:flex-start;flex-direction:column;gap:8px; }
+  }
 </style>
 </head>
 <body>
@@ -51,13 +99,14 @@
 
 <div class="wrap">
   <div class="panel">
+    <div class="trend-heading"><div><h1>店铺趋势</h1><p>查看销售变化，对比各店铺表现</p></div><button class="btn" id="retryData">刷新数据</button></div>
     <!-- 控制行：店铺多选 / 指标 / 粒度 / 日期区间 -->
     <div class="ctl-row">
       <div class="grp shop" id="shopGrp"><span class="gl">🏪 店铺</span></div>
       <div class="grp" id="metricGrp"><span class="gl">📊 指标</span>
         <button data-m="amount" class="on">💰 销售额</button>
-        <button data-m="orders">🧾 单数</button>
-        <button data-m="qty">👟 件数</button>
+        <button data-m="orders">🧾 订单数</button>
+        <button data-m="qty">👟 销售件数</button>
       </div>
       <div class="grp" id="granGrp"><span class="gl">⏱ 粒度</span>
         <button data-g="day" class="on">日</button>
@@ -71,374 +120,32 @@
         <button data-r="all">全部</button>
       </div>
       <div class="datepick">
-        <input type="date" id="fromD"><span>至</span><input type="date" id="toD">
+        <input type="date" id="fromD" aria-label="开始日期"><span>至</span><input type="date" id="toD" aria-label="结束日期">
       </div>
     </div>
 
     <!-- 汇总：随所选店铺+当前可见区间实时变 -->
     <div class="sum-strip" id="sumStrip"></div>
 
+    <div class="chart-heading"><div><h2 id="chartTitle">销售额趋势</h2><span id="chartUnit">单位：IDR</span></div><div class="chart-actions"><label><input type="checkbox" id="showValues"> 显示数值</label><button class="btn ghost" id="resetView">恢复所选范围</button></div></div>
     <div class="chartbox" id="chartbox">
-      <canvas id="chart" height="360"></canvas>
+      <canvas id="chart" height="360" tabindex="0" role="img" aria-label="店铺趋势折线图" aria-describedby="pointDetail chartHint">店铺销售趋势。图表下方提供所选日期的数值。</canvas>
     </div>
     <div class="legend" id="legend"></div>
-    <div class="ch-hint">🖱 <b>滚轮缩放</b>时间范围 · <b>按住左右拖动</b>平移 · <b>悬停</b>查看数值（默认不标数字）· 区间汇总随图表窗口实时变化</div>
+    <div id="pointDetail" class="point-detail" aria-live="polite">正在读取店铺数据…</div>
+    <div class="ch-hint" id="chartHint">悬停或轻点折线查看数值 · 滚轮缩放，鼠标拖动平移 · 键盘左右键逐点查看 · 空心点表示该周期数据未采集完整</div>
+    <div id="labelHint" class="ch-hint"></div>
+    <div id="chartStatus" class="chart-status" role="status">正在加载…</div>
     <div id="rangeTag" class="aux" style="margin-top:4px"></div>
   </div>
 
   <div class="footer">
-    数据来源：站斧店铺环境自动同步 · 留存 ≥ 6 个月 · 折线图按 日/周/月 聚合，可滚轮缩放拖动浏览任意日期段 · 更新于 <span id="footTime">—</span>
+    数据来源：店铺日报 · 日期按日报记录，缺失数据不补零 · 更新于 <span id="footTime">—</span>
   </div>
 </div>
 
 <script src="assets/app.js"></script>
-<script>
-/* ================= 数据 ================= */
-var RAW = [];          // sales_summary.daily 原行
-var STORES = [];       // 店铺名数组(动态发现)
-var onShops = {};      // store -> bool(选中)
-var COLORS = ['#3b6cf6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
-var metric = 'amount'; // amount | orders | qty
-var gran = 'day';      // day | week | month
-
-var axis = [];         // [{label, start, end(含)}] 聚合点 (label=起始日期MM-DD, endDate为区间末)
-var valByShop = {};    // shop -> 与 axis 等长数组 (无该店数据的点=null)
-var canvas, ctx, box, chartbox, W = 0, H = 0;
-var padL = 64, padR = 14, padT = 16, padB = 28;
-var view = null;       // {end: 轴索引, span: 点数}
-var hoverIdx = -1, drag = null;
-
-function fmtDate(ds) { return String(ds || '').slice(5); }          // MM-DD
-function shortStore(s) { const m = String(s).match(/(Shopee|TikTok|Tokopedia|Lazada|虾皮)/i); return m ? m[1] : String(s).replace(/—.*$/, ''); }
-function addDays(ds, n) { const d = new Date(ds + 'T00:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
-function mondayOf(ds) { const d = new Date(ds + 'T00:00:00'); const w = (d.getDay() + 6) % 7; return addDays(ds, -w); }
-
-/* ================= 加载 ================= */
-function loadData() {
-  fetch('sales_summary.json?t=' + Date.now()).then(r => r.json()).then(a => {
-    RAW = a.daily || [];
-    if (!RAW.length) { document.getElementById('sumStrip').innerHTML = '<div class="empty">暂无数据</div>'; return; }
-    // 动态发现店铺(以后加店自动出现)
-    const seen = [];
-    RAW.forEach(r => { if (r.store && !seen.includes(r.store)) seen.push(r.store); });
-    STORES = seen;
-    onShops = {};
-    STORES.forEach(s => onShops[s] = true);
-    renderShopChips();
-    const minD = RAW.reduce((m, r) => r.date < m ? r.date : m, '9999');
-    const maxD = RAW.reduce((m, r) => r.date > m ? r.date : m, '');
-    buildAxis(minD, maxD);
-    document.getElementById('footTime').textContent = relTime(a.updatedAt);
-    applyPreset('all');
-  }).catch(() => { document.getElementById('sumStrip').innerHTML = '<div class="empty">数据加载失败</div>'; });
-}
-
-/* 聚合轴: 由最早~最晚日期按粒度生成点 */
-function buildAxis(minD, maxD) {
-  axis = [];
-  if (gran === 'day') {
-    let d = minD;
-    while (d <= maxD) { axis.push({ start: d, end: d, label: fmtDate(d) }); d = addDays(d, 1); }
-  } else if (gran === 'week') {
-    let d = mondayOf(minD);
-    while (d <= maxD) { const e = addDays(d, 6); axis.push({ start: d, end: e > maxD ? maxD : e, label: fmtDate(d) + '周' }); d = addDays(d, 7); }
-  } else {
-    // 月
-    const first = new Date(minD + 'T00:00:00');
-    let d = new Date(first.getFullYear(), first.getMonth(), 1);
-    const last = new Date(maxD + 'T00:00:00');
-    while (d <= last) {
-      const ys = d.getFullYear(), ms = String(d.getMonth()+1).padStart(2,'0');
-      const end = new Date(d.getFullYear(), d.getMonth()+1, 0);
-      const es = end.getFullYear() + '-' + String(end.getMonth()+1).padStart(2,'0') + '-' + String(end.getDate()).padStart(2,'0');
-      axis.push({ start: ys + '-' + ms + '-01', end: es > maxD ? maxD : es, label: ys + '-' + ms });
-      d = new Date(d.getFullYear(), d.getMonth() + 1, 1);
-    }
-  }
-  // 每店铺: 逐日值表(按日缓存后再聚)
-  const dayVal = {};   // store -> {date: {amount,orders,qty}}
-  STORES.forEach(s => dayVal[s] = {});
-  RAW.forEach(r => { if (dayVal[r.store] && r.date) dayVal[r.store][r.date] = { amount: r.amountLocal != null ? r.amountLocal : null, orders: r.orders != null ? r.orders : 0, qty: r.totalQty != null ? r.totalQty : 0 }; });
-  valByShop = {};
-  STORES.forEach(s => {
-    const arr = axis.map(p => {
-      let amt = 0, ord = 0, qty = 0, any = false;
-      let d = p.start;
-      while (d <= p.end) {
-        const v = dayVal[s][d];
-        if (v) { any = true; if (v.amount != null) amt += v.amount; ord += v.orders || 0; qty += v.qty || 0; }
-        if (d === p.end) break;
-        d = addDays(d, 1);
-      }
-      return any ? { amount: amt, orders: ord, qty: qty } : null;
-    });
-    valByShop[s] = arr;
-  });
-}
-
-/* ================= 控制 ================= */
-function renderShopChips() {
-  const el = document.getElementById('shopGrp');
-  el.innerHTML = '<span class="gl">🏪 店铺</span>' + STORES.map((s, i) =>
-    '<button data-s="' + s + '" class="' + (onShops[s] ? 'on' : '') + '" style="' + (onShops[s] ? 'background:' + COLORS[i % COLORS.length] + ';border-color:transparent' : '') + '">' + shortStore(s) + '</button>'
-  ).join('');
-  if (!STORES.length) el.innerHTML = '<span class="gl">🏪 店铺</span><span class="aux">暂无</span>';
-}
-document.getElementById('shopGrp').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  const s = b.getAttribute('data-s'); if (!s) return;
-  onShops[s] = !onShops[s];
-  // 全不选时自动至少保留一个
-  if (!STORES.some(x => onShops[x])) { onShops[s] = true; }
-  renderShopChips();
-  drawAll();
-});
-document.getElementById('metricGrp').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  document.querySelectorAll('#metricGrp button').forEach(x => x.classList.toggle('on', x === b));
-  metric = b.getAttribute('data-m');
-  drawAll();
-});
-document.getElementById('granGrp').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  document.querySelectorAll('#granGrp button').forEach(x => x.classList.toggle('on', x === b));
-  gran = b.getAttribute('data-g');
-  // 重建轴, 保持末端
-  const minD = axis.length ? axis[0].start : '';
-  const maxD = axis.length ? axis[axis.length - 1].end : '';
-  buildAxis(minD, maxD);
-  view = { end: axis.length - 1, span: axis.length };
-  syncDateInputs();
-  drawAll();
-});
-document.getElementById('rangeGrp').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  applyPreset(b.getAttribute('data-r'));
-});
-function presetRange(p) {
-  const t = new Date();
-  const to = t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
-  const todayIdx = axis.findIndex(x => x.end >= to);
-  const N = axis.length;
-  if (p === 'all') return { from: 0, to: N - 1 };
-  if (p === '7d') return { from: Math.max(0, N - 7), to: N - 1 };
-  if (p === '30d') return { from: Math.max(0, N - 30), to: N - 1 };
-  if (p === '90d') return { from: Math.max(0, N - 90), to: N - 1 };
-  return { from: 0, to: N - 1 };
-}
-function applyPreset(p) {
-  if (!axis.length) return;
-  const rg = presetRange(p);
-  view = { end: rg.to, span: rg.to - rg.from + 1 };
-  syncDateInputs();
-  drawAll();
-}
-/* 把 view 显示为日历区间 */
-function syncDateInputs() {
-  if (!axis.length || !view) return;
-  const vr = visibleRange();
-  document.getElementById('fromD').value = axis[vr.start].start;
-  document.getElementById('toD').value = axis[vr.end].end;
-}
-document.getElementById('fromD').addEventListener('change', applyDateInputs);
-document.getElementById('toD').addEventListener('change', applyDateInputs);
-function applyDateInputs() {
-  const f = document.getElementById('fromD').value, t = document.getElementById('toD').value;
-  if (!f || !t || !axis.length) return;
-  const si = axis.findIndex(x => x.end >= f);
-  const ei = axis.findIndex(x => x.end >= t);
-  if (si < 0 || ei < 0 || si > ei) { syncDateInputs(); return; }
-  view = { end: ei, span: ei - si + 1 };
-  drawAll();
-}
-
-/* ================= 绘制 ================= */
-function activeShops() { return STORES.filter(s => onShops[s]); }
-function metricName() { return { amount: '销售额', orders: '单数', qty: '件数' }[metric]; }
-function metricOf(v) {
-  if (!v) return null;
-  if (metric === 'orders') return v.orders;
-  if (metric === 'qty') return v.qty;
-  return v.amount != null ? v.amount : null;
-}
-function visibleRange() {
-  if (!view) return { start: 0, end: 0 };
-  return { start: Math.max(0, view.end - view.span + 1), end: view.end };
-}
-function fmtV(v) {
-  if (metric === 'amount') return fmtRp(v);
-  return Math.round(v || 0) + (metric === 'orders' ? ' 单' : ' 件');
-}
-function resize() {
-  canvas = document.getElementById('chart');
-  box = document.getElementById('chartbox');
-  let w = box.clientWidth - 2; if (w < 220) w = 220;
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = Math.round(w * dpr); canvas.height = Math.round(360 * dpr);
-  canvas.style.height = '360px';
-  ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
-  W = w; H = 360;
-}
-function draw() {
-  if (!ctx || !axis.length) return;
-  ctx.clearRect(0, 0, W, H);
-  const vr = visibleRange();
-  const n = vr.end - vr.start + 1;
-  const shops = activeShops();
-  if (!shops.length) { ctx.fillStyle = '#93a1b5'; ctx.font = '13px sans-serif'; ctx.fillText('请至少选择一个店铺', W/2 - 70, H/2); return; }
-  const X = idx => padL + (idx - vr.start) / (n - 1 || 1) * (W - padL - padR);
-  const allVals = [];
-  shops.forEach(s => { for (let i = vr.start; i <= vr.end; i++) { const v = metricOf(valByShop[s][i]); if (v != null) allVals.push(v); } });
-  if (!allVals.length) { ctx.fillStyle = '#93a1b5'; ctx.font = '13px sans-serif'; ctx.fillText('该区间暂无数据', W/2 - 50, H/2); return; }
-  let vmax = Math.max.apply(null, allVals), vmin = 0;
-  if (vmax === vmin) vmax = vmin + 1;
-  const Y = v => padT + (1 - (v - vmin) / (vmax - vmin)) * (H - padT - padB);
-  // 网格
-  ctx.strokeStyle = '#eef1f6'; ctx.fillStyle = '#93a1b5'; ctx.font = '10.5px sans-serif'; ctx.lineWidth = 1;
-  for (let t = 0; t <= 4; t++) {
-    const gv = vmin + (vmax - vmin) * t / 4, gy = Y(gv);
-    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(W - padR, gy); ctx.stroke();
-    ctx.textAlign = 'right'; ctx.fillText(metric === 'amount' ? shortNum(gv) : Math.round(gv), padL - 6, gy + 3);
-  }
-  // X 刻度
-  ctx.textAlign = 'center';
-  const step = Math.max(1, Math.ceil(n / 10));
-  for (let i = vr.start; i <= vr.end; i += step) ctx.fillText(axis[i].label, X(i), H - 9);
-  // 线 + 面积
-  shops.forEach((s, si) => {
-    const c = COLORS[STORES.indexOf(s) % COLORS.length];
-    ctx.strokeStyle = c; ctx.lineWidth = 2; ctx.lineJoin = 'round';
-    ctx.beginPath(); let started = false;
-    for (let i = vr.start; i <= vr.end; i++) {
-      const v = metricOf(valByShop[s][i]);
-      if (v == null) { started = false; continue; }
-      const x = X(i), y = Y(v);
-      if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.globalAlpha = .07; ctx.fillStyle = c;
-    ctx.lineTo(X(vr.end), H - padB); ctx.lineTo(X(vr.start), H - padB); ctx.closePath(); ctx.fill();
-    ctx.globalAlpha = 1;
-  });
-  // hover 十字线 + tooltip
-  if (hoverIdx >= vr.start && hoverIdx <= vr.end) {
-    const hx = X(hoverIdx);
-    ctx.strokeStyle = '#c9d3e0'; ctx.setLineDash([4, 3]);
-    ctx.beginPath(); ctx.moveTo(hx, padT); ctx.lineTo(hx, H - padB); ctx.stroke(); ctx.setLineDash([]);
-    const pt = axis[hoverIdx];
-    const rngTxt = pt.end === pt.start ? pt.start : pt.start.slice(5) + ' ~ ' + pt.end.slice(5);
-    let lines = [rngTxt];
-    shops.forEach((s, si) => {
-      const v = metricOf(valByShop[s][hoverIdx]);
-      lines.push(shortStore(s) + ': ' + (v != null ? fmtV(v) : '—'));
-    });
-    ctx.font = '11px sans-serif';
-    let tw = 0; lines.forEach(l => tw = Math.max(tw, ctx.measureText(l).width));
-    const bx = Math.min(hx + 12, W - tw - 18), by = padT + 8;
-    ctx.fillStyle = 'rgba(20,28,45,.93)';
-    ctx.beginPath(); roundRect(bx, by, tw + 16, lines.length * 15 + 10, 6); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.textAlign = 'left';
-    lines.forEach((l, k) => ctx.fillText(l, bx + 8, by + 16 + k * 15));
-  }
-}
-function roundRect(x, y, w, h, r) { ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-function shortNum(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : v >= 1000 ? (v/1000).toFixed(0) + 'k' : Math.round(v); }
-
-/* ================= 汇总: 随当前可见窗口 ================= */
-function renderSum() {
-  const el = document.getElementById('sumStrip');
-  if (!axis.length || !view) { el.innerHTML = ''; return; }
-  const vr = visibleRange();
-  const shops = activeShops();
-  const sum = {};
-  shops.forEach(s => {
-    let amt = 0, ord = 0, qty = 0;
-    for (let i = vr.start; i <= vr.end; i++) { const v = valByShop[s][i]; if (v) { amt += v.amount || 0; ord += v.orders || 0; qty += v.qty || 0; } }
-    sum[s] = { amt, ord, qty };
-  });
-  let totAmt = 0, totOrd = 0, totQty = 0;
-  shops.forEach(s => { totAmt += sum[s].amt; totOrd += sum[s].ord; totQty += sum[s].qty; });
-  const f0 = axis[vr.start].start, f1 = axis[vr.end].end;
-  const rangeTxt = '当前显示 ' + f0.slice(5) + ' ~ ' + f1.slice(5) + (gran === 'week' ? '（周聚合）' : gran === 'month' ? '（月聚合）' : '');
-  document.getElementById('rangeTag').textContent = rangeTxt;
-  el.innerHTML =
-    '<div class="tot-card"><div class="tk">📦 销售额合计</div><div class="tv">' + fmtRp(totAmt) + '</div><div class="ts">' + shops.map(s => shortStore(s)).join(' + ') + '</div></div>' +
-    '<div class="tot-card"><div class="tk">🧾 订单合计</div><div class="tv">' + totOrd + ' 单</div><div class="ts">' + shops.length + ' 家店铺</div></div>' +
-    '<div class="tot-card"><div class="tk">👟 件数合计</div><div class="tv">' + totQty + ' 件</div></div>' +
-    shops.map((s, si) => '<div class="tot-card"><div class="tk" style="color:' + COLORS[STORES.indexOf(s) % COLORS.length] + '">' + shortStore(s) + '</div><div class="tv">' + fmtRp(sum[s].amt) + '</div><div class="ts">' + sum[s].ord + ' 单 · ' + sum[s].qty + ' 件</div></div>').join('');
-}
-
-/* ================= 图例 ================= */
-function renderLegend() {
-  const el = document.getElementById('legend');
-  el.innerHTML = activeShops().map((s, i) =>
-    '<span class="lg" data-s="' + s + '"><i style="background:' + COLORS[STORES.indexOf(s) % COLORS.length] + '"></i>' + shortStore(s) + ' · ' + metricName() + '</span>'
-  ).join('');
-}
-document.getElementById('legend').addEventListener('click', e => {
-  const lg = e.target.closest('.lg'); if (!lg) return;
-  const s = lg.getAttribute('data-s'); if (!s) return;
-  onShops[s] = !onShops[s];
-  if (!STORES.some(x => onShops[x])) onShops[s] = true;
-  renderShopChips();
-  drawAll();
-});
-
-function drawAll() { renderSum(); renderLegend(); draw(); }
-
-/* ================= 交互 ================= */
-function clampView() {
-  if (!view) return;
-  if (view.end < 0) view.end = 0;
-  if (view.end > axis.length - 1) view.end = axis.length - 1;
-  if (view.span < 2) view.span = 2;
-  if (view.span > axis.length) view.span = Math.max(2, axis.length);
-}
-function xToIdx(px) {
-  const vr = visibleRange(), n = vr.end - vr.start + 1;
-  const f = (px - padL) / (W - padL - padR);
-  return Math.round(vr.start + f * (n - 1));
-}
-function bindChart() {
-  chartbox = document.getElementById('chartbox');
-  canvas = document.getElementById('chart');
-  chartbox.addEventListener('wheel', e => {
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    const anchor = xToIdx(e.clientX - rect.left);
-    const old = view.span;
-    const factor = e.deltaY > 0 ? 1.2 : 1 / 1.2;
-    const ns = Math.max(2, Math.min(axis.length, Math.round(old * factor)));
-    const pos = axis.length > 1 ? (anchor - view.end) / Math.max(1, view.span - 1) : 0;
-    view.span = ns;
-    view.end = Math.round(anchor - pos * (ns - 1));
-    clampView();
-    syncDateInputs();
-    drawAll();
-  }, { passive: false });
-  canvas.addEventListener('mousedown', e => { drag = e.clientX; canvas.style.cursor = 'grabbing'; });
-  window.addEventListener('mousemove', e => {
-    if (drag != null) {
-      const dx = e.clientX - drag; drag = e.clientX;
-      const ppd = (W - padL - padR) / Math.max(1, view.span - 1);
-      view.end -= Math.round(dx / ppd);
-      clampView(); syncDateInputs(); drawAll();
-    } else {
-      const rect = canvas.getBoundingClientRect();
-      const idx = xToIdx(e.clientX - rect.left);
-      if (idx !== hoverIdx) { hoverIdx = idx; draw(); }
-    }
-  });
-  window.addEventListener('mouseup', () => { if (drag != null) { drag = null; canvas.style.cursor = 'crosshair'; } });
-  canvas.addEventListener('mouseleave', () => { if (hoverIdx !== -1) { hoverIdx = -1; draw(); } });
-  canvas.style.cursor = 'crosshair';
-}
-window.addEventListener('resize', () => { resize(); draw(); });
-
-initSyncPill();
-bindChart();
-loadData();
-setInterval(loadData, 5 * 60 * 1000);
-</script>
+<script src="assets/store-data.js"></script>
+<script src="assets/store.js"></script>
 </body>
 </html>
