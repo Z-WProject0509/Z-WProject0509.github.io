@@ -39,7 +39,7 @@
       const v = values[s][i], val = v[metric];
       const txt = val == null ? '—' : (multi ? Math.round(val).toLocaleString('en-US') : format(val));
       const cov = v.coverage[metric] < v.expected ? ' <small>·' + v.coverage[metric] + '/' + v.expected + '天</small>' : '';
-      return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(s) + '<b>' + txt + '</b>' + cov + '</div>';
+      return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(lbl(s)) + '<b>' + txt + '</b>' + cov + '</div>';
     }).join('');
     const note = multi ? '<div class="tip-note">多币种仅逐店显示，不可相加</div>' : '';
     return tipDate + rows + note;
@@ -92,6 +92,7 @@
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
   function chipIcon(s) { return window.platLogo ? window.platLogo(s) : ''; } // 按店名自动识别平台(品牌-平台命名)
+  function lbl(s) { return window.storeBrand ? window.storeBrand(s) : s; }  // 显示只留品牌名
   function metricSync() { document.querySelectorAll('#metricGrp button[data-m]').forEach(b => { const on = metrics.has(b.dataset.m); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); }
   function chips() {
     const mode = (singleMode
@@ -99,11 +100,11 @@
       : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">多选</button><button class="shop-mini" data-mo="single">单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
     const vis = visibleShops();
-    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(s) + '</button>').join('');
+    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
     // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
     $('legend').innerHTML = multiMode()
       ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
-      : vis.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
+      : vis.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(lbl(s)) + '</button>').join('');
     metricSync();
     ctySync();
   }
@@ -174,7 +175,7 @@
       return '<div class="tot-card"><div class="tk">'+names[key]+'合计</div><div class="tv">'+(key==='amount'&&!currency()?'多币种不可相加':format(total,key))+'</div><div class="ts">'+(covered<expected?'仅汇总已采集数据':'所选店铺 · 当前区间')+'</div></div>';
     });
     if (!mm && ss.length) {
-      ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(s)+'</div><div class="tv">'+(metric==='amount'&&!currency()?'请选择相同币种':format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
+      ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(lbl(s))+'</div><div class="tv">'+(metric==='amount'&&!currency()?'请选择相同币种':format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
     } else if (mm) {
       cards.push('<div class="tot-card"><div class="tk">📈 相对走势</div><div class="tv" style="font-size:14px">多指标同图对比</div><div class="ts">以区间首日=100 归一</div></div>');
     }
@@ -292,7 +293,7 @@
       return;
     }
     $('pointDetail').innerHTML = '<strong>' + p.start + (p.end !== p.start ? ' 至 ' + p.end : '') + '</strong>' + selected().map(s => {
-      const v = values[s][i]; return '<span><i style="background:' + color(s) + '"></i>' + esc(s) + ' <b>' + (metric === 'amount' && !currency() ? '币种不同' : format(v[metric])) + '</b>' + (v[metric] != null && v.coverage[metric] < v.expected ? ' <small>仅' + v.coverage[metric] + '/' + v.expected + '天</small>' : '') + '</span>';
+      const v = values[s][i]; return '<span><i style="background:' + color(s) + '"></i>' + esc(lbl(s)) + ' <b>' + (metric === 'amount' && !currency() ? '币种不同' : format(v[metric])) + '</b>' + (v[metric] != null && v.coverage[metric] < v.expected ? ' <small>仅' + v.coverage[metric] + '/' + v.expected + '天</small>' : '') + '</span>';
     }).join('');
   }
   function applyMods() {
@@ -311,7 +312,7 @@
     let h = '<div class="tbl-sub" style="font-weight:750;color:var(--text);margin:10px 0 4px;font-size:13px">' +
       (multiMode() ? '<i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + MCOL[m] + ';margin-right:6px"></i>' : '') + names[m] +
       (multiMode() ? '（所选店铺合计/逐店）' : '') + '</div>';
-    h += '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + chipIcon(s) + esc(s) + '</th>').join('') +
+    h += '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</th>').join('') +
       (mixed ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
     for (let i = view.end; i >= view.start; i--) {
       const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
@@ -378,13 +379,6 @@
   $('metricGrp').addEventListener('click', function (e) {
     const b = e.target.closest('button[data-m]'); if (!b) return;
     toggleMetricMM(b.dataset.m);
-  });
-  $('granGrp').addEventListener('click', function (e) {
-    const b = e.target.closest('button'); if (!b) return;
-    gran = b.dataset.g;
-    if (axis.length) { range = visibleDates(); rebuild(); }
-    document.querySelectorAll('#granGrp button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
-    render();
   });
   $('modGrp').addEventListener('click',function (event) {
     const b = event.target.closest('button'); if (!b || !b.dataset.mod) return;
