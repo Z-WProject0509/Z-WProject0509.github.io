@@ -21,14 +21,14 @@
   function message(text, error) { $('chartStatus').textContent = text; $('chartStatus').classList.toggle('error', !!error); }
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
-  function chipLabel(s) { return (/泰|THB|thai/i.test(s) ? '🅖🇹🇭 ' : /ZEROTH/i.test(s) ? '🅖🇮🇩 ' : '🇮🇩 ') + s; }
+  function chipIcon(s) { return /Shopee|虾皮/i.test(s) ? window.platLogo('Shopee') : /TikTok|Tiktok|抖店/i.test(s) ? window.platLogo('TikTok') : ''; }
   function chips() {
     const mode = (singleMode
       ? '<button class="shop-mini" data-mo="multi">⇄ 多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">◉ 单选</button>'
       : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">⇄ 多选</button><button class="shop-mini" data-mo="single">◉ 单选</button>');
     const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
-    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + esc(chipLabel(s)) + '</button>').join('');
-    $('legend').innerHTML = shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '"><i style="background:' + color(s) + '"></i>' + esc(s) + '</button>').join('');
+    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(s) + '</button>').join('');
+    $('legend').innerHTML = shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + (chipIcon(s) || '<i style="background:' + color(s) + '"></i>') + esc(s) + '</button>').join('');
   }
   function rangeButtons() { document.querySelectorAll('#rangeGrp button').forEach(b => { b.classList.toggle('on', b.dataset.r === activePreset); b.setAttribute('aria-pressed',b.dataset.r === activePreset); }); }
   function rebuild() {
@@ -175,7 +175,7 @@
     const vd = visibleDates();
     $('tableHead').innerHTML = '📋 每日一览：<b>' + names[metric] + '</b> · ' + ss.length + ' 家店铺 · ' + (vd ? vd.from + ' 至 ' + vd.to : '') +
       (multi ? ' · ⚠ 币种不同仅逐店看' : '') + ' · 最新日期在最上 · 每格小标 = 较前一个日期 ▲升 ▼降';
-    let html = '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + esc(s) + '</th>').join('') +
+    let html = '<table><thead><tr><th>周期（最新在上）</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + chipIcon(s) + esc(s) + '</th>').join('') +
       (multi ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
     for (let i = view.end; i >= view.start; i--) {
       const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
