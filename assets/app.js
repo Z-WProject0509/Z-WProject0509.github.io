@@ -74,10 +74,12 @@
     tick(); setInterval(tick, 1000);
   };
   window.refreshNow = function () { location.reload(); };
-  // 平台品牌 Logo(全站带平台的标识统一用它): Shopee→logo-shopee.png, TikTok/Tokopedia→logo-tk.png
+  // 平台品牌 Logo(全站带平台的标识统一用它): 直接吃店名/平台名自动识别
+  //   店名=品牌-平台: 虾皮/Shopee → shopee, 抖店/TikTok/Tokopedia → tk; 拉赞达/Lazada 暂无素材返回空
   window.platLogo = function (p) {
     var s = String(p || '');
-    var k = /TikTok|Tiktok|tokopedia/i.test(s) ? 'tk' : /Shopee|虾皮/i.test(s) ? 'shopee' : '';
-    return k ? '<img class="plogo" src="assets/logo-' + k + '.png" alt="' + k + '">' : '';
+    if (/(?:虾皮|Shopee)/i.test(s)) return '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">';
+    if (/(?:抖店|TikTok|Tiktok|Tokopedia)/i.test(s)) return '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">';
+    return '';
   };
 })();
