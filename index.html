@@ -189,19 +189,26 @@ function stName(s) {
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
 var PLAT_NAME = { shopee: 'MULMUL', tk: 'MULMUL', thsp: 'ZEROTH·泰' };
+var FILE_MAP = { 'zw-sp': 'st_zeewalk_shopee.json', 'zw-tk': 'st_zeewalk_tk.json', 'kk-sp': 'st_kaki_shopee.json', 'kk-tk': 'st_kaki_tk.json', 'al1-sp': 'st_al1_shopee.json' };
+var PLK = { shopee: 'shopee', tk: 'tk', zeroth: 'shopee', 'zeroth-tk': 'tk', thsp: 'shopee', 'zw-sp': 'shopee', 'zw-tk': 'tk', 'kk-sp': 'shopee', 'kk-tk': 'tk', 'al1-sp': 'shopee' };
 // ===== 店铺国家母分组(与 _site/stores.json 保持一致; 新店只改这里 = 母分组配置) =====
 var CTY_LIST = [
   { name: '印尼', emoji: '🇮🇩', note: 'Shopee .co.id · TikTok Shop .tokopedia.com · Lazada 印尼', stores: [
-    { key: 'shopee', plat: 'shopee', brand: 'MULMUL', label: 'Shopee—MULMUL', live: true },
-    { key: 'tk', plat: 'tk', brand: 'MULMUL', label: 'TikTok—MULMUL', live: true },
-    { key: 'zeroth', plat: 'zeroth', brand: 'ZEROTH', label: '🅖 ZEROTH 虾皮', live: true },
-    { key: 'zeroth-tk', plat: 'zeroth-tk', brand: 'ZEROTH', label: '🅖 ZEROTH 抖店', live: true },
-    { key: 'zt-lzd-id', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
+    { key: 'shopee', plat: 'shopee', brand: 'MULMUL', label: 'MULMUL', live: true },
+    { key: 'tk', plat: 'tk', brand: 'MULMUL', label: 'MULMUL', live: true },
+    { key: 'zeroth', plat: 'zeroth', brand: 'ZEROTH', label: 'ZEROTH', live: true },
+    { key: 'zeroth-tk', plat: 'zeroth-tk', brand: 'ZEROTH', label: 'ZEROTH', live: true },
+    { key: 'zw-sp', plat: 'zw-sp', brand: 'ZEEWALK', label: 'ZEEWALK', live: true },
+    { key: 'zw-tk', plat: 'zw-tk', brand: 'ZEEWALK', label: 'ZEEWALK', live: true },
+    { key: 'kk-sp', plat: 'kk-sp', brand: 'KAKI CILIK', label: 'KAKI CILIK', live: true },
+    { key: 'kk-tk', plat: 'kk-tk', brand: 'KAKI CILIK', label: 'KAKI CILIK', live: true },
+    { key: 'al1-sp', plat: 'al1-sp', brand: 'ALIBABA', alias: '一店', label: 'ALIBABA一店', live: true },
+    { key: 'zt-lzd-id', plat: null, brand: 'ZEROTH', label: 'ZEROTH(拉赞达)', live: false }
   ]},
   { name: '泰国', emoji: '🇹🇭', note: 'Shopee .co.th · TikTok Shop 泰国 · Lazada 泰国', stores: [
-    { key: 'zt-sp', plat: 'thsp', brand: 'ZEROTH', label: '🅖 ZEROTH 泰国虾皮', live: true },
-    { key: 'zt-tk', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 抖店', live: false },
-    { key: 'zt-lzd', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
+    { key: 'zt-sp', plat: 'thsp', brand: 'ZEROTH', label: 'ZEROTH·泰', live: true },
+    { key: 'zt-tk', plat: null, brand: 'ZEROTH', label: 'ZEROTH(抖店)', live: false },
+    { key: 'zt-lzd', plat: null, brand: 'ZEROTH', label: 'ZEROTH(拉赞达)', live: false }
   ]}
 ];
 var curCty = CTY_LIST[0].name;
@@ -253,6 +260,33 @@ function setCty(name) {
   }
 }
 function initCty() { buildCtyBar(); setCty(curCty); }
+// 动态补齐 live 店的标签与面板(新增店只需 CTY_LIST+FILE_MAP, 不用改静态 HTML)
+function ensureLiveUI() {
+  var tabsEl = document.querySelector('.tabs'), mainEl = document.querySelector('.main');
+  if (!tabsEl || !mainEl) return;
+  CTY_LIST.forEach(function (c) {
+    c.stores.forEach(function (st) {
+      if (!st.live || !st.plat) return;
+      if (!document.querySelector('.tab[data-plat="' + st.plat + '"]')) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'tab'; b.style.display = 'none';
+        b.setAttribute('data-plat', st.plat);
+        b.setAttribute('onclick', "switchTab('" + st.plat + "')");
+        var lk = PLK[st.plat];
+        b.innerHTML = (lk ? '<img class="plogo" src="assets/logo-' + lk + '.png" alt="">' : '') + esc(st.label || st.key);
+        tabsEl.appendChild(b);
+      }
+      if (!document.getElementById('state-' + st.plat)) {
+        var w = document.createElement('div');
+        w.id = 'state-' + st.plat; w.className = 'state';
+        w.innerHTML = '<div class="cards" id="cards-' + st.plat + '"></div>' +
+          '<div class="panel"><h2>🕐 最近订单（' + esc(st.label || st.key) + '） <span class="tag">当日新单 · 状态标红</span></h2><div id="recentOrders-' + st.plat + '"></div></div>' +
+          '<div class="panel"><h2>🚚 待处理订单（' + esc(st.label || st.key) + '） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-' + st.plat + '"></div></div>';
+        mainEl.appendChild(w);
+      }
+    });
+  });
+}
 var cache = {};
 function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
 function fmtM(n, cc) { cc = cc || 'IDR'; return n == null ? '—' : (cc === 'THB' ? '฿' : cc === 'IDR' ? 'Rp ' : cc + ' ') + Math.round(n).toLocaleString('en-US'); }
@@ -306,7 +340,7 @@ function renderSide(plat, d) {
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
   // MULMUL 店名标签随数据刷新, 保持平台 logo; ZEROTH 标签保持静态短名(自带 logo)
-  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk' && plat !== 'thsp') tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">' : plat === 'tk' ? '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">' : '') + esc(disp);
+  if (tabEl && (plat === 'shopee' || plat === 'tk')) tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">' : '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">') + esc(disp);
   document.getElementById('upd').textContent = disp + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
     '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(disp) + '</span></div>' +
@@ -381,7 +415,7 @@ function render(plat, d) {
     : '<div class="empty">🎉 暂无待处理订单（全部已打面单发货）</div>';
 }
 function load(plat) {
-  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : plat === 'thsp' ? 'zeroth_th_shopee.json' : 'data.json';
+  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : plat === 'thsp' ? 'zeroth_th_shopee.json' : (FILE_MAP[plat] || 'data.json');
   if (cache[plat]) { render(plat, cache[plat]); return; }
   fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     cache[plat] = d; render(plat, d);
@@ -513,6 +547,7 @@ function renderOverview() {
     '</div></div><div class="ov-legend">' + legend + '</div>';
 }
 // 每 5 分钟自动刷新
+ensureLiveUI();
 initCty();
 loadOverview();
 setInterval(function () {
