@@ -74,6 +74,16 @@
     tick(); setInterval(tick, 1000);
   };
   window.refreshNow = function () { location.reload(); };
+  // 店铺显示名 = 只留品牌(去掉 虾皮/抖店/拉赞达/Shopee/TikTok 等平台词; 平台用 logo 表示)
+  // 内部数据键仍为 "品牌-平台"; 泰国店自动补 "·泰" 以示区别。
+  window.storeBrand = function (s) {
+    var v = String(s || '');
+    var th = false;
+    if (/泰国|泰-|泰$|THB|thai/i.test(v)) { th = true; v = v.replace(/泰国/g, '').replace(/泰-?/g, ''); }
+    v = v.replace(/(?:虾皮|抖店|拉赞达|Shopee|Tiktok|TikTok|Tokopedia|Lazada)/gi, '');
+    v = v.replace(/[【】]/g, '').replace(/^[\s\-—–_]+|[\s\-—–_]+$/g, '');
+    return (v || '店铺') + (th ? '·泰' : '');
+  };
   // 平台品牌 Logo(全站带平台的标识统一用它): 直接吃店名/平台名自动识别
   //   店名=品牌-平台: 虾皮/Shopee → shopee, 抖店/TikTok/Tokopedia → tk; 拉赞达/Lazada 暂无素材返回空
   window.platLogo = function (p) {
