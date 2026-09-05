@@ -6,6 +6,8 @@
   let rows = [], shops = [], chosen = new Set(), axis = [], values = Object.create(null);
   let metric = 'amount', gran = 'day', range = null, activePreset = '30d', view = {start:0,end:0};
   let hover = -1, drag = null, initial = true, loading = false, skipped = 0;
+  let singleMode = false;                        // false=多选(点哪家加/减), true=单选(点谁只看谁)
+  const mods = new Set(['sum','chart','table']); // 模块自选: 汇总卡/趋势图/每日一览
   const canvas = $('chart'), ctx = canvas.getContext('2d');
   let W = 0, H = 360, plot = null;
   function selected() { return shops.filter(s => chosen.has(s)); }
@@ -19,8 +21,13 @@
   function message(text, error) { $('chartStatus').textContent = text; $('chartStatus').classList.toggle('error', !!error); }
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
+  function chipLabel(s) { return (/MULMUL/i.test(s) ? '🇮🇩 ' : s.indexOf('ZEROTH') >= 0 ? '🅖🇮🇩 ' : '') + s; }
   function chips() {
-    $('shopGrp').innerHTML = '<span class="gl">店铺</span>' + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + esc(s) + '</button>').join('');
+    const mode = (singleMode
+      ? '<button class="shop-mini" data-mo="multi">⇄ 多选</button><button class="shop-mini on" data-mo="single" style="color:var(--primary);font-weight:800">◉ 单选</button>'
+      : '<button class="shop-mini on" data-mo="multi" style="color:var(--primary);font-weight:800">⇄ 多选</button><button class="shop-mini" data-mo="single">◉ 单选</button>');
+    const acts = '<button class="shop-mini sep" data-act="all">全选</button><button class="shop-mini" data-act="none">清空</button>';
+    $('shopGrp').innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts + shops.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + esc(chipLabel(s)) + '</button>').join('');
     $('legend').innerHTML = shops.map(s => '<button class="lg ' + (chosen.has(s)?'':'off') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '"><i style="background:' + color(s) + '"></i>' + esc(s) + '</button>').join('');
   }
   function rangeButtons() { document.querySelectorAll('#rangeGrp button').forEach(b => { b.classList.toggle('on', b.dataset.r === activePreset); b.setAttribute('aria-pressed',b.dataset.r === activePreset); }); }
@@ -145,13 +152,61 @@
       const v=values[s][i];return '<span><i style="background:'+color(s)+'"></i>'+esc(s)+' <b>'+(metric==='amount'&&!currency()?'币种不同':format(v[metric]))+'</b>'+(v[metric]!=null&&v.coverage[metric]<v.expected?' <small>仅'+v.coverage[metric]+'/'+v.expected+'天</small>':'')+'</span>';
     }).join('');
   }
-  function render() { renderSummary();draw();detail(); }
-  function toggleShop(event) {
-    const b=event.target.closest('button[data-s]');if(!b)return;const s=b.dataset.s;
-    if(chosen.has(s)){if(chosen.size===1)return;chosen.delete(s);}else chosen.add(s);
-    chips();render();
+  function applyMods() {
+    const vis = (id, on) => { const el = $(id); if (el) el.style.display = on ? '' : 'none'; };
+    vis('sumStrip', mods.has('sum'));
+    ['chartHead','chartbox','legend','pointDetail','chartHint','labelHint','chartStatus'].forEach(id => vis(id, mods.has('chart')));
+    vis('tableZone', mods.has('table'));
   }
-  $('shopGrp').addEventListener('click',toggleShop);$('legend').addEventListener('click',toggleShop);
+  function pctCell(v, p) {
+    if (v == null || p == null || p === 0 || v === p) return '';
+    const d = v - p, up = d > 0;
+    return ' <small style="color:' + (up ? 'var(--green)' : 'var(--red)') + '">' + (up ? '▲' : '▼') + Math.abs(d / p * 100).toFixed(0) + '%</small>';
+  }
+  function renderTable() {
+    const zone = $('tableZone');
+    if (!mods.has('table') || !axis.length) { if (zone) zone.style.display = 'none'; return; }
+    const ss = selected(), cur = currency(), multi = metric === 'amount' && !cur;
+    const vd = visibleDates();
+    $('tableHead').innerHTML = '📋 每日一览：<b>' + names[metric] + '</b> · ' + ss.length + ' 家店铺 · ' + (vd ? vd.from + ' 至 ' + vd.to : '') +
+      (multi ? ' · ⚠ 币种不同仅逐店看' : '') + ' · 每格小标=较上一周期 ▲升 ▼降';
+    let html = '<table><thead><tr><th>周期</th>' + ss.map(s => '<th style="border-top:3px solid ' + color(s) + '">' + esc(s) + '</th>').join('') +
+      (multi ? '' : '<th>合计</th>') + '</tr></thead><tbody>';
+    for (let i = view.start; i <= view.end; i++) {
+      const lab = axis[i].start === axis[i].end ? axis[i].start : axis[i].label;
+      html += '<tr><td>' + lab + '</td>';
+      let sum = 0, any = false;
+      ss.forEach(s => {
+        const v = values[s][i][metric], p = i > view.start ? values[s][i - 1][metric] : null;
+        if (v == null) { html += '<td class="na">—</td>'; return; }
+        const cov = values[s][i].coverage[metric] < values[s][i].expected;
+        any = true; if (!multi) sum += v;
+        html += '<td class="' + (cov ? 'cov' : '') + '">' + (multi ? Math.round(v).toLocaleString('en-US') : format(v)) + pctCell(v, p) + '</td>';
+      });
+      html += (multi || !any) ? '<td class="na">—</td>' : '<td><b>' + format(sum) + '</b></td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    $('tableBody').innerHTML = html;
+  }
+  function render() { renderSummary(); draw(); detail(); renderTable(); applyMods(); }
+  function toggleStore(s) {
+    if (singleMode) { chosen = new Set([s]); }
+    else if (chosen.has(s)) { if (chosen.size === 1) return; chosen.delete(s); }
+    else chosen.add(s);
+    chips(); render();
+  }
+  function shopGrpClick(event) {
+    const b = event.target.closest('button'); if (!b) return;
+    if (b.dataset.mo) { singleMode = b.dataset.mo === 'single'; chips(); render(); return; }
+    if (b.dataset.act) {
+      chosen = b.dataset.act === 'all' ? new Set(shops) : new Set();
+      chips(); render(); return;
+    }
+    if (b.dataset.s) toggleStore(b.dataset.s);
+  }
+  $('shopGrp').addEventListener('click', shopGrpClick);
+  $('legend').addEventListener('click', function (event) { const b = event.target.closest('button[data-s]'); if (b) toggleStore(b.dataset.s); });
   ['metric','gran'].forEach(kind=>$(kind==='metric'?'metricGrp':'granGrp').addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
     if(kind==='metric')metric=b.dataset.m;
@@ -159,6 +214,14 @@
     e.currentTarget.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});render();
   }));
   $('rangeGrp').addEventListener('click',e=>{const b=e.target.closest('button');if(b)applyPreset(b.dataset.r);});
+  $('modGrp').addEventListener('click',function (event) {
+    const b = event.target.closest('button'); if (!b || !b.dataset.mod) return;
+    const m = b.dataset.mod;
+    if (mods.has(m) && mods.size === 1) return; // 至少保留一个模块
+    if (mods.has(m)) mods.delete(m); else mods.add(m);
+    document.querySelectorAll('#modGrp button').forEach(x => { x.classList.toggle('on', mods.has(x.dataset.mod)); x.setAttribute('aria-pressed', mods.has(x.dataset.mod)); });
+    render();
+  });
   $('fromD').addEventListener('change',useDates);$('toD').addEventListener('change',useDates);
   $('showValues').addEventListener('change',draw);
   $('resetView').addEventListener('click',()=>{if(!axis.length)return;view={start:0,end:axis.length-1};hover=-1;syncInputs();render();});
