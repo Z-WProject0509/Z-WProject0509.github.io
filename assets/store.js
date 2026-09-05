@@ -375,10 +375,11 @@
     const b = event.target.closest('button'); if (!b) return;
     if (b.dataset.mo) { singleMode = b.dataset.mo === 'single'; chips(); render(); return; }
     if (b.dataset.act) {
-      chosen = b.dataset.act === 'all' ? new Set(shops) : new Set();
+      chosen = b.dataset.act === 'all' ? new Set(visibleShops()) : new Set();
       chips(); render(); return;
     }
-    if (b.dataset.s) toggleStore(b.dataset.s);
+    const k = b.dataset.key || b.dataset.s;
+    if (k) toggleStore(k);
   }
   $('shopGrp').addEventListener('click', shopGrpClick);
   const shopCtrl = $('shopCtrl'); if (shopCtrl) shopCtrl.addEventListener('click', shopGrpClick);
