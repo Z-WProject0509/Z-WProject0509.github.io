@@ -74,6 +74,19 @@
   .ov-lg b { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
   .ov-lg small { color: var(--text-3); font-variant-numeric: tabular-nums; }
   .ov-lg .sp { margin-left: auto; }
+  /* ===== 店铺国家母分组 ===== */
+  .cty-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
+  .cty-lbl { font-size: 12px; color: var(--text-3); font-weight: 700; letter-spacing: .6px; }
+  .cty-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cty { border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-2); border-radius: 999px; padding: 5px 14px; font-size: 12.5px; font-weight: 650; cursor: pointer; font-family: inherit; display: inline-flex; gap: 6px; align-items: center; transition: all .15s; user-select: none; }
+  .cty:hover { border-color: var(--primary); color: var(--primary); }
+  .cty.on { background: var(--text); border-color: var(--text); color: #fff; box-shadow: 0 2px 6px rgba(16,24,40,.22); }
+  .cty small { font-weight: 650; opacity: .7; font-size: 11.5px; }
+  .cty.on small { opacity: .8; }
+  .ghost-tabs { display: flex; gap: 6px; flex-wrap: wrap; padding: 4px 2px; margin: 0 0 8px; }
+  .ghostchip { padding: 7px 16px; border-radius: 999px; border: 1px dashed var(--border-strong); background: var(--surface-2); color: var(--text-3); font-size: 13px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+  .ghostchip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+  .ghost-note { font-size: 11.5px; color: var(--text-3); margin: 0 0 10px; line-height: 1.65; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
 </head>
@@ -93,12 +106,14 @@
 <div class="wrap">
 <div class="layout">
   <div class="main">
+    <div class="cty-row"><span class="cty-lbl">🌏 国家</span><div class="cty-chips" id="ctyChips"></div></div>
     <div class="tabs">
       <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee—MULMUL</button>
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
       <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')">🅖 ZEROTH 虾皮</button>
       <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')">🅖 ZEROTH 抖店</button>
     </div>
+    <div id="ctyGhost"></div>
     <div class="upd" id="upd"></div>
     <div id="state-shopee" class="state on">
       <div class="cards" id="cards-shopee"></div>
@@ -168,6 +183,70 @@ function stName(s) {
 }
 function isBad(s) { return BAD.indexOf(String(s)) >= 0; }
 var PLAT_NAME = { shopee: 'Shopee—MULMUL', tk: 'TikTok—MULMUL' };
+// ===== 店铺国家母分组(与 _site/stores.json 保持一致; 新店只改这里 = 母分组配置) =====
+var CTY_LIST = [
+  { name: '印尼', emoji: '🇮🇩', note: 'Shopee .co.id · TikTok Shop .tokopedia.com · Lazada 印尼', stores: [
+    { key: 'shopee', plat: 'shopee', brand: 'MULMUL', label: 'Shopee—MULMUL', live: true },
+    { key: 'tk', plat: 'tk', brand: 'MULMUL', label: 'TikTok—MULMUL', live: true },
+    { key: 'zeroth', plat: 'zeroth', brand: 'ZEROTH', label: '🅖 ZEROTH 虾皮', live: true },
+    { key: 'zeroth-tk', plat: 'zeroth-tk', brand: 'ZEROTH', label: '🅖 ZEROTH 抖店', live: true },
+    { key: 'zt-lzd-id', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
+  ]},
+  { name: '泰国', emoji: '🇹🇭', note: 'Shopee .co.th · TikTok Shop 泰国 · Lazada 泰国', stores: [
+    { key: 'zt-sp', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 虾皮', live: false },
+    { key: 'zt-tk', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 抖店', live: false },
+    { key: 'zt-lzd', plat: null, brand: 'ZEROTH', label: '🅖 ZEROTH 拉赞达', live: false }
+  ]}
+];
+var curCty = CTY_LIST[0].name;
+function esc2(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function ctyOf(plat) { for (var i = 0; i < CTY_LIST.length; i++) for (var j = 0; j < CTY_LIST[i].stores.length; j++) if (CTY_LIST[i].stores[j].plat === plat) return CTY_LIST[i].name; return null; }
+function buildCtyBar() {
+  var box = document.getElementById('ctyChips');
+  if (!box) return;
+  box.innerHTML = CTY_LIST.map(function (c) {
+    var live = c.stores.filter(function (s) { return s.live; }).length;
+    var pend = c.stores.length - live;
+    var cnt = (live ? live + ' 家' : '') + (pend ? (live ? ' + ' : '') + pend + ' 待接入' : '');
+    return '<button class="cty' + (c.name === curCty ? ' on' : '') + '" data-cty="' + esc2(c.name) + '" onclick="setCty(\'' + esc2(c.name) + '\')">' + c.emoji + ' ' + esc2(c.name) + (cnt ? ' <small>' + esc2(cnt) + '</small>' : '') + '</button>';
+  }).join('');
+}
+function setCty(name) {
+  curCty = name;
+  var c = null;
+  for (var i = 0; i < CTY_LIST.length; i++) if (CTY_LIST[i].name === name) { c = CTY_LIST[i]; break; }
+  if (!c) return;
+  // 选中态
+  var chips = document.querySelectorAll('#ctyChips .cty');
+  for (var k = 0; k < chips.length; k++) chips[k].classList.toggle('on', chips[k].getAttribute('data-cty') === name);
+  var liveKeys = c.stores.filter(function (s) { return s.live; }).map(function (s) { return s.plat; });
+  // 显示/隐藏真实店铺标签(该国家的点亮, 其他隐藏)
+  var tabs = document.querySelectorAll('.tabs .tab');
+  for (var t = 0; t < tabs.length; t++) {
+    var show = liveKeys.indexOf(tabs[t].getAttribute('data-plat')) >= 0;
+    tabs[t].style.display = show ? '' : 'none';
+    if (!show && tabs[t].classList.contains('on')) tabs[t].classList.remove('on');
+  }
+  document.querySelector('.tabs').style.display = liveKeys.length ? '' : 'none';
+  // 该国家下"待接入"店铺的占位 chips
+  var pending = c.stores.filter(function (s) { return !s.live; });
+  var ghost = document.getElementById('ctyGhost');
+  if (pending.length) {
+    ghost.innerHTML =
+      '<div class="ghost-tabs">' + pending.map(function (s) {
+        return '<span class="ghostchip"><span class="dot"></span>' + esc2(s.label) + '</span>';
+      }).join('') + '</div>' +
+      '<div class="ghost-note">' + c.emoji + ' ' + esc2(c.name) + ' · ' + pending.map(function (s) { return esc2(s.label.replace('🅖 ', '')); }).join('、') + ' 尚未接入看板（确认紫鸟店铺后接入即自动点亮，含 订单发货 + 店铺数据 + 财务 整套）</div>';
+    ghost.style.display = '';
+  } else { ghost.style.display = 'none'; ghost.innerHTML = ''; }
+  // 切到第一个已接入店铺
+  if (liveKeys.length) { switchTab(liveKeys[0]); }
+  else {
+    for (var s2 = 0; s2 < document.querySelectorAll('.state').length; s2++) document.querySelectorAll('.state')[s2].classList.remove('on');
+    document.getElementById('upd').textContent = c.emoji + ' ' + c.name + ' — 店铺待接入（同步器注册后自动点亮）';
+  }
+}
+function initCty() { buildCtyBar(); setCty(curCty); }
 var cache = {};
 function fmtRp(n) { return n == null ? '—' : 'Rp ' + Math.round(n).toLocaleString('en-US'); }
 function fmtCny(n) { return n == null ? '—' : '≈ ¥' + Math.round(n).toLocaleString('en-US'); }
@@ -423,7 +502,7 @@ function renderOverview() {
     '</div></div><div class="ov-legend">' + legend + '</div>';
 }
 // 每 5 分钟自动刷新
-load('shopee');
+initCty();
 loadOverview();
 setInterval(function () {
   var cur = document.querySelector('.tab.on');
