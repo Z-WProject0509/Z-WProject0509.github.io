@@ -37,12 +37,24 @@
     const multi = metric === 'amount' && !currency();
     const rows = ss.map(s => {
       const v = values[s][i], val = v[metric];
-      const txt = val == null ? '—' : (multi ? Math.round(val).toLocaleString('en-US') : format(val));
+      let txt = val == null ? '—' : (multi ? fmtCur(val, curOf(s)) : format(val));
+      const prev = i > view.start ? values[s][i - 1][metric] : null;
+      let delta = '';
+      if (val != null && prev != null && prev !== 0 && val !== prev) {
+        const d = val - prev, up = d > 0;
+        delta = ' <small style="color:' + (up ? 'var(--green)' : 'var(--red)') + '">' + (up ? '▲' : '▼') + Math.abs(d / prev * 100).toFixed(0) + '%</small>';
+      }
       const cov = v.coverage[metric] < v.expected ? ' <small>·' + v.coverage[metric] + '/' + v.expected + '天</small>' : '';
-      return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(lbl(s)) + '<b>' + txt + '</b>' + cov + '</div>';
+      return '<div class="tip-row"><i style="background:' + color(s) + '"></i>' + esc(lbl(s)) + '<b>' + txt + '</b>' + delta + cov + '</div>';
     }).join('');
-    const note = multi ? '<div class="tip-note">多币种仅逐店显示，不可相加</div>' : '';
-    return tipDate + rows + note;
+    let head = '<div class="tip-d">' + axis[i].label + '</div>';
+    if (ss.length > 1 && !multi) { // 同币种合计
+      let tot = 0, any = false;
+      ss.forEach(s => { const vv = values[s][i][metric]; if (vv != null) { tot += vv; any = true; } });
+      if (any) head += '<div class="tip-total">合计 <b>' + format(tot) + '</b></div>';
+    }
+    const note = multi ? '<div class="tip-note">多币种：逐店带各自货币符号，不可合并</div>' : (ss.length > 1 && metric === 'orders' ? '' : '');
+    return head + rows + note;
   }
   function placeTip(clientX, clientY, i) {
     const html = tipContent(i);
@@ -77,7 +89,11 @@
     const codes = new Set(rows.filter(r => chosen.has(r.store) && range && r.date >= range.from && r.date <= range.to).map(r => r.currency));
     return codes.size > 1 ? null : [...codes][0] || 'IDR';
   }
-  function money(n) { return n == null ? '—' : (currency() === 'IDR' ? 'Rp ' : (currency() || '') + ' ') + Math.round(n).toLocaleString('en-US'); }
+  function money(n) { return n == null ? '—' : symOf(currency()) + Math.round(n).toLocaleString('en-US'); }
+  function curOf(s) { const r = rows.find(x => x.store === s); return (r && r.currency) || 'IDR'; }
+  function symOf(c) { return c === 'IDR' ? 'Rp ' : c === 'THB' ? '฿ ' : (c || 'IDR') + ' '; }
+  // 任何销售金额单元格: 货币符号 + 千分位 + 精确到个位
+  function fmtCur(v, c) { return v == null ? '—' : symOf(c || 'IDR') + Math.round(v).toLocaleString('en-US'); }
   function format(v, key = metric) { return v == null ? '未采集' : key === 'amount' ? money(v) : Math.round(v).toLocaleString('zh-CN') + (key === 'orders' ? ' 单' : ' 件'); }
   function color(s) { return COLORS[shops.indexOf(s) % COLORS.length]; }
   // 多指标聚合助手: 某日某指标 在所选店铺上的合计(同币种才可加)与覆盖
@@ -177,7 +193,7 @@
       return '<div class="tot-card"><div class="tk">'+names[key]+'合计</div><div class="tv">'+(key==='amount'&&!currency()?'多币种不可相加':format(total,key))+'</div><div class="ts">'+(covered<expected?'仅汇总已采集数据':'所选店铺 · 当前区间')+'</div></div>';
     });
     if (!mm && ss.length) {
-      ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(lbl(s))+'</div><div class="tv">'+(metric==='amount'&&!currency()?'请选择相同币种':format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
+      ss.forEach(s=>{const a=sumFor(s,metric);cards.push('<div class="tot-card shop-total" style="--shop-color:'+color(s)+'"><div class="tk">'+esc(lbl(s))+'</div><div class="tv">'+(metric==='amount'&&!currency()?fmtCur(a.total,curOf(s)):format(a.total))+'</div><div class="ts">已采集 '+a.count+' / '+a.expected+' 天</div></div>');});
     } else if (mm) {
       cards.push('<div class="tot-card"><div class="tk">📈 相对走势</div><div class="tv" style="font-size:14px">多指标同图对比</div><div class="ts">以区间首日=100 归一</div></div>');
     }
@@ -325,7 +341,7 @@
         if (v == null) { h += '<td class="na">—</td>'; return; }
         const cov = values[s][i].coverage[m] < values[s][i].expected;
         any = true; if (!mixed) sum += v;
-        h += '<td class="' + (cov ? 'cov' : '') + '">' + (mixed ? Math.round(v).toLocaleString('en-US') : format(v, m)) + pctCell(v, p) + '</td>';
+        h += '<td class="' + (cov ? 'cov' : '') + '">' + (mixed ? fmtCur(v, curOf(s)) : format(v, m)) + pctCell(v, p) + '</td>';
       });
       h += (mixed || !any) ? '<td class="na">—</td>' : '<td><b>' + format(sum, m) + '</b></td>';
       h += '</tr>';
