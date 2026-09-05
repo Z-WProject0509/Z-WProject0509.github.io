@@ -97,6 +97,7 @@
       <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')">Shopee—MULMUL</button>
       <button class="tab" data-plat="tk" onclick="switchTab('tk')">TikTok—MULMUL</button>
       <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')">🅖 ZEROTH 虾皮</button>
+      <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')">🅖 ZEROTH 抖店</button>
     </div>
     <div class="upd" id="upd"></div>
     <div id="state-shopee" class="state on">
@@ -113,6 +114,11 @@
       <div class="cards" id="cards-zeroth"></div>
       <div class="panel"><h2>🕐 最近订单（ZEROTH 虾皮） <span class="tag">当日新单 · 取消/发货标红</span></h2><div id="recentOrders-zeroth"></div></div>
       <div class="panel"><h2>🚚 待处理（ZEROTH 虾皮 · To Process） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-zeroth"></div></div>
+    </div>
+    <div id="state-zeroth-tk" class="state">
+      <div class="cards" id="cards-zeroth-tk"></div>
+      <div class="panel"><h2>🕐 最近订单（ZEROTH 抖店） <span class="tag">当日新单 · 状态标红</span></h2><div id="recentOrders-zeroth-tk"></div></div>
+      <div class="panel"><h2>🚚 待处理（ZEROTH 抖店 · To ship） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-zeroth-tk"></div></div>
     </div>
   </div>
 
@@ -211,7 +217,7 @@ function renderSide(plat, d) {
   var sName = storeNameOf(plat, d);
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
-  if (tabEl && plat !== 'zeroth') tabEl.textContent = sName;  // ZEROTH tab 保持短名
+  if (tabEl && plat !== 'zeroth' && plat !== 'zeroth-tk') tabEl.textContent = sName;  // ZEROTH tab 保持短名
   document.getElementById('upd').textContent = sName + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
     '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(sName) + '</span></div>' +
@@ -285,7 +291,7 @@ function render(plat, d) {
     : '<div class="empty">🎉 暂无待处理订单（全部已打面单发货）</div>';
 }
 function load(plat) {
-  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : 'data.json';
+  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : 'data.json';
   if (cache[plat]) { render(plat, cache[plat]); return; }
   fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     cache[plat] = d; render(plat, d);
