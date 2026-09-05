@@ -1,5 +1,6 @@
 {
   "title": "店铺注册表(按国家母分组)",
+  "namingRule": "店名 = 品牌-平台, 自动识别: 虾皮=Shopee / 抖店=TikTok / 拉赞达=Lazada; 名字含 泰 = 泰国站(THB), 否则印尼(IDR)。加新店只需补 storeName=品牌+平台后缀 的同步文件并在 _auto/zeroth_daily.mjs 的 Z_STORES 加一行。",
   "updatedAt": "2026/9/5 17:30:34",
   "note": "国家=店铺的母分组, 判定依据: 紫鸟/站斧店清单的站点域名与 platformName(如 Shopee-印尼-本土=seller.shopee.co.id、TikTok Shop-印尼-本土=seller-id.tokopedia.com、Shopee-泰国-本土=seller.shopee.co.th)。live=true 表示已接入看板(订单发货+店铺数据+财务); live=false 表示待接入(确认后在同步器注册即可整套点亮)。品牌归属: MULMUL、ZEROTH 等均按母品牌, 不按公司A/B。",
   "countries": [
