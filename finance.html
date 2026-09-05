@@ -166,7 +166,7 @@ function renderCheck() {
     var cur = platEl.querySelector('.btn.on');
     var curPlat = cur ? cur.getAttribute('data-plat') : 'all';
     platEl.innerHTML = '<button class="btn ' + (cPlat === 'all' ? 'on' : '') + '" data-plat="all">📚 全部店铺</button>' +
-      plats.map(function (p) { return '<button class="btn ' + (cPlat === p ? 'on' : '') + '" data-plat="' + p + '">' + p + '</button>'; }).join('');
+      plats.map(function (p) { return '<button class="btn ' + (cPlat === p ? 'on' : '') + '" data-plat="' + p + '">' + (window.platLogo ? window.platLogo(p) : '') + esc(p) + '</button>'; }).join('');
   }
   var s = ledger.summary;
   var sumHtml = '';
@@ -208,7 +208,7 @@ function renderCheck() {
     var dateTxt = esc(String(o.date || ''));
     if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(dateTxt)) dateTxt = dateTxt.slice(5, 16); else if (/^\d{4}-\d{2}-\d{2}/.test(dateTxt)) dateTxt = dateTxt.slice(5);
     var payTxt = o.payDate ? '<span class="ok">' + esc(String(o.payDate).slice(5)) + '</span>' : '<span class="dim">—</span>';
-    return '<tr><td>' + o.platform + '</td><td title="' + esc(o.date || '') + '">' + dateTxt + '</td><td title="' + esc(o.sn) + '">' + esc(o.sn) + '</td><td title="' + esc(o.sku || '') + '">' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td>' + payTxt + '</td><td><span class="pill ' + st[0] + '"><span class="d"></span>' + st[1] + '</span></td></tr>';
+    return '<tr><td>' + (window.platLogo ? window.platLogo(o.platform) : '') + esc(o.platform) + '</td><td title="' + esc(o.date || '') + '">' + dateTxt + '</td><td title="' + esc(o.sn) + '">' + esc(o.sn) + '</td><td title="' + esc(o.sku || '') + '">' + esc(o.sku || '') + '</td><td>' + (o.qty || '') + '</td><td>' + fmtRp(o.amount) + '</td><td>' + amtTxt + '</td><td>' + costTxt + '</td><td>' + profitTxt + '</td><td>' + esc(o.status || '') + '</td><td>' + payTxt + '</td><td><span class="pill ' + st[0] + '"><span class="d"></span>' + st[1] + '</span></td></tr>';
   }).join('');
   window.__csvRows = all.map(function (o) { return [o.platform, o.date, o.sn, o.sku, o.qty, o.amount, o.check === 'ok' && o.payAmt != null ? o.payAmt : '', o.cost != null ? o.cost : '', o.profit != null ? o.profit : '', o.status, o.payDate || '', CHECK_LABEL[o.check] ? CHECK_LABEL[o.check][1] : o.check]; });
   window.__allRows = __rowsHtml; // 用于分页加载
