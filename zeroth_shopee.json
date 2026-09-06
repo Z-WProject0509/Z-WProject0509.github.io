@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026/9/6 15:45:12",
+  "generatedAt": "2026/9/6 16:13:43",
   "platform": "shopee",
   "storeName": "【印尼ZEROTH】虾皮",
   "storeId": "27748602739309",
@@ -15,9 +15,9 @@
   },
   "statusAgg": {
     "To Ship": 1,
-    "Shipped": 5,
+    "Shipped": 4,
     "Cancelled": 26,
-    "Unknown": 1,
+    "Unknown": 2,
     "Completed": 40
   },
   "toshipCount": 1,
@@ -110,7 +110,7 @@
       "sku": "2609021F7BW1CR",
       "qty": 1,
       "amt": 361500,
-      "st": "Shipped"
+      "st": "Unknown"
     },
     {
       "id": "260830P6RGDR5X",
