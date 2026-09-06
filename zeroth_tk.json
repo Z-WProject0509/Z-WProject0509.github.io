@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026/9/7 00:19:34",
+  "generatedAt": "2026/9/7 00:49:22",
   "platform": "tk",
   "storeName": "【印尼ZEROTH】抖店",
   "storeId": "27748571249582",
@@ -10,19 +10,26 @@
     "amountLocal": 0
   },
   "window": {
-    "count": 871,
-    "amountLocal": 344666534
+    "count": 872,
+    "amountLocal": 345142533
   },
   "statusAgg": {
+    "Unpaid": 1,
     "Awaiting shipment": 14,
     "Cancelled": 431,
     "Shipped": 48,
     "Delivered": 57,
     "Completed": 321
   },
-  "toshipCount": 14,
+  "toshipCount": 15,
   "recent": [],
   "toship": [
+    {
+      "d": "2026-09-06",
+      "id": "585930128145351697",
+      "st": "Unpaid",
+      "sku": "63979-ZT1M-ID-GR-43-PC"
+    },
     {
       "d": "2026-09-06",
       "id": "585928710560646959",
@@ -109,6 +116,14 @@
     }
   ],
   "allOrders": [
+    {
+      "id": "585930128145351697",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-GR-43-PC",
+      "qty": 1,
+      "amt": 475999,
+      "st": "Unpaid"
+    },
     {
       "id": "585928710560646959",
       "date": "2026-09-06",
