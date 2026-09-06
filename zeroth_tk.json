@@ -1,27 +1,35 @@
 {
-  "generatedAt": "2026/9/6 17:48:11",
+  "generatedAt": "2026/9/6 18:18:01",
   "platform": "tk",
   "storeName": "【印尼ZEROTH】抖店",
   "storeId": "27748571249582",
   "currency": "IDR",
   "orders": {
-    "count": 8,
-    "totalQty": 8,
-    "amountLocal": 2892704
+    "count": 9,
+    "totalQty": 9,
+    "amountLocal": 3293604
   },
   "window": {
-    "count": 859,
-    "amountLocal": 340370628
+    "count": 860,
+    "amountLocal": 340771528
   },
   "statusAgg": {
-    "Awaiting shipment": 3,
-    "Shipped": 53,
-    "Delivered": 54,
+    "Awaiting shipment": 4,
+    "Shipped": 52,
+    "Delivered": 55,
     "Cancelled": 428,
     "Completed": 321
   },
-  "toshipCount": 3,
+  "toshipCount": 4,
   "recent": [
+    {
+      "d": "2026-09-06",
+      "id": "585923400448640995",
+      "sku": "63979-ZT1M-ID-BR-42-PC",
+      "qty": 1,
+      "amt": 400900,
+      "st": "Awaiting shipment"
+    },
     {
       "d": "2026-09-06",
       "id": "585922443343857619",
@@ -90,6 +98,12 @@
   "toship": [
     {
       "d": "2026-09-06",
+      "id": "585923400448640995",
+      "st": "Awaiting shipment",
+      "sku": "63979-ZT1M-ID-BR-42-PC"
+    },
+    {
+      "d": "2026-09-06",
       "id": "585922443343857619",
       "st": "Awaiting shipment",
       "sku": "63979-ZT1M-ID-GR-43-PC"
@@ -108,6 +122,14 @@
     }
   ],
   "allOrders": [
+    {
+      "id": "585923400448640995",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-BR-42-PC",
+      "qty": 1,
+      "amt": 400900,
+      "st": "Awaiting shipment"
+    },
     {
       "id": "585922443343857619",
       "date": "2026-09-06",
@@ -258,7 +280,7 @@
       "sku": "63979-ZT1M-ID-GR-40-PC",
       "qty": 1,
       "amt": 355620,
-      "st": "Shipped"
+      "st": "Delivered"
     },
     {
       "id": "585877726897472840",
