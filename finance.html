@@ -51,7 +51,9 @@
   <div class="panel">
     <h2>🔍 订单 · 到账 · 利润跟踪 <span class="badge-new">近60天＋历史未结清</span><span class="tag">出单记成本 → 到账自动算利润；未到账持续跟踪</span></h2>
     <div class="plat-btns" id="finCty" style="margin-bottom:6px;align-items:center"><span style="font-size:12px;color:var(--text-3);font-weight:700;margin-right:6px">🌏 国家</span><button class="btn on" data-cty="印尼">🇮🇩 印尼</button><button class="btn" data-cty="泰国">🇹🇭 泰国</button><span class="aux" id="finCtyNote" style="margin-left:8px"></span></div>
-    <div class="plat-btns" id="checkPlat" style="margin-bottom:8px"><button class="btn on" data-plat="all">📚 全部店铺</button></div>
+    <div class="shopline-box" id="finShopBar"></div>
+    <div class="aux" id="finShopNote" style="margin:-6px 0 8px;font-size:11.5px">点店铺=看这一家的财务（单选）；没接到账本/成本源的店会提示“待接入”。</div>
+    <div class="plat-btns" id="checkPlat" style="display:none"><button class="btn on" data-plat="all">📚 全部店铺</button></div>
     <div class="rg-head">
       <div class="rg-presets" id="checkFilt">
         <button class="btn on" data-c="all">全部</button>
@@ -80,7 +82,43 @@
 <script src="assets/app.js"></script>
 <script>
 var CHECK_LABEL = { ok: ['ok','已到账'], pending: ['pend','跟踪中'], abnormal: ['bad','⚠ 异常'], cancelled: ['dim','✕ 取消'] };
-var ledger = null, cPlat = 'all', cFilt = 'all', cCty = '印尼';
+var ledger = null, cPlat = 'all', cFilt = 'all', cCty = '印尼', cShop = null, finInit = false;
+var FIN_PEND = {};
+var FIN_ITEMS = [
+  { key: 'Shopee—MULMUL', plat: 'Shopee', label: 'MULMUL', pend: false },
+  { key: 'Tiktok—MULMUL', plat: 'TikTok', label: 'MULMUL', pend: false },
+  { key: 'ZEROTH-虾皮', label: 'ZEROTH', pend: true },
+  { key: 'ZEROTH-抖店', label: 'ZEROTH', pend: true },
+  { key: 'ZEROTH泰-虾皮', label: 'ZEROTH·泰', pend: true },
+  { key: 'ZEEWALK-虾皮', label: 'ZEEWALK', pend: true },
+  { key: 'ZEEWALK-抖店', label: 'ZEEWALK', pend: true },
+  { key: 'KAKI CILIK-虾皮', label: 'KAKI CILIK', pend: true },
+  { key: 'KAKI CILIK-抖店', label: 'KAKI CILIK', pend: true },
+  { key: 'ALIBABA一店-虾皮', label: 'ALIBABA一店', pend: true },
+  { key: 'ALIBABA一店-抖店', label: 'ALIBABA一店', pend: true }
+];
+FIN_ITEMS.forEach(function (it) { if (it.pend) FIN_PEND[it.key] = it.label; });
+function renderFinShop() {
+  var act = {}; if (cShop) act[cShop] = true;
+  var el = document.getElementById('finShopBar');
+  if (el && window.storeGroup) el.innerHTML = window.storeGroup(FIN_ITEMS, act);
+}
+function pendingFinanceBox() {
+  var lbl = FIN_PEND[cShop] || cShop;
+  var note = cCty === '泰国' ? 'ZEROTH 泰国店' : lbl;
+  var box = document.getElementById('profitBox');
+  if (box) box.innerHTML = '<div class="empty"><span class="big">💰</span>' + esc(note) + ' 的财务待接入<br><span class="aux">放款流水/成本表接入后自动出真实到账与利润（目前账本为 MULMUL 印尼）</span></div>';
+  var cb = document.getElementById('checkBox');
+  if (cb) cb.innerHTML = '<div class="empty"><span class="big">📊</span>' + esc(note) + ' 订单账本待接入<br><span class="aux">该店订单/放款同步器接入后自动出现逐单到账跟踪</span></div>';
+}
+function setShop(key) {
+  cShop = key;
+  var it = null;
+  for (var i = 0; i < FIN_ITEMS.length; i++) if (FIN_ITEMS[i].key === key) { it = FIN_ITEMS[i]; break; }
+  if (!it) return;
+  if (it.pend) { cCty = /泰|THB/i.test(key) ? '泰国' : '印尼'; ctyRefresh(); renderFinShop(); pendingFinanceBox(); return; }
+  cPlat = it.plat; cCty = '印尼'; ctyRefresh(); renderFinShop(); renderProfit(); renderCheck();
+}
 
 function renderIncome(inc) {
   var box = document.getElementById('incomeOverview');
@@ -275,6 +313,8 @@ function loadAll() {
   fetch('finance_shopee.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(renderIncome).catch(function () { document.getElementById('incomeOverview').innerHTML = '<div class="empty">加载失败，稍后自动重试</div>'; });
   fetch('finance_orders.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (a) {
     ledger = a; renderProfit(); renderCheck();
+    renderFinShop();
+    if (!finInit) { finInit = true; setShop('Shopee—MULMUL'); }
     document.getElementById('footTime').textContent = relTime(a.summary.generatedAt);
     return Promise.all([
       fetch('ads_summary.json?t=' + Date.now()).then(function (r) { return r.json(); }).catch(function () { return null; }),
@@ -282,6 +322,10 @@ function loadAll() {
     ]).then(function (arr) { renderAds(arr[0], arr[1]); });
   }).catch(function () { document.getElementById('checkBox').innerHTML = '<div class="empty">核对数据加载失败</div>'; });
 }
+document.getElementById('finShopBar').addEventListener('click', function (e) {
+  var b = e.target.closest('.spill2'); if (!b || !b.dataset.key) return;
+  setShop(b.dataset.key);
+});
 document.getElementById('finCty').addEventListener('click', function (e) {
   var b = e.target.closest('.btn'); if (!b || !b.dataset.cty) return;
   cCty = b.getAttribute('data-cty');
