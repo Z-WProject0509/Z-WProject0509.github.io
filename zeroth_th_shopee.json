@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026/9/6 16:49:20",
+  "generatedAt": "2026/9/6 17:15:13",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
@@ -15,9 +15,9 @@
   },
   "statusAgg": {
     "To Ship": 3,
-    "Shipped": 6,
+    "Shipped": 5,
     "Cancelled": 52,
-    "completed": 6,
+    "completed": 7,
     "Unknown": 16,
     "Completed": 327
   },
@@ -155,7 +155,7 @@
       "sku": "ZT1",
       "qty": 1,
       "amt": 473,
-      "st": "Shipped"
+      "st": "completed"
     },
     {
       "id": "2609033BS8KCVE",
