@@ -1,27 +1,43 @@
 {
-  "generatedAt": "2026/9/6 19:45:38",
+  "generatedAt": "2026/9/6 20:18:21",
   "platform": "tk",
   "storeName": "【印尼ZEROTH】抖店",
   "storeId": "27748571249582",
   "currency": "IDR",
   "orders": {
-    "count": 12,
-    "totalQty": 12,
-    "amountLocal": 4295470
+    "count": 14,
+    "totalQty": 14,
+    "amountLocal": 4898134
   },
   "window": {
-    "count": 863,
-    "amountLocal": 341773394
+    "count": 865,
+    "amountLocal": 342376058
   },
   "statusAgg": {
-    "Awaiting shipment": 7,
+    "Awaiting shipment": 9,
     "Shipped": 49,
     "Delivered": 56,
     "Cancelled": 430,
     "Completed": 321
   },
-  "toshipCount": 7,
+  "toshipCount": 9,
   "recent": [
+    {
+      "d": "2026-09-06",
+      "id": "585925311518114992",
+      "sku": "63979-ZT1M-ID-GR-43-PC",
+      "qty": 1,
+      "amt": 303352,
+      "st": "Awaiting shipment"
+    },
+    {
+      "d": "2026-09-06",
+      "id": "585925074924767120",
+      "sku": "63979-ZT1M-ID-GR-42-PC",
+      "qty": 1,
+      "amt": 299312,
+      "st": "Awaiting shipment"
+    },
     {
       "d": "2026-09-06",
       "id": "585924966587204739",
@@ -122,6 +138,18 @@
   "toship": [
     {
       "d": "2026-09-06",
+      "id": "585925311518114992",
+      "st": "Awaiting shipment",
+      "sku": "63979-ZT1M-ID-GR-43-PC"
+    },
+    {
+      "d": "2026-09-06",
+      "id": "585925074924767120",
+      "st": "Awaiting shipment",
+      "sku": "63979-ZT1M-ID-GR-42-PC"
+    },
+    {
+      "d": "2026-09-06",
       "id": "585924966587204739",
       "st": "Awaiting shipment",
       "sku": "63979-ZT1M-ID-GR-40-PC"
@@ -164,6 +192,22 @@
     }
   ],
   "allOrders": [
+    {
+      "id": "585925311518114992",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-GR-43-PC",
+      "qty": 1,
+      "amt": 303352,
+      "st": "Awaiting shipment"
+    },
+    {
+      "id": "585925074924767120",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-GR-42-PC",
+      "qty": 1,
+      "amt": 299312,
+      "st": "Awaiting shipment"
+    },
     {
       "id": "585924966587204739",
       "date": "2026-09-06",
