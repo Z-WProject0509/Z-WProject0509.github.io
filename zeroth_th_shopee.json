@@ -1,84 +1,28 @@
 {
-  "generatedAt": "2026/9/5 19:02:46",
+  "generatedAt": "2026/9/6 11:47:18",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
   "currency": "THB",
   "orders": {
-    "count": 5,
-    "totalQty": 5,
-    "amountLocal": 2003
+    "count": 0,
+    "totalQty": 0,
+    "amountLocal": 0
   },
   "window": {
     "count": 407,
     "amountLocal": 222710.18
   },
   "statusAgg": {
-    "To Ship": 1,
-    "Shipped": 7,
-    "Unpaid": 1,
-    "Cancelled": 51,
-    "completed": 7,
-    "Unknown": 15,
-    "Completed": 325
+    "Shipped": 8,
+    "Cancelled": 52,
+    "completed": 6,
+    "Unknown": 14,
+    "Completed": 327
   },
-  "toshipCount": 2,
-  "recent": [
-    {
-      "d": "2026-09-05",
-      "id": "2609058M5D2XA1",
-      "sku": "63979-ZT2M-TH-BL-44-PC",
-      "qty": 1,
-      "amt": 359,
-      "st": "To Ship"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057SU93HPU",
-      "sku": "63979-ZT2M-TH-BL-42-PC",
-      "qty": 1,
-      "amt": 414,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057RNC07SH",
-      "sku": "63979-ZT3M-TH-BL-42-PC",
-      "qty": 1,
-      "amt": 351,
-      "st": "Unpaid"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "26090578NU5C9M",
-      "sku": "ZT3",
-      "qty": 1,
-      "amt": 475,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "26090570V75TT8",
-      "sku": "63979-ZT2M-TH-BLU-40-PC",
-      "qty": 1,
-      "amt": 404,
-      "st": "Shipped"
-    }
-  ],
-  "toship": [
-    {
-      "d": "2026-09-05",
-      "id": "2609058M5D2XA1",
-      "st": "To Ship",
-      "sku": "63979-ZT2M-TH-BL-44-PC"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057RNC07SH",
-      "st": "Unpaid",
-      "sku": "63979-ZT3M-TH-BL-42-PC"
-    }
-  ],
+  "toshipCount": 0,
+  "recent": [],
+  "toship": [],
   "allOrders": [
     {
       "id": "2609058M5D2XA1",
@@ -86,7 +30,7 @@
       "sku": "63979-ZT2M-TH-BL-44-PC",
       "qty": 1,
       "amt": 359,
-      "st": "To Ship"
+      "st": "Shipped"
     },
     {
       "id": "2609057SU93HPU",
@@ -102,7 +46,7 @@
       "sku": "63979-ZT3M-TH-BL-42-PC",
       "qty": 1,
       "amt": 351,
-      "st": "Unpaid"
+      "st": "Cancelled"
     },
     {
       "id": "26090578NU5C9M",
@@ -246,7 +190,7 @@
       "sku": "63979-ZT3M-TH-BR-44-PC",
       "qty": 1,
       "amt": 329,
-      "st": "completed"
+      "st": "Unknown"
     },
     {
       "id": "260831SPWGJGMA",
@@ -310,7 +254,7 @@
       "sku": "ZT2",
       "qty": 1,
       "amt": 261,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260828JA3E4XRY",
@@ -358,7 +302,7 @@
       "sku": "63979-ZT3M-TH-BR-40-PC",
       "qty": 1,
       "amt": 321,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260827DTF6RH9C",
