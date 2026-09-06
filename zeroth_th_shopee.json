@@ -1,44 +1,67 @@
 {
-  "generatedAt": "2026/9/7 00:50:36",
+  "generatedAt": "2026/9/7 01:51:48",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
   "currency": "THB",
   "orders": {
-    "count": 0,
-    "totalQty": 0,
-    "amountLocal": 0
+    "count": 1,
+    "totalQty": 1,
+    "amountLocal": 350
   },
   "window": {
-    "count": 411,
-    "amountLocal": 224553.18
+    "count": 412,
+    "amountLocal": 224903.18
   },
   "statusAgg": {
-    "To Ship": 1,
+    "To ship": 2,
     "Shipped": 5,
     "completed": 9,
     "Cancelled": 52,
     "Unknown": 15,
     "Completed": 329
   },
-  "toshipCount": 1,
-  "recent": [],
+  "toshipCount": 2,
+  "recent": [
+    {
+      "d": "2026-09-07",
+      "id": "260907C15MTH0A",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 350,
+      "st": "To ship"
+    }
+  ],
   "toship": [
+    {
+      "d": "2026-09-07",
+      "id": "260907C15MTH0A",
+      "st": "To ship",
+      "sku": "ZT1"
+    },
     {
       "d": "2026-09-06",
       "id": "260906BD9W3WYE",
-      "st": "To Ship",
+      "st": "To ship",
       "sku": "63979-ZT3M-TH-BR-41-PC"
     }
   ],
   "allOrders": [
+    {
+      "id": "260907C15MTH0A",
+      "date": "2026-09-07",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 350,
+      "st": "To ship"
+    },
     {
       "id": "260906BD9W3WYE",
       "date": "2026-09-06",
       "sku": "63979-ZT3M-TH-BR-41-PC",
       "qty": 1,
       "amt": 367,
-      "st": "To Ship"
+      "st": "To ship"
     },
     {
       "id": "260906B0HVBNCB",
