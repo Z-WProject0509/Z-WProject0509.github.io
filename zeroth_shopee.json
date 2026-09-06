@@ -1,60 +1,43 @@
 {
-  "generatedAt": "2026/9/5 18:56:38",
+  "generatedAt": "2026/9/6 11:41:38",
   "platform": "shopee",
   "storeName": "【印尼ZEROTH】虾皮",
   "storeId": "27748602739309",
   "currency": "IDR",
   "orders": {
-    "count": 4,
-    "totalQty": 4,
-    "amountLocal": 1324226
+    "count": 1,
+    "totalQty": 1,
+    "amountLocal": 369387
   },
   "window": {
-    "count": 72,
-    "amountLocal": 26692479
+    "count": 73,
+    "amountLocal": 27061866
   },
   "statusAgg": {
-    "To Ship": 1,
+    "To Ship": 2,
     "Cancelled": 26,
-    "Shipped": 5,
+    "Shipped": 4,
+    "Unknown": 1,
     "Completed": 40
   },
-  "toshipCount": 1,
+  "toshipCount": 2,
   "recent": [
     {
-      "d": "2026-09-05",
-      "id": "2609058SSC9AWJ",
+      "d": "2026-09-06",
+      "id": "260906A6U64DQU",
       "sku": "ZT1",
       "qty": 1,
-      "amt": 293269,
+      "amt": 369387,
       "st": "To Ship"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057YQ0B3WE",
-      "sku": "ZT1",
-      "qty": 1,
-      "amt": 292732,
-      "st": "Cancelled"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057UY5J8MJ",
-      "sku": "ZT1",
-      "qty": 1,
-      "amt": 409159,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "26090570XW16HJ",
-      "sku": "ZT1",
-      "qty": 1,
-      "amt": 329066,
-      "st": "Shipped"
     }
   ],
   "toship": [
+    {
+      "d": "2026-09-06",
+      "id": "260906A6U64DQU",
+      "st": "To Ship",
+      "sku": "ZT1"
+    },
     {
       "d": "2026-09-05",
       "id": "2609058SSC9AWJ",
@@ -63,6 +46,14 @@
     }
   ],
   "allOrders": [
+    {
+      "id": "260906A6U64DQU",
+      "date": "2026-09-06",
+      "sku": "ZT1",
+      "qty": 1,
+      "amt": 369387,
+      "st": "To Ship"
+    },
     {
       "id": "2609058SSC9AWJ",
       "date": "2026-09-05",
@@ -109,7 +100,7 @@
       "sku": "26090338STV8Y0",
       "qty": 1,
       "amt": 318050,
-      "st": "Shipped"
+      "st": "Unknown"
     },
     {
       "id": "26090338QUYVB2",
