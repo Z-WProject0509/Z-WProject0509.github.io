@@ -1,53 +1,69 @@
 {
-  "generatedAt": "2026/9/5 19:01:25",
+  "generatedAt": "2026/9/6 11:45:56",
   "platform": "tk",
   "storeName": "【印尼ZEROTH】抖店",
   "storeId": "27748571249582",
   "currency": "IDR",
   "orders": {
-    "count": 3,
-    "totalQty": 3,
-    "amountLocal": 1196951
+    "count": 2,
+    "totalQty": 2,
+    "amountLocal": 671650
   },
   "window": {
-    "count": 851,
-    "amountLocal": 337477924
+    "count": 853,
+    "amountLocal": 338149574
   },
   "statusAgg": {
-    "Shipped": 57,
-    "Cancelled": 424,
-    "Delivered": 54,
-    "Completed": 316
+    "Awaiting shipment": 1,
+    "Shipped": 51,
+    "Cancelled": 428,
+    "Delivered": 52,
+    "Completed": 321
   },
-  "toshipCount": 0,
+  "toshipCount": 1,
   "recent": [
     {
-      "d": "2026-09-05",
-      "id": "585898746594887647",
-      "sku": "63979-ZT1M-ID-BL-41-PC",
+      "d": "2026-09-06",
+      "id": "585915240641758797",
+      "sku": "63979-ZT1M-ID-GR-41-PC",
       "qty": 1,
-      "amt": 403899,
-      "st": "Shipped"
+      "amt": 319260,
+      "st": "Awaiting shipment"
     },
     {
-      "d": "2026-09-05",
-      "id": "585897392837199568",
+      "d": "2026-09-06",
+      "id": "585913604252337497",
       "sku": "63979-ZT1M-ID-BL-42-PC",
       "qty": 1,
-      "amt": 395011,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "585896793074861363",
-      "sku": "63979-ZT1M-ID-BR-42-PC",
-      "qty": 1,
-      "amt": 398041,
+      "amt": 352390,
       "st": "Shipped"
     }
   ],
-  "toship": [],
+  "toship": [
+    {
+      "d": "2026-09-06",
+      "id": "585915240641758797",
+      "st": "Awaiting shipment",
+      "sku": "63979-ZT1M-ID-GR-41-PC"
+    }
+  ],
   "allOrders": [
+    {
+      "id": "585915240641758797",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-GR-41-PC",
+      "qty": 1,
+      "amt": 319260,
+      "st": "Awaiting shipment"
+    },
+    {
+      "id": "585913604252337497",
+      "date": "2026-09-06",
+      "sku": "63979-ZT1M-ID-BL-42-PC",
+      "qty": 1,
+      "amt": 352390,
+      "st": "Shipped"
+    },
     {
       "id": "585898746594887647",
       "date": "2026-09-05",
@@ -142,7 +158,7 @@
       "sku": "63979-ZT1M-ID-BR-41-PC",
       "qty": 1,
       "amt": 396021,
-      "st": "Shipped"
+      "st": "Cancelled"
     },
     {
       "id": "585875622676497846",
@@ -158,7 +174,7 @@
       "sku": "63979-ZT1M-ID-BR-41-PC",
       "qty": 1,
       "amt": 399051,
-      "st": "Shipped"
+      "st": "Delivered"
     },
     {
       "id": "585874343633520105",
@@ -414,7 +430,7 @@
       "sku": "63979-ZT1M-ID-BL-42-PC",
       "qty": 1,
       "amt": 356600,
-      "st": "Shipped"
+      "st": "Delivered"
     },
     {
       "id": "585828181644641694",
@@ -622,7 +638,7 @@
       "sku": "63979-ZT1M-ID-GR-42-PC",
       "qty": 1,
       "amt": 441470,
-      "st": "Shipped"
+      "st": "Delivered"
     },
     {
       "id": "585785934742914411",
@@ -742,7 +758,7 @@
       "sku": "63979-ZT1M-ID-GR-42-PC",
       "qty": 1,
       "amt": 345099,
-      "st": "Delivered"
+      "st": "Completed"
     },
     {
       "id": "585776497436886309",
@@ -814,7 +830,7 @@
       "sku": "63979-ZT1M-ID-GR-44-PC",
       "qty": 1,
       "amt": 358650,
-      "st": "Delivered"
+      "st": "Completed"
     },
     {
       "id": "585761696561399330",
@@ -862,7 +878,7 @@
       "sku": "63979-ZT1M-ID-GR-41-PC",
       "qty": 1,
       "amt": 387940,
-      "st": "Delivered"
+      "st": "Completed"
     },
     {
       "id": "585748403070928188",
@@ -950,7 +966,7 @@
       "sku": "63979-ZT1M-ID-BR-41-PC",
       "qty": 1,
       "amt": 351177,
-      "st": "Shipped"
+      "st": "Cancelled"
     },
     {
       "id": "585732300714968403",
@@ -1302,7 +1318,7 @@
       "sku": "63979-ZT1M-ID-GR-41-PC",
       "qty": 1,
       "amt": 0,
-      "st": "Delivered"
+      "st": "Completed"
     },
     {
       "id": "585616350182868205",
@@ -1566,7 +1582,7 @@
       "sku": "63979-ZT1M-ID-GR-41-PC",
       "qty": 1,
       "amt": 399050,
-      "st": "Shipped"
+      "st": "Cancelled"
     },
     {
       "id": "585537570865841286",
@@ -3262,7 +3278,7 @@
       "sku": "63979-ZT1M-ID-GR-41-PC",
       "qty": 1,
       "amt": 431573,
-      "st": "Shipped"
+      "st": "Cancelled"
     },
     {
       "id": "585286630333187598",
@@ -3750,7 +3766,7 @@
       "sku": "63979-ZT1M-ID-BR-42-PC",
       "qty": 1,
       "amt": 458035,
-      "st": "Delivered"
+      "st": "Completed"
     },
     {
       "id": "585230207997937090",
