@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026/9/6 16:19:13",
+  "generatedAt": "2026/9/6 16:49:20",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
@@ -15,9 +15,9 @@
   },
   "statusAgg": {
     "To Ship": 3,
-    "Shipped": 7,
+    "Shipped": 6,
     "Cancelled": 52,
-    "completed": 5,
+    "completed": 6,
     "Unknown": 16,
     "Completed": 327
   },
@@ -131,7 +131,7 @@
       "sku": "63979-ZT2M-TH-BLU-40-PC",
       "qty": 1,
       "amt": 404,
-      "st": "Shipped"
+      "st": "completed"
     },
     {
       "id": "2609045YE4KKV1",
