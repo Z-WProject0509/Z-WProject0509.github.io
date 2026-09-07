@@ -8,7 +8,7 @@
   let rows = [], shops = [], chosen = new Set(), axis = [], values = Object.create(null);
   let metric = 'amount', gran = 'day', range = null, activePreset = '30d', view = {start:0,end:0};
   let hover = -1, drag = null, initial = true, loading = false, skipped = 0;
-  let ctyF = 'all'; // 国家母分组: all / 印尼 / 泰国(与订单发货页一致)
+  let scopeState = null; let ctyF = 'all'; // 国家母分组: all / 印尼 / 泰国(与订单发货页一致)
   const metrics = new Set(['amount']); // 默认只选销售额 → 折线=每家店各自的真实金额; 勾选≥2个指标时才切"相对走势"
   function metricList() { return METS.filter(m => metrics.has(m)); }
   function multiMode() { return metrics.size > 1; }
@@ -77,8 +77,8 @@
   }
   let W = 0, H = 360, plot = null;
   function selected() { return shops.filter(s => chosen.has(s)); }
-  function shopCountry(s) { return /泰|THB|thai/i.test(s || '') ? '泰国' : '印尼'; }
-  function visibleShops() { return ctyF === 'all' ? shops : shops.filter(s => shopCountry(s) === ctyF); }
+  function shopCountry(s) { return ShopScope.find(s)?.country || '未分类'; }
+  function visibleShops() { return shops.filter(s => {const meta=ShopScope.find(s); return meta && scopeState && meta.country===scopeState.country && meta.platform===scopeState.platform && (scopeState.store==='all' || meta.key===scopeState.store);}); }
   function ctySync() {
     const btns = document.querySelectorAll('#ctyGrp button');
     btns.forEach(b => { const on = b.dataset.cty === ctyF; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
@@ -108,7 +108,7 @@
   function visibleDates() { return axis.length ? { from:axis[view.start].start,to:axis[view.end].end } : range; }
   function syncInputs() { const v = visibleDates(); if (v) { $('fromD').value=v.from; $('toD').value=v.to; } }
   function chipIcon(s) { return window.platLogo ? window.platLogo(s) : ''; } // 按店名自动识别平台(品牌-平台命名)
-  function lbl(s) { return window.storeBrand ? window.storeBrand(s) : s; }  // 显示只留品牌名
+  function lbl(s) { return ShopScope.find(s)?.name || s; }  // 显示只留品牌名
   function metricSync() { document.querySelectorAll('#metricGrp button[data-m]').forEach(b => { const on = metrics.has(b.dataset.m); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); }
   function chips() {
     const mode = (singleMode
@@ -118,13 +118,7 @@
     const vis = visibleShops();
     // 第一行: 店铺工具(多选/单选/全选/清空); 第二行起: 虾皮一排/TikTok一排(排内品牌首字母 A→Z)
     const ctrl = $('shopCtrl'); if (ctrl) ctrl.innerHTML = '<span class="gl">🏪 店铺</span>' + mode + acts;
-    if (window.storeGroup) {
-      const items = vis.map(s => ({ key: s, label: lbl(s), pend: false }));
-      const act = {}; vis.forEach(s => { if (chosen.has(s)) act[s] = true; });
-      $('shopGrp').innerHTML = window.storeGroup(items, act);
-    } else {
-      $('shopGrp').innerHTML = vis.map(s => '<button data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '" class="' + (chosen.has(s)?'on':'') + '" style="--shop-color:' + color(s) + '">' + chipIcon(s) + esc(lbl(s)) + '</button>').join('');
-    }
+    $('shopGrp').innerHTML = vis.map(s => '<button type="button" class="spill2 ' + (chosen.has(s)?'on':'') + '" data-s="' + esc(s) + '" aria-pressed="' + chosen.has(s) + '">' + esc(ShopScope.find(s)?.name || s) + '</button>').join('') || '<div class="empty">该范围暂无日报数据</div>';
     // 图例: 单选指标时=店铺开关; 多选指标时=指标开关(店由店铺条选)
     $('legend').innerHTML = multiMode()
       ? metricList().map(m => '<button class="lg" data-mm="' + m + '" aria-pressed="' + metrics.has(m) + '"><i style="background:' + MCOL[m] + '"></i>' + names[m] + '</button>').join('')
@@ -171,7 +165,7 @@
         shops.forEach(s => { const c = curBy.get(s) || 'IDR'; (groups[c] = groups[c] || []).push(s); });
         chosen = new Set(groups['IDR'] || groups[Object.keys(groups)[0]] || shops);
       } else { chosen=new Set([...chosen].filter(s=>shops.includes(s))); shops.filter(s=>!oldShops.has(s)).forEach(s=>chosen.add(s)); if (!chosen.size && shops.length) chosen.add(shops[0]); }
-      if (ctyF !== 'all') { chosen = new Set([...chosen].filter(s => shopCountry(s) === ctyF)); if (!chosen.size) chosen = new Set(visibleShops()); }
+      chosen = new Set([...chosen].filter(s => visibleShops().includes(s))); if (!chosen.size) chosen = new Set(visibleShops());
       chips(); $('footTime').textContent=data.updatedAt || '未提供更新时间';
       if (!rows.length) {
         axis=[];range=null;plot=null;view={start:0,end:0};hover=-1;
@@ -442,5 +436,10 @@
   canvas.addEventListener('keydown',e=>{if(!axis.length||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const current=hover<0?view.end:hover;hover=e.key==='Home'?view.start:e.key==='End'?view.end:Math.max(view.start,Math.min(view.end,current+(e.key==='ArrowRight'?1:-1)));draw();detail();placeTipAtPoint(hover);});
   window.addEventListener('resize',resize);
   if(window.ResizeObserver)new ResizeObserver(resize).observe($('chartbox'));
-  initSyncPill();resize();loadData();setInterval(loadData,5*60*1000);
+  initSyncPill();resize();
+  $('ctyRow').classList.add('scope-legacy');
+  ShopScope.ready.then(() => {
+    ShopScope.mount($('scopeBar'), state => {scopeState=state; ctyF=state.country; chosen=new Set(visibleShops()); if(range){chips();render();}}, {multiple:true});
+    loadData(); setInterval(loadData,5*60*1000);
+  }).catch(e => message(e.message,true));
 })();
