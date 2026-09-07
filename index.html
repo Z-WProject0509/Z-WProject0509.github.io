@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
+<head><title>订单发货 · 电商综合平台</title>
 <meta charset="utf-8">
 <meta name="theme-color" content="#3b6cf6">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
@@ -89,12 +89,15 @@
   .ghost-note { font-size: 11.5px; color: var(--text-3); margin: 0 0 10px; line-height: 1.65; }
   @media (max-width: 1100px) { .layout { flex-direction: column; } .side { width: 100%; position: static; } }
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/unified.css">
+<script src="assets/scope.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
-  <div class="brand"><span class="logo">🛒</span>电商工作台 <small>双平台 · MULMUL</small></div>
+  <div class="brand"><span class="logo">🛒</span>电商综合平台 <small>多国家 · 多平台 · 多店铺</small></div>
   <nav class="areanav">
-    <a class="an" href="index.html">📦 订单发货</a>
+    <a class="an on" href="index.html">📦 订单发货</a>
     <a class="an" href="store.html">📊 店铺数据</a>
     <a class="an" href="finance.html">💰 财务</a>
   </nav>
@@ -103,16 +106,16 @@
     <button class="btn ghost" onclick="refreshNow()">⟳ 刷新</button>
   </div>
 </div></header>
-<div class="wrap">
+<div class="wrap"><div id="scopeBar"></div>
 <div class="layout">
   <div class="main">
     <div class="cty-row"><span class="cty-lbl">🌏 国家</span><div class="cty-chips" id="ctyChips"></div></div>
     <div class="tabs">
-      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">MULMUL</button>
-      <button class="tab" data-plat="tk" onclick="switchTab('tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">MULMUL</button>
-      <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH</button>
-      <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')"><img class="plogo" src="assets/logo-tk.png" alt="TikTok">ZEROTH</button>
-      <button class="tab" data-plat="thsp" onclick="switchTab('thsp')" style="display:none"><img class="plogo" src="assets/logo-shopee.png" alt="Shopee">ZEROTH·泰</button>
+      <button class="tab on" data-plat="shopee" onclick="switchTab('shopee')"><img class="plogo" src="assets/logo-shopee.svg" alt="Shopee">MULMUL</button>
+      <button class="tab" data-plat="tk" onclick="switchTab('tk')"><img class="plogo" src="assets/logo-tk.svg" alt="TikTok">MULMUL</button>
+      <button class="tab" data-plat="zeroth" onclick="switchTab('zeroth')"><img class="plogo" src="assets/logo-shopee.svg" alt="Shopee">ZEROTH</button>
+      <button class="tab" data-plat="zeroth-tk" onclick="switchTab('zeroth-tk')"><img class="plogo" src="assets/logo-tk.svg" alt="TikTok">ZEROTH</button>
+      <button class="tab" data-plat="thsp" onclick="switchTab('thsp')" style="display:none"><img class="plogo" src="assets/logo-shopee.svg" alt="Shopee">ZEROTH·泰</button>
     </div>
     <div id="ctyGhost"></div>
     <div class="upd" id="upd"></div>
@@ -192,99 +195,36 @@ var PLAT_NAME = { shopee: 'MULMUL', tk: 'MULMUL', thsp: 'ZEROTH·泰' };
 var FILE_MAP = { 'zw-sp': 'st_zeewalk_shopee.json', 'zw-tk': 'st_zeewalk_tk.json', 'kk-sp': 'st_kaki_shopee.json', 'kk-tk': 'st_kaki_tk.json', 'al1-sp': 'st_al1_shopee.json' };
 var PLK = { shopee: 'shopee', tk: 'tk', zeroth: 'shopee', 'zeroth-tk': 'tk', thsp: 'shopee', 'zw-sp': 'shopee', 'zw-tk': 'tk', 'kk-sp': 'shopee', 'kk-tk': 'tk', 'al1-sp': 'shopee' };
 // ===== 店铺国家母分组(与 _site/stores.json 保持一致; 新店只改这里 = 母分组配置) =====
-var CTY_LIST = [
-  { name: '印尼', emoji: '🇮🇩', note: 'Shopee .co.id · TikTok Shop .tokopedia.com · Lazada 印尼', stores: [
-    { key: 'shopee', plat: 'shopee', brand: 'MULMUL', label: 'MULMUL', live: true },
-    { key: 'tk', plat: 'tk', brand: 'MULMUL', label: 'MULMUL', live: true },
-    { key: 'zeroth', plat: 'zeroth', brand: 'ZEROTH', label: 'ZEROTH', live: true },
-    { key: 'zeroth-tk', plat: 'zeroth-tk', brand: 'ZEROTH', label: 'ZEROTH', live: true },
-    { key: 'zw-sp', plat: 'zw-sp', brand: 'ZEEWALK', label: 'ZEEWALK', live: true },
-    { key: 'zw-tk', plat: 'zw-tk', brand: 'ZEEWALK', label: 'ZEEWALK', live: true },
-    { key: 'kk-sp', plat: 'kk-sp', brand: 'KAKI CILIK', label: 'KAKI CILIK', live: true },
-    { key: 'kk-tk', plat: 'kk-tk', brand: 'KAKI CILIK', label: 'KAKI CILIK', live: true },
-    { key: 'al1-sp', plat: 'al1-sp', brand: 'ALIBABA', alias: '一店', label: 'ALIBABA一店', live: true },
-    { key: 'zt-lzd-id', plat: null, brand: 'ZEROTH', label: 'ZEROTH(拉赞达)', live: false }
-  ]},
-  { name: '泰国', emoji: '🇹🇭', note: 'Shopee .co.th · TikTok Shop 泰国 · Lazada 泰国', stores: [
-    { key: 'zt-sp', plat: 'thsp', brand: 'ZEROTH', label: 'ZEROTH·泰', live: true },
-    { key: 'zt-tk', plat: null, brand: 'ZEROTH', label: 'ZEROTH(抖店)', live: false },
-    { key: 'zt-lzd', plat: null, brand: 'ZEROTH', label: 'ZEROTH(拉赞达)', live: false }
-  ]}
-];
-var curCty = CTY_LIST[0].name;
-function esc2(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-function ctyOf(plat) { for (var i = 0; i < CTY_LIST.length; i++) for (var j = 0; j < CTY_LIST[i].stores.length; j++) if (CTY_LIST[i].stores[j].plat === plat) return CTY_LIST[i].name; return null; }
-function buildCtyBar() {
-  var box = document.getElementById('ctyChips');
-  if (!box) return;
-  box.innerHTML = CTY_LIST.map(function (c) {
-    var live = c.stores.filter(function (s) { return s.live; }).length;
-    var pend = c.stores.length - live;
-    var cnt = (live ? live + ' 家' : '') + (pend ? (live ? ' + ' : '') + pend + ' 待接入' : '');
-    return '<button class="cty' + (c.name === curCty ? ' on' : '') + '" data-cty="' + esc2(c.name) + '" onclick="setCty(\'' + esc2(c.name) + '\')">' + c.emoji + ' ' + esc2(c.name) + (cnt ? ' <small>' + esc2(cnt) + '</small>' : '') + '</button>';
-  }).join('');
-}
-function setCty(name) {
-  curCty = name;
-  var c = null;
-  for (var i = 0; i < CTY_LIST.length; i++) if (CTY_LIST[i].name === name) { c = CTY_LIST[i]; break; }
-  if (!c) return;
-  // 选中态
-  var chips = document.querySelectorAll('#ctyChips .cty');
-  for (var k = 0; k < chips.length; k++) chips[k].classList.toggle('on', chips[k].getAttribute('data-cty') === name);
-  var liveKeys = c.stores.filter(function (s) { return s.live; }).map(function (s) { return s.plat; });
-  // 显示/隐藏真实店铺标签(该国家的点亮, 其他隐藏)
-  var tabs = document.querySelectorAll('.tabs .tab');
-  for (var t = 0; t < tabs.length; t++) {
-    var show = liveKeys.indexOf(tabs[t].getAttribute('data-plat')) >= 0;
-    tabs[t].style.display = show ? '' : 'none';
-    if (!show && tabs[t].classList.contains('on')) tabs[t].classList.remove('on');
-  }
-  document.querySelector('.tabs').style.display = liveKeys.length ? '' : 'none';
-  // 该国家下"待接入"店铺的占位 chips
-  var pending = c.stores.filter(function (s) { return !s.live; });
-  var ghost = document.getElementById('ctyGhost');
-  if (pending.length) {
-    ghost.innerHTML =
-      '<div class="ghost-tabs">' + pending.map(function (s) {
-        return '<span class="ghostchip"><span class="dot"></span>' + esc2(s.label) + '</span>';
-      }).join('') + '</div>' +
-      '<div class="ghost-note">' + c.emoji + ' ' + esc2(c.name) + ' · ' + pending.map(function (s) { return esc2(s.label.replace('🅖 ', '')); }).join('、') + ' 尚未接入看板（确认紫鸟店铺后接入即自动点亮，含 订单发货 + 店铺数据 + 财务 整套）</div>';
-    ghost.style.display = '';
-  } else { ghost.style.display = 'none'; ghost.innerHTML = ''; }
-  // 切到第一个已接入店铺
-  if (liveKeys.length) { switchTab(liveKeys[0]); }
-  else {
-    for (var s2 = 0; s2 < document.querySelectorAll('.state').length; s2++) document.querySelectorAll('.state')[s2].classList.remove('on');
-    document.getElementById('upd').textContent = c.emoji + ' ' + c.name + ' — 店铺待接入（同步器注册后自动点亮）';
-  }
-}
-function initCty() { buildCtyBar(); setCty(curCty); }
-// 动态补齐 live 店的标签与面板(新增店只需 CTY_LIST+FILE_MAP, 不用改静态 HTML)
+var CTY_LIST = [], curCty = '', activeOrder = null;
+function ctyOf(key) { return ShopScope.find(key)?.country; }
 function ensureLiveUI() {
-  var tabsEl = document.querySelector('.tabs'), mainEl = document.querySelector('.main');
-  if (!tabsEl || !mainEl) return;
-  CTY_LIST.forEach(function (c) {
-    c.stores.forEach(function (st) {
-      if (!st.live || !st.plat) return;
-      if (!document.querySelector('.tab[data-plat="' + st.plat + '"]')) {
-        var b = document.createElement('button');
-        b.type = 'button'; b.className = 'tab'; b.style.display = 'none';
-        b.setAttribute('data-plat', st.plat);
-        b.setAttribute('onclick', "switchTab('" + st.plat + "')");
-        var lk = PLK[st.plat];
-        b.innerHTML = (lk ? '<img class="plogo" src="assets/logo-' + lk + '.png" alt="">' : '') + esc(st.label || st.key);
-        tabsEl.appendChild(b);
-      }
-      if (!document.getElementById('state-' + st.plat)) {
-        var w = document.createElement('div');
-        w.id = 'state-' + st.plat; w.className = 'state';
-        w.innerHTML = '<div class="cards" id="cards-' + st.plat + '"></div>' +
-          '<div class="panel"><h2>🕐 最近订单（' + esc(st.label || st.key) + '） <span class="tag">当日新单 · 状态标红</span></h2><div id="recentOrders-' + st.plat + '"></div></div>' +
-          '<div class="panel"><h2>🚚 待处理订单（' + esc(st.label || st.key) + '） <span class="tag">发货后自动移除</span></h2><div id="toshipOrders-' + st.plat + '"></div></div>';
-        mainEl.appendChild(w);
-      }
-    });
+  document.querySelector('.main > .cty-row').classList.add('scope-legacy');
+  document.querySelector('.tabs').classList.add('scope-legacy');
+  document.getElementById('ctyGhost').classList.add('scope-legacy');
+  ShopScope.stores.forEach(st => {
+    FILE_MAP[st.key] = st.file; PLAT_NAME[st.key] = st.name;
+    if (!document.getElementById('state-' + st.key)) {
+      const w = document.createElement('div'); w.id = 'state-' + st.key; w.className = 'state';
+      w.innerHTML = '<div class="cards" id="cards-' + st.key + '"></div><div class="panel"><h2>最近订单</h2><div id="recentOrders-' + st.key + '"></div></div><div class="panel"><h2>待处理订单</h2><div id="toshipOrders-' + st.key + '"></div></div>';
+      document.querySelector('.main').append(w);
+    }
+  });
+}
+function initCty() {
+  ShopScope.mount(document.getElementById('scopeBar'), (state, shop) => {
+    curCty = state.country; activeOrder = shop?.key;
+    document.querySelectorAll('.state').forEach(el => el.classList.remove('on'));
+    document.getElementById('sideSnapshot').innerHTML = '<div class="empty">暂无店铺数据</div>';
+    document.getElementById('rateBox').innerHTML = '<div class="empty">等待汇率数据</div>';
+    document.getElementById('upd').textContent = '';
+    if (!shop) return;
+    const panel = document.getElementById('state-' + shop.key); panel.classList.add('on');
+    if (!shop.live || !shop.file) {
+      document.getElementById('cards-' + shop.key).innerHTML = '';
+      document.getElementById('recentOrders-' + shop.key).innerHTML = '<div class="empty">该店铺订单待接入</div>';
+      document.getElementById('toshipOrders-' + shop.key).innerHTML = '<div class="empty">暂无已同步数据</div>'; return;
+    }
+    load(shop.key);
   });
 }
 var cache = {};
@@ -340,7 +280,7 @@ function renderSide(plat, d) {
   var syncTxt = d.syncMinutes != null ? ' · ⏱ 本次更新用时 ' + d.syncMinutes + ' 分钟' : '';
   var tabEl = document.querySelector('.tab[data-plat="' + plat + '"]');
   // MULMUL 店名标签随数据刷新, 保持平台 logo; ZEROTH 标签保持静态短名(自带 logo)
-  if (tabEl && (plat === 'shopee' || plat === 'tk')) tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">' : '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">') + esc(disp);
+  if (tabEl && (plat === 'shopee' || plat === 'tk')) tabEl.innerHTML = (plat === 'shopee' ? '<img class="plogo" src="assets/logo-shopee.svg" alt="Shopee">' : '<img class="plogo" src="assets/logo-tk.svg" alt="TikTok">') + esc(disp);
   document.getElementById('upd').textContent = disp + ' — 更新于 ' + (d.generatedAt || '') + ' · 数据每 15 分钟自动更新' + syncTxt;
   document.getElementById('sideSnapshot').innerHTML =
     '<div class="snap-row"><span class="k">店铺</span><span class="v">' + esc(disp) + '</span></div>' +
@@ -415,11 +355,11 @@ function render(plat, d) {
     : '<div class="empty">🎉 暂无待处理订单（全部已打面单发货）</div>';
 }
 function load(plat) {
-  var url = plat === 'tk' ? 'tk.json' : plat === 'zeroth' ? 'zeroth_shopee.json' : plat === 'zeroth-tk' ? 'zeroth_tk.json' : plat === 'thsp' ? 'zeroth_th_shopee.json' : (FILE_MAP[plat] || 'data.json');
+  var url = FILE_MAP[plat]; if (!url) return;
   if (cache[plat]) { render(plat, cache[plat]); return; }
-  fetch(url + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
-    cache[plat] = d; render(plat, d);
-  }).catch(function () { document.getElementById('upd').textContent = '数据加载失败'; });
+  fetch(url + '?t=' + Date.now()).then(function (r) { if (!r.ok) throw Error("数据文件不可用"); return r.json(); }).then(function (d) {
+    cache[plat] = d; if (activeOrder === plat) render(plat, d);
+  }).catch(function () { if (activeOrder === plat) { document.getElementById('upd').textContent = '数据加载失败，请刷新重试'; document.getElementById('cards-' + plat).innerHTML = '<div class="empty">当前店铺数据暂不可用</div>'; } });
 }
 function switchTab(plat) {
   document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('on', b.dataset.plat === plat); });
@@ -547,13 +487,10 @@ function renderOverview() {
     '</div></div><div class="ov-legend">' + legend + '</div>';
 }
 // 每 5 分钟自动刷新
-ensureLiveUI();
-initCty();
-loadOverview();
+ShopScope.ready.then(() => { ensureLiveUI(); initCty(); }).catch(e => { document.getElementById('scopeBar').textContent = e.message; });
+document.getElementById('ovBody').closest('.panel').remove();
 setInterval(function () {
-  var cur = document.querySelector('.tab.on');
-  if (cur) { cache[cur.dataset.plat] = null; load(cur.dataset.plat); }
-  loadOverview();
+  if (activeOrder) { cache[activeOrder] = null; load(activeOrder); }
 }, 5 * 60 * 1000);
 </script>
 </body>
