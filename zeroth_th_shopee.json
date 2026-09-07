@@ -1,19 +1,20 @@
 {
-  "generatedAt": "2026/9/7 08:17:59",
+  "generatedAt": "2026/9/7 08:46:27",
   "platform": "shopee",
   "storeName": "【泰国ZEROTH】虾皮",
   "storeId": "27722617464774",
   "currency": "THB",
   "orders": {
-    "count": 1,
-    "totalQty": 1,
-    "amountLocal": 350
+    "count": 2,
+    "totalQty": 2,
+    "amountLocal": 1005
   },
   "window": {
-    "count": 412,
-    "amountLocal": 224903.18
+    "count": 413,
+    "amountLocal": 225558.18
   },
   "statusAgg": {
+    "Unpaid": 1,
     "To ship": 2,
     "Shipped": 5,
     "completed": 9,
@@ -21,8 +22,16 @@
     "Unknown": 15,
     "Completed": 329
   },
-  "toshipCount": 2,
+  "toshipCount": 3,
   "recent": [
+    {
+      "d": "2026-09-07",
+      "id": "260907CT25NY3U",
+      "sku": "63979-ZT5M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 655,
+      "st": "Unpaid"
+    },
     {
       "d": "2026-09-07",
       "id": "260907C15MTH0A",
@@ -33,6 +42,12 @@
     }
   ],
   "toship": [
+    {
+      "d": "2026-09-07",
+      "id": "260907CT25NY3U",
+      "st": "Unpaid",
+      "sku": "63979-ZT5M-TH-BL-44-PC"
+    },
     {
       "d": "2026-09-07",
       "id": "260907C15MTH0A",
@@ -47,6 +62,14 @@
     }
   ],
   "allOrders": [
+    {
+      "id": "260907CT25NY3U",
+      "date": "2026-09-07",
+      "sku": "63979-ZT5M-TH-BL-44-PC",
+      "qty": 1,
+      "amt": 655,
+      "st": "Unpaid"
+    },
     {
       "id": "260907C15MTH0A",
       "date": "2026-09-07",
