@@ -1,61 +1,56 @@
 {
-  "generatedAt": "2026/9/5 19:29:27",
+  "generatedAt": "2026/9/7 17:05:34",
   "platform": "shopee",
   "storeName": "【印尼ALIBABA一店】虾皮",
   "storeId": "27823692361118",
   "currency": "IDR",
   "orders": {
-    "count": 4,
-    "totalQty": 4,
-    "amountLocal": 186803
+    "count": 1,
+    "totalQty": 1,
+    "amountLocal": 75481
   },
   "window": {
-    "count": 419,
-    "amountLocal": 15243579
+    "count": 422,
+    "amountLocal": 15403040
   },
   "statusAgg": {
-    "To Ship": 1,
-    "Shipped": 10,
-    "Unknown": 9,
+    "To Ship": 4,
+    "Shipped": 6,
+    "Unknown": 5,
+    "completed": 2,
     "Cancelled": 65,
-    "Completed": 334
+    "Completed": 340
   },
-  "toshipCount": 1,
+  "toshipCount": 4,
   "recent": [
     {
-      "d": "2026-09-05",
-      "id": "2609058SVCNMTY",
-      "sku": "2609058SVCNMTY",
+      "d": "2026-09-07",
+      "id": "260907DGURJD8M",
+      "sku": "260907DGURJD8M",
       "qty": 1,
-      "amt": 46990,
+      "amt": 75481,
       "st": "To Ship"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609058MS4D1A5",
-      "sku": "2609058MS4D1A5",
-      "qty": 1,
-      "amt": 46990,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057YURUESB",
-      "sku": "2609057YURUESB",
-      "qty": 1,
-      "amt": 45833,
-      "st": "Shipped"
-    },
-    {
-      "d": "2026-09-05",
-      "id": "2609057TS7J03B",
-      "sku": "2609057TS7J03B",
-      "qty": 1,
-      "amt": 46990,
-      "st": "Shipped"
     }
   ],
   "toship": [
+    {
+      "d": "2026-09-07",
+      "id": "260907DGURJD8M",
+      "st": "To Ship",
+      "sku": "260907DGURJD8M"
+    },
+    {
+      "d": "2026-09-06",
+      "id": "260906ANR5NT4Q",
+      "st": "To Ship",
+      "sku": "260906ANR5NT4Q"
+    },
+    {
+      "d": "2026-09-05",
+      "id": "26090591FA0WVT",
+      "st": "To Ship",
+      "sku": "26090591FA0WVT"
+    },
     {
       "d": "2026-09-05",
       "id": "2609058SVCNMTY",
@@ -65,6 +60,30 @@
   ],
   "allOrders": [
     {
+      "id": "260907DGURJD8M",
+      "date": "2026-09-07",
+      "sku": "260907DGURJD8M",
+      "qty": 1,
+      "amt": 75481,
+      "st": "To Ship"
+    },
+    {
+      "id": "260906ANR5NT4Q",
+      "date": "2026-09-06",
+      "sku": "260906ANR5NT4Q",
+      "qty": 1,
+      "amt": 41990,
+      "st": "To Ship"
+    },
+    {
+      "id": "26090591FA0WVT",
+      "date": "2026-09-05",
+      "sku": "26090591FA0WVT",
+      "qty": 1,
+      "amt": 41990,
+      "st": "To Ship"
+    },
+    {
       "id": "2609058SVCNMTY",
       "date": "2026-09-05",
       "sku": "2609058SVCNMTY",
@@ -94,7 +113,7 @@
       "sku": "2609057TS7J03B",
       "qty": 1,
       "amt": 46990,
-      "st": "Shipped"
+      "st": "Unknown"
     },
     {
       "id": "2609045BP5VJ53",
@@ -118,7 +137,7 @@
       "sku": "26090457W348YV",
       "qty": 1,
       "amt": 46590,
-      "st": "Shipped"
+      "st": "completed"
     },
     {
       "id": "26090457MP6734",
@@ -126,7 +145,7 @@
       "sku": "26090457MP6734",
       "qty": 1,
       "amt": 40433,
-      "st": "Shipped"
+      "st": "Unknown"
     },
     {
       "id": "2609034B11FKQ3",
@@ -134,7 +153,7 @@
       "sku": "2609034B11FKQ3",
       "qty": 1,
       "amt": 42090,
-      "st": "Shipped"
+      "st": "Unknown"
     },
     {
       "id": "260903447JGV0V",
@@ -158,7 +177,7 @@
       "sku": "2609033C0K7WQ5",
       "qty": 1,
       "amt": 41462,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "2609021T51BPJJ",
@@ -182,7 +201,7 @@
       "sku": "26090209CPS4Y1",
       "qty": 1,
       "amt": 36425,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260902017872JJ",
@@ -198,7 +217,7 @@
       "sku": "260901UFW13A1F",
       "qty": 1,
       "amt": 45491,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260901U79K6C81",
@@ -206,7 +225,7 @@
       "sku": "260901U79K6C81",
       "qty": 1,
       "amt": 36490,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260830Q39MYH6Q",
@@ -222,7 +241,7 @@
       "sku": "260830Q1WCTY3A",
       "qty": 1,
       "amt": 41990,
-      "st": "Unknown"
+      "st": "completed"
     },
     {
       "id": "260830PGFB7T0Q",
@@ -230,7 +249,7 @@
       "sku": "260830PGFB7T0Q",
       "qty": 1,
       "amt": 41122,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260830PB3GAYBY",
@@ -262,7 +281,7 @@
       "sku": "260830N1505SFC",
       "qty": 1,
       "amt": 31990,
-      "st": "Unknown"
+      "st": "Completed"
     },
     {
       "id": "260829M7CB2D2U",
