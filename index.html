@@ -305,7 +305,7 @@ function renderSide(plat, d) {
     }).join('');
     document.getElementById('rateBox').innerHTML =
       chips +
-      '<div class="fx-note">汇率实时（每 15 分钟随数据更新）· 更新于 ' + esc(utcLocal(fx.updatedAt, true)) + '</div>' +
+      '<div class="fx-note">汇率实时（每 15 分钟随数据更新）· 更新于 ' + esc(fx.updatedAt || '') + '</div>' +
       '<div class="fx-calc"><div class="fxc-title">💱 换算（币种可选 · 汇率实时）</div>' +
       '<div class="fxc-row"><select id="fxFrom"></select><input id="fxAmount" type="number" placeholder="金额" value="100"></div>' +
       '<div class="fxc-row">≈ <b id="fxResult" class="fxr">—</b></div></div>';
@@ -329,7 +329,7 @@ function render(plat, d) {
   var cc = d.currency || 'IDR';
   var curFx = fxItem(fx, cc);
   var cny = fx && c.amountLocal != null && curFx ? c.amountLocal * curFx.cnyPer : null;
-  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + utcLocal(fx.updatedAt, true) + '（每 15 分钟刷新）' : '';
+  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + esc(fx.updatedAt) + '（每 15 分钟刷新）' : '';
   document.getElementById('cards-' + plat).innerHTML = [
     ['订单总数', (c.count || 0) + ' 单', ''],
     ['取消订单', cancelled + ' 单', cancelled ? 'red' : ''],
