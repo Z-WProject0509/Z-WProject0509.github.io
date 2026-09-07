@@ -88,8 +88,8 @@
   //   店名=品牌-平台: 虾皮/Shopee → shopee, 抖店/TikTok/Tokopedia → tk; 拉赞达/Lazada 暂无素材返回空
   window.platLogo = function (p) {
     var s = String(p || '');
-    if (/(?:虾皮|Shopee)/i.test(s)) return '<img class="plogo" src="assets/logo-shopee.png" alt="Shopee">';
-    if (/(?:抖店|TikTok|Tiktok|Tokopedia)/i.test(s)) return '<img class="plogo" src="assets/logo-tk.png" alt="TikTok">';
+    if (/(?:虾皮|Shopee)/i.test(s)) return '<img class="plogo" src="assets/logo-shopee.svg" alt="Shopee">';
+    if (/(?:抖店|TikTok|Tiktok|Tokopedia)/i.test(s)) return '<img class="plogo" src="assets/logo-tk.svg" alt="TikTok">';
     return '';
   };
   // 店铺选择条(三页共用): 虾皮一排 / TikTok 一排, 排内按品牌首字母 A→Z
