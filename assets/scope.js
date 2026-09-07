@@ -30,7 +30,7 @@
       select.addEventListener('change', () => {state[key] = select.value; if (key === 'country') {state.platform = null; state.store = null;} if (key === 'platform') state.store = null; update();});
     });
     const path = document.createElement('div'); path.className = 'scope-path'; host.append(path);
-    const labelName = s => { const n = s.name || s.displayName || s.label || s.storeName || s.key; const words = n.replace(/[【】]/g,'').split(/\s+/); return words.length > 1 ? words.map((x,i)=>`<span>${x}</span>`).join('') : `<span>${n}</span>`; };
+    const labelName = s => { const n = String(s.name || s.displayName || s.label || s.storeName || s.key).replace(/[【】]/g,''); return `<span>${n}</span>`; };
     function drawTree(countries, currentCountry, currentPlatform, currentStore, allMode) {
       tree.replaceChildren();
       const countryRow=document.createElement('div'); countryRow.className='scope-country-row';
