@@ -11,13 +11,14 @@
   },
   "window": {
     "count": 20,
-    "amountLocal": 521439
+    "amountLocal": 521439,
+    "statusAll": {
+      "Awaiting shipment": 4,
+      "Shipped": 14,
+      "Canceled": 2
+    }
   },
-  "statusAgg": {
-    "Awaiting shipment": 4,
-    "Shipped": 14,
-    "Canceled": 2
-  },
+  "statusAgg": {},
   "toshipCount": 4,
   "recent": [],
   "toship": [
