@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026/9/7 09:13:59",
+  "generatedAt": "2026/9/7 09:44:57",
   "platform": "tk",
   "storeName": "【印尼ZEROTH】抖店",
   "storeId": "27748571249582",
@@ -16,9 +16,9 @@
   "statusAgg": {
     "Awaiting shipment": 15,
     "Unpaid": 1,
-    "Cancelled": 431,
-    "Shipped": 48,
-    "Delivered": 46,
+    "Cancelled": 432,
+    "Shipped": 46,
+    "Delivered": 47,
     "Completed": 332
   },
   "toshipCount": 16,
@@ -329,7 +329,7 @@
       "sku": "63979-ZT1M-ID-BR-42-PC",
       "qty": 1,
       "amt": 398041,
-      "st": "Shipped"
+      "st": "Delivered"
     },
     {
       "id": "585894318436943498",
@@ -617,7 +617,7 @@
       "sku": "63979-ZT1M-ID-BR-42-PC",
       "qty": 1,
       "amt": 415211,
-      "st": "Shipped"
+      "st": "Cancelled"
     },
     {
       "id": "585839130788398241",
