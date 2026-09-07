@@ -11,16 +11,21 @@
   },
   "window": {
     "count": 200,
-    "amountLocal": 98628.55
+    "amountLocal": 98628.55,
+    "statusAll": {
+      "To Ship": 3,
+      "Cancelled": 24,
+      "Unpaid": 1,
+      "Shipped": 4,
+      "completed": 11,
+      "Unknown": 14,
+      "Completed": 143
+    }
   },
   "statusAgg": {
     "To Ship": 3,
-    "Cancelled": 24,
-    "Unpaid": 1,
-    "Shipped": 4,
-    "completed": 11,
-    "Unknown": 14,
-    "Completed": 143
+    "Cancelled": 1,
+    "Unpaid": 1
   },
   "toshipCount": 4,
   "recent": [
