@@ -674,7 +674,7 @@
     }
   ],
   "sync": {
-    "intervalMinutes": 30,
+    "intervalMinutes": 15,
     "publish": {
       "enabled": true,
       "owner": "Z-WProject0509",
