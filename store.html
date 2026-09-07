@@ -131,10 +131,13 @@
     .chart-actions { gap:10px; }.point-detail { align-items:flex-start;flex-direction:column;gap:8px; }
   }
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/unified.css">
+<script src="assets/scope.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
-  <div class="brand"><span class="logo">🛒</span>电商工作台 <small>店铺数据 · 多店对比</small></div>
+  <div class="brand"><span class="logo">🛒</span>电商综合平台 <small>多国家 · 多平台 · 多店铺</small></div>
   <nav class="areanav">
     <a class="an" href="index.html">📦 订单发货</a>
     <a class="an on" href="store.html">📊 店铺数据</a>
@@ -146,7 +149,7 @@
   </div>
 </div></header>
 
-<div class="wrap">
+<div class="wrap"><div id="scopeBar"></div>
   <div class="panel">
     <div class="trend-heading"><div><h1>店铺趋势</h1><p>查看销售变化，对比各店铺表现</p></div><button class="btn" id="retryData">刷新数据</button></div>
     <!-- 控制行：国家母分组 / 店铺多选 / 指标(可多选) / 粒度 / 日历日期区间 -->
