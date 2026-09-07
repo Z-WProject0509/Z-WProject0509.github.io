@@ -1,18 +1,20 @@
 {
-  "title": "店铺注册表(按国家母分组)",
-  "namingRule": "店名 = 品牌-平台, 自动识别: 虾皮=Shopee / 抖店=TikTok / 拉赞达=Lazada; 名字含 泰 = 泰国站(THB), 否则印尼(IDR)。加新店只需补 storeName=品牌+平台后缀 的同步文件并在 _auto/zeroth_daily.mjs 的 Z_STORES 加一行。",
+  "title": "电商综合平台店铺注册表",
+  "namingRule": "身份以 id + countryCode + platformId 为准，显示名称不用于推断国家。",
   "updatedAt": "2026/9/5 19:04:21",
-  "note": "国家=店铺的母分组, 判定依据: 紫鸟/站斧店清单的站点域名与 platformName(如 Shopee-印尼-本土=seller.shopee.co.id、TikTok Shop-印尼-本土=seller-id.tokopedia.com、Shopee-泰国-本土=seller.shopee.co.th)。live=true 表示已接入看板(订单发货+店铺数据+财务); live=false 表示待接入(确认后在同步器注册即可整套点亮)。品牌归属: MULMUL、ZEROTH 等均按母品牌, 不按公司A/B。",
+  "note": "模块分别配置数据源；订单已接入不代表财务已接入。新增国家/平台/店铺统一在本文件注册。",
   "countries": [
     {
       "name": "印尼",
       "emoji": "🇮🇩",
-      "currency": "IDR"
+      "currency": "IDR",
+      "code": "ID"
     },
     {
       "name": "泰国",
       "emoji": "🇹🇭",
-      "currency": "THB"
+      "currency": "THB",
+      "code": "TH"
     }
   ],
   "stores": [
@@ -26,7 +28,69 @@
       "storeName": "Shopee—MULMUL",
       "site": "seller.shopee.co.id",
       "file": "data.json",
-      "live": true
+      "live": true,
+      "id": "shopee",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "MULMUL",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "Shopee—MULMUL"
+      ],
+      "modules": {
+        "orders": {
+          "file": "data.json"
+        },
+        "sales": {
+          "file": "sales_summary.json"
+        },
+        "finance": {
+          "file": "finance_orders.json",
+          "legacyPlatform": "Shopee"
+        },
+        "ads": {
+          "file": "ads_summary.json",
+          "costField": "expense",
+          "salesField": "sales"
+        },
+        "income": {
+          "file": "finance_shopee.json"
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "shopee_sync.mjs",
+            "args": [
+              "--once"
+            ]
+          },
+          {
+            "script": "shopee_toship_sync.mjs",
+            "args": [
+              "--once"
+            ]
+          },
+          {
+            "script": "make_site_data.mjs",
+            "args": [
+              "--once"
+            ],
+            "outputs": [
+              "data.json"
+            ]
+          }
+        ],
+        "income": [
+          {
+            "script": "finance_income_sync.mjs",
+            "outputs": [
+              "finance_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "tk",
@@ -38,7 +102,44 @@
       "storeName": "Tiktok—MULMUL",
       "site": "seller-id.tokopedia.com",
       "file": "tk.json",
-      "live": true
+      "live": true,
+      "id": "tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "MULMUL",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "TikTok—MULMUL",
+        "Tiktok—MULMUL"
+      ],
+      "modules": {
+        "orders": {
+          "file": "tk.json"
+        },
+        "sales": {
+          "file": "sales_summary.json"
+        },
+        "finance": {
+          "file": "finance_orders.json",
+          "legacyPlatform": "TikTok"
+        },
+        "ads": {
+          "file": "ads_tk_summary.json",
+          "costField": "cost",
+          "salesField": "grossRevenue"
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "tk_sync.mjs",
+            "outputs": [
+              "tk.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "zeroth",
@@ -50,7 +151,40 @@
       "storeName": "【印尼ZEROTH】虾皮",
       "site": "seller.shopee.co.id",
       "file": "zeroth_shopee.json",
-      "live": true
+      "live": true,
+      "id": "zeroth",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "ZEROTH",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ZEROTH 虾皮",
+        "ZEROTH-虾皮",
+        "【印尼ZEROTH】虾皮"
+      ],
+      "modules": {
+        "orders": {
+          "file": "zeroth_shopee.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "shopee"
+            ],
+            "outputs": [
+              "zeroth_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "zeroth-tk",
@@ -62,7 +196,40 @@
       "storeName": "【印尼ZEROTH】抖店",
       "site": "seller-id.tokopedia.com",
       "file": "zeroth_tk.json",
-      "live": true
+      "live": true,
+      "id": "zeroth-tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "ZEROTH",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ZEROTH 抖店",
+        "ZEROTH-抖店",
+        "【印尼ZEROTH】抖店"
+      ],
+      "modules": {
+        "orders": {
+          "file": "zeroth_tk.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "tk"
+            ],
+            "outputs": [
+              "zeroth_tk.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "zt-lzd-id",
@@ -75,8 +242,19 @@
       "site": "Lazada-印尼",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
-      "storeId": "27787308234296"
+      "note": "尚未提供模块数据源",
+      "storeId": "27787308234296",
+      "id": "zt-lzd-id",
+      "countryCode": "ID",
+      "platformId": "lazada",
+      "name": "ZEROTH",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "【印尼ZEROTH】拉赞达",
+        "ZEROTH 拉赞达"
+      ],
+      "modules": {}
     },
     {
       "key": "zt-sp",
@@ -87,10 +265,43 @@
       "label": "ZEROTH 虾皮",
       "storeName": "【泰国ZEROTH】虾皮",
       "site": "seller.shopee.co.th",
-      "file": null,
-      "live": false,
+      "file": "zeroth_th_shopee.json",
+      "live": true,
       "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
-      "storeId": "27722617464774"
+      "storeId": "27722617464774",
+      "id": "zt-sp",
+      "countryCode": "TH",
+      "platformId": "shopee",
+      "name": "ZEROTH",
+      "currency": "THB",
+      "enabled": true,
+      "aliases": [
+        "ZEROTH 虾皮",
+        "ZEROTH泰-虾皮",
+        "【泰国ZEROTH】虾皮"
+      ],
+      "modules": {
+        "orders": {
+          "file": "zeroth_th_shopee.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "th-sp"
+            ],
+            "outputs": [
+              "zeroth_th_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "zt-tk",
@@ -103,8 +314,19 @@
       "site": "TikTok Shop-泰国-本土",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
-      "storeId": "27719292977580"
+      "note": "尚未提供模块数据源",
+      "storeId": "27719292977580",
+      "id": "zt-tk",
+      "countryCode": "TH",
+      "platformId": "tiktok",
+      "name": "ZEROTH",
+      "currency": "THB",
+      "enabled": true,
+      "aliases": [
+        "【泰国ZEROTH】抖店",
+        "ZEROTH 抖店"
+      ],
+      "modules": {}
     },
     {
       "key": "zt-lzd",
@@ -117,8 +339,19 @@
       "site": "Lazada-泰国",
       "file": null,
       "live": false,
-      "note": "待接入: 同步器注册后整套接入(订单+店铺数据+财务)",
-      "storeId": "27719306929337"
+      "note": "尚未提供模块数据源",
+      "storeId": "27719306929337",
+      "id": "zt-lzd",
+      "countryCode": "TH",
+      "platformId": "lazada",
+      "name": "ZEROTH",
+      "currency": "THB",
+      "enabled": true,
+      "aliases": [
+        "ZEROTH 拉赞达",
+        "【泰国ZEROTH】拉赞达"
+      ],
+      "modules": {}
     },
     {
       "key": "zeewalk-sp",
@@ -131,7 +364,39 @@
       "site": "seller.shopee.co.id",
       "storeId": "27775383969695",
       "file": "st_zeewalk_shopee.json",
-      "live": true
+      "live": true,
+      "id": "zeewalk-sp",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "ZEEWALK",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ZEEWALK-虾皮",
+        "【印尼ZEEWALK】虾皮"
+      ],
+      "modules": {
+        "orders": {
+          "file": "st_zeewalk_shopee.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "sp-zeewalk"
+            ],
+            "outputs": [
+              "st_zeewalk_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "zeewalk-tk",
@@ -144,7 +409,39 @@
       "site": "seller-id.tokopedia.com",
       "storeId": "27774718283400",
       "file": "st_zeewalk_tk.json",
-      "live": true
+      "live": true,
+      "id": "zeewalk-tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "ZEEWALK",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ZEEWALK-抖店",
+        "【印尼ZEEWALK】抖店"
+      ],
+      "modules": {
+        "orders": {
+          "file": "st_zeewalk_tk.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "tk-zeewalk"
+            ],
+            "outputs": [
+              "st_zeewalk_tk.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "kaki-sp",
@@ -157,7 +454,39 @@
       "site": "seller.shopee.co.id",
       "storeId": "27794326145550",
       "file": "st_kaki_shopee.json",
-      "live": true
+      "live": true,
+      "id": "kaki-sp",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "KAKI CILIK",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "KAKI CILIK-虾皮",
+        "【印尼KAKI CILIK】虾皮"
+      ],
+      "modules": {
+        "orders": {
+          "file": "st_kaki_shopee.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "sp-kaki"
+            ],
+            "outputs": [
+              "st_kaki_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "kaki-tk",
@@ -170,7 +499,39 @@
       "site": "seller-id.tokopedia.com",
       "storeId": "27795182675582",
       "file": "st_kaki_tk.json",
-      "live": true
+      "live": true,
+      "id": "kaki-tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "KAKI CILIK",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "KAKI CILIK-抖店",
+        "【印尼KAKI CILIK】抖店"
+      ],
+      "modules": {
+        "orders": {
+          "file": "st_kaki_tk.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "tk-kaki"
+            ],
+            "outputs": [
+              "st_kaki_tk.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "al1-sp",
@@ -184,7 +545,39 @@
       "site": "seller.shopee.co.id",
       "storeId": "27823692361118",
       "file": "st_al1_shopee.json",
-      "live": true
+      "live": true,
+      "id": "al1-sp",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "ALIBABA一店",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ALIBABA一店-虾皮",
+        "【印尼ALIBABA一店】虾皮"
+      ],
+      "modules": {
+        "orders": {
+          "file": "st_al1_shopee.json"
+        },
+        "sales": {
+          "file": "sales_summary.json",
+          "aggregateFromOrders": true
+        }
+      },
+      "sync": {
+        "orders": [
+          {
+            "script": "zeroth_sync.mjs",
+            "args": [
+              "sp-al1"
+            ],
+            "outputs": [
+              "st_al1_shopee.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "al1-tk",
@@ -198,7 +591,19 @@
       "site": "seller-id.tokopedia.com",
       "storeId": "27827140475426",
       "file": "st_al1_tk.json",
-      "live": true
+      "live": true,
+      "id": "al1-tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "ALIBABA一店",
+      "currency": "IDR",
+      "enabled": true,
+      "aliases": [
+        "ALIBABA一店-抖店",
+        "【印尼ALIBABA一店】抖店"
+      ],
+      "modules": {},
+      "note": "尚未提供模块数据源"
     },
     {
       "key": "al2-sp",
@@ -213,7 +618,18 @@
       "storeId": "27836768846423",
       "file": "st_al2_shopee.json",
       "live": false,
-      "note": "该店不存在(无实际店铺)，暂不使用"
+      "note": "尚未提供模块数据源",
+      "id": "al2-sp",
+      "countryCode": "ID",
+      "platformId": "shopee",
+      "name": "ALIBABA二店",
+      "currency": "IDR",
+      "enabled": false,
+      "aliases": [
+        "【印尼ALIBABA二店】虾皮",
+        "ALIBABA二店-虾皮"
+      ],
+      "modules": {}
     },
     {
       "key": "al2-tk",
@@ -228,7 +644,69 @@
       "storeId": "27836769221097",
       "file": "st_al2_tk.json",
       "live": false,
-      "note": "该店不存在(无实际店铺)，暂不使用"
+      "note": "尚未提供模块数据源",
+      "id": "al2-tk",
+      "countryCode": "ID",
+      "platformId": "tiktok",
+      "name": "ALIBABA二店",
+      "currency": "IDR",
+      "enabled": false,
+      "aliases": [
+        "【印尼ALIBABA二店】抖店",
+        "ALIBABA二店-抖店"
+      ],
+      "modules": {}
     }
-  ]
+  ],
+  "schemaVersion": 2,
+  "platforms": [
+    {
+      "id": "tiktok",
+      "name": "TikTok"
+    },
+    {
+      "id": "shopee",
+      "name": "Shopee"
+    },
+    {
+      "id": "lazada",
+      "name": "Lazada"
+    }
+  ],
+  "sync": {
+    "intervalMinutes": 30,
+    "publish": {
+      "enabled": true,
+      "owner": "Z-WProject0509",
+      "repo": "Z-WProject0509.github.io",
+      "branch": "main"
+    },
+    "derivedSteps": [
+      {
+        "script": "make_daily_summary.mjs",
+        "outputs": [
+          "sales_summary.json"
+        ]
+      },
+      {
+        "script": "make_ads_daily.mjs",
+        "outputs": [
+          "ads_summary.json"
+        ]
+      },
+      {
+        "script": "make_tk_ads_daily.mjs",
+        "outputs": [
+          "ads_tk_summary.json"
+        ]
+      },
+      {
+        "script": "make_finance_ledger.mjs",
+        "outputs": [
+          "finance_orders.json"
+        ]
+      }
+    ],
+    "stepTimeoutMinutes": 30
+  }
 }
