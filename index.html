@@ -179,6 +179,15 @@ setInterval(function () {
 </script>
 <script>
 function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+// 把 UTC ISO(带 Z) 显示成本地时间(否则页面看到12:45那类UTC误导为早上)
+function utcLocal(s, withDate) {
+  if (!s) return '';
+  var d = new Date(/Z$/i.test(s) ? s : s.replace(' ', 'T') + '.000Z');
+  if (isNaN(d)) return String(s).replace('T', ' ').slice(0, 16);
+  var p = n => String(n).padStart(2, '0');
+  if (withDate) return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  return p(d.getHours()) + ':' + p(d.getMinutes());
+}
 function fixedTable(cols, rowsHtml, cls) {
   if (!rowsHtml) return '<div class="empty">暂无数据</div>';
   return '<div class="' + cls + '"><div class="fhead"><table><thead><tr>' + cols.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr></thead></table></div>' +
@@ -296,7 +305,7 @@ function renderSide(plat, d) {
     }).join('');
     document.getElementById('rateBox').innerHTML =
       chips +
-      '<div class="fx-note">汇率实时（每 15 分钟随数据更新）· 更新于 ' + esc(fx.updatedAt.replace('T', ' ').slice(0, 16)) + '</div>' +
+      '<div class="fx-note">汇率实时（每 15 分钟随数据更新）· 更新于 ' + esc(utcLocal(fx.updatedAt, true)) + '</div>' +
       '<div class="fx-calc"><div class="fxc-title">💱 换算（币种可选 · 汇率实时）</div>' +
       '<div class="fxc-row"><select id="fxFrom"></select><input id="fxAmount" type="number" placeholder="金额" value="100"></div>' +
       '<div class="fxc-row">≈ <b id="fxResult" class="fxr">—</b></div></div>';
@@ -320,7 +329,7 @@ function render(plat, d) {
   var cc = d.currency || 'IDR';
   var curFx = fxItem(fx, cc);
   var cny = fx && c.amountLocal != null && curFx ? c.amountLocal * curFx.cnyPer : null;
-  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + fx.updatedAt.slice(0, 10) : '';
+  var fxNote = fx && fx.updatedAt ? '汇率更新于 ' + utcLocal(fx.updatedAt, true) + '（每 15 分钟刷新）' : '';
   document.getElementById('cards-' + plat).innerHTML = [
     ['订单总数', (c.count || 0) + ' 单', ''],
     ['取消订单', cancelled + ' 单', cancelled ? 'red' : ''],
