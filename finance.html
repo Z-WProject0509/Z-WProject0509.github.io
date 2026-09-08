@@ -84,6 +84,17 @@
 var CHECK_LABEL = { ok: ['ok','已到账'], pending: ['pend','跟踪中'], abnormal: ['bad','⚠ 异常'], cancelled: ['dim','✕ 取消'] };
 var ledger = null, cPlat = 'all', cFilt = 'all', cCty = '印尼', cShop = null, finInit = false;
 var currentShop = null, financeRequest = 0;
+function financeShop(shop) {
+  if (!shop) return shop;
+  // 新版注册表按模块声明数据源；旧版 finance 配置仍兼容。
+  if (!shop.modules) return shop;
+  const finance = shop.modules.finance;
+  return {...shop, finance: finance?.file ? {
+    ...finance,
+    incomeFile: shop.modules.income?.file,
+    adsFile: shop.modules.ads?.file
+  } : null};
+}
 function pendingFinanceBox() {
   window.__csvRows = []; window.__allRows = ''; window.__finShown = 0;
   document.getElementById('exportBtn').disabled = true;
@@ -309,7 +320,7 @@ document.getElementById('exportBtn').addEventListener('click', function () {
 });
 initSyncPill();
 ShopScope.ready.then(() => {
-  ShopScope.mount(document.getElementById('scopeBar'), (state, shop) => {currentShop=shop; cShop=shop?.key; cCty=state.country; loadAll();});
+  ShopScope.mount(document.getElementById('scopeBar'), (state, shop) => {currentShop=financeShop(shop); cShop=shop?.key; cCty=state.country; loadAll();});
   setInterval(loadAll,5*60*1000);
 }).catch(e => {document.getElementById('scopeBar').textContent=e.message;});
 </script>
