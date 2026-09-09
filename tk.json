@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026/9/9 13:35:01",
+  "generatedAt": "2026/9/9 14:05:18",
   "platform": "TK",
   "storeName": "Tiktok—MULMUL",
   "orders": {
-    "count": 36,
-    "totalQty": 41,
-    "amountLocal": 1680198
+    "count": 46,
+    "totalQty": 52,
+    "amountLocal": 2054181
   },
   "statusAgg": {
-    "Shipped": 35,
-    "Awaiting shipment": 1
+    "Shipped": 37,
+    "Awaiting shipment": 9
   },
-  "toshipCount": 0,
+  "toshipCount": 9,
   "fx": {
     "list": [
       {
@@ -89,6 +89,316 @@
   },
   "recent": [
     {
+      "d": "2026-09-09 12:59:18",
+      "id": "585975841635337998",
+      "sku": "781G-2",
+      "qty": 1,
+      "amt": 47989,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:59:18",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 47989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:52:36",
+      "id": "585975824809953203",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:52:36",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:48:06",
+      "id": "585975752054965579",
+      "sku": "778",
+      "qty": 1,
+      "amt": 37430,
+      "inc": 28262,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:48:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 37430,
+      "expectedIncome": 28262,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:46:17",
+      "id": "585975766976660811",
+      "sku": "778",
+      "qty": 1,
+      "amt": 37430,
+      "inc": null,
+      "st": "Shipped",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:46:17",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 37430,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Shipped",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:56",
+      "id": "585975792158279558",
+      "sku": "781-1 / 781G-2",
+      "qty": 2,
+      "amt": 78697,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:56",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 2,
+      "salesAmount": 78697,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:21",
+      "id": "585975605211726881",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 40470,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:21",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 40470,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:34",
+      "id": "585975645286532363",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": 31904,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:34",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": 31904,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:13",
+      "id": "585975647118132362",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": 34103,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:13",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": 34103,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:38:35",
+      "id": "585975592944698788",
+      "sku": "710",
+      "qty": 1,
+      "amt": null,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:38:35",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": null,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:30:13",
+      "id": "585975438015825316",
+      "sku": "710",
+      "qty": 1,
+      "amt": null,
+      "inc": null,
+      "st": "Shipped",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:30:13",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": null,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Shipped",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
       "d": "2026-09-09 11:51:30",
       "id": "585974624729269316",
       "sku": "778G-9",
@@ -117,7 +427,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:39:18",
@@ -148,7 +458,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:25:50",
@@ -156,7 +466,7 @@
       "sku": "781-1 / 781G-2",
       "qty": 2,
       "amt": 84757,
-      "inc": null,
+      "inc": 70623,
       "st": "Shipped",
       "sample": false,
       "orderedAt": "2026-09-09 11:25:50",
@@ -165,7 +475,7 @@
       "store": "MULMUL",
       "quantity": 2,
       "salesAmount": 84757,
-      "expectedIncome": null,
+      "expectedIncome": 70623,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -179,7 +489,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:21:53",
@@ -210,7 +520,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:09:46",
@@ -241,7 +551,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:06:34",
@@ -249,7 +559,7 @@
       "sku": "856",
       "qty": 1,
       "amt": 41590,
-      "inc": null,
+      "inc": 31751,
       "st": "Shipped",
       "sample": false,
       "orderedAt": "2026-09-09 11:06:34",
@@ -258,7 +568,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 41590,
-      "expectedIncome": null,
+      "expectedIncome": 31751,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -272,7 +582,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:55:07",
@@ -303,7 +613,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:50:01",
@@ -334,7 +644,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:39:51",
@@ -365,7 +675,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:20:57",
@@ -396,7 +706,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:13:24",
@@ -427,7 +737,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:11:34",
@@ -458,7 +768,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:00:53",
@@ -466,7 +776,7 @@
       "sku": "781-1",
       "qty": 1,
       "amt": 44989,
-      "inc": null,
+      "inc": 32658,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 10:00:53",
@@ -475,7 +785,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 44989,
-      "expectedIncome": null,
+      "expectedIncome": 32658,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -489,7 +799,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:45:11",
@@ -520,7 +830,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:32:17",
@@ -551,7 +861,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:28:55",
@@ -582,7 +892,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:28:24",
@@ -613,7 +923,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:12:30",
@@ -644,7 +954,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:24:51",
@@ -675,7 +985,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:19:07",
@@ -706,7 +1016,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:17:40",
@@ -737,7 +1047,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:12:37",
@@ -768,7 +1078,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:12:30",
@@ -799,7 +1109,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:54:15",
@@ -830,7 +1140,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:36:01",
@@ -861,7 +1171,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:24:32",
@@ -892,7 +1202,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:17:56",
@@ -923,7 +1233,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:42:23",
@@ -954,7 +1264,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:40:40",
@@ -985,7 +1295,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:24:28",
@@ -1016,7 +1326,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:12:45",
@@ -1047,7 +1357,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 05:00:43",
@@ -1078,7 +1388,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 04:22:05",
@@ -1109,7 +1419,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 01:45:18",
@@ -1140,7 +1450,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 00:30:25",
@@ -1171,7 +1481,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 00:16:19",
@@ -1202,12 +1512,584 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     }
   ],
-  "toship": [],
+  "toship": [
+    {
+      "d": "2026-09-09 12:38:35",
+      "id": "585975592944698788",
+      "st": "Awaiting shipment",
+      "sku": "710",
+      "amt": null,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:38:35",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": null,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:34",
+      "id": "585975645286532363",
+      "st": "Awaiting shipment",
+      "sku": "781-1",
+      "amt": 43989,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:34",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:48:06",
+      "id": "585975752054965579",
+      "st": "Awaiting shipment",
+      "sku": "778",
+      "amt": 37430,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:48:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 37430,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:59:18",
+      "id": "585975841635337998",
+      "st": "Awaiting shipment",
+      "sku": "781G-2",
+      "amt": 47989,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:59:18",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 47989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 10:00:53",
+      "id": "585972646503089640",
+      "st": "Awaiting shipment",
+      "sku": "781-1",
+      "amt": 44989,
+      "sample": false,
+      "orderedAt": "2026-09-09 10:00:53",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 44989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:13",
+      "id": "585975647118132362",
+      "st": "Awaiting shipment",
+      "sku": "781-1",
+      "amt": 43989,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:13",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:56",
+      "id": "585975792158279558",
+      "st": "Awaiting shipment",
+      "sku": "781-1 / 781G-2",
+      "amt": 78697,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:56",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 78697,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:21",
+      "id": "585975605211726881",
+      "st": "Awaiting shipment",
+      "sku": "781-1",
+      "amt": 40470,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:21",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 40470,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:52:36",
+      "id": "585975824809953203",
+      "st": "Awaiting shipment",
+      "sku": "781-1",
+      "amt": 43989,
+      "sample": false,
+      "orderedAt": "2026-09-09 12:52:36",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    }
+  ],
   "allOrders": [
     {
+      "d": "2026-09-09 12:59:18",
+      "id": "585975841635337998",
+      "sku": "781G-2",
+      "qty": 1,
+      "amt": 47989,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:59:18",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 47989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:52:36",
+      "id": "585975824809953203",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:52:36",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:48:06",
+      "id": "585975752054965579",
+      "sku": "778",
+      "qty": 1,
+      "amt": 37430,
+      "inc": 28262,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:48:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 37430,
+      "expectedIncome": 28262,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:46:17",
+      "id": "585975766976660811",
+      "sku": "778",
+      "qty": 1,
+      "amt": 37430,
+      "inc": null,
+      "st": "Shipped",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:46:17",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 37430,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Shipped",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:56",
+      "id": "585975792158279558",
+      "sku": "781-1 / 781G-2",
+      "qty": 2,
+      "amt": 78697,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:56",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 2,
+      "salesAmount": 78697,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:42:21",
+      "id": "585975605211726881",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 40470,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:42:21",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 40470,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:34",
+      "id": "585975645286532363",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": 31904,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:34",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": 31904,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:41:13",
+      "id": "585975647118132362",
+      "sku": "781-1",
+      "qty": 1,
+      "amt": 43989,
+      "inc": 34103,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:41:13",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 43989,
+      "expectedIncome": 34103,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:38:35",
+      "id": "585975592944698788",
+      "sku": "710",
+      "qty": 1,
+      "amt": null,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:38:35",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": null,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
+      "d": "2026-09-09 12:30:13",
+      "id": "585975438015825316",
+      "sku": "710",
+      "qty": 1,
+      "amt": null,
+      "inc": null,
+      "st": "Shipped",
+      "sample": false,
+      "orderedAt": "2026-09-09 12:30:13",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": null,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Shipped",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 14:05:18"
+    },
+    {
       "d": "2026-09-09 11:51:30",
       "id": "585974624729269316",
       "sku": "778G-9",
@@ -1236,7 +2118,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:39:18",
@@ -1267,7 +2149,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:25:50",
@@ -1275,7 +2157,7 @@
       "sku": "781-1 / 781G-2",
       "qty": 2,
       "amt": 84757,
-      "inc": null,
+      "inc": 70623,
       "st": "Shipped",
       "sample": false,
       "orderedAt": "2026-09-09 11:25:50",
@@ -1284,7 +2166,7 @@
       "store": "MULMUL",
       "quantity": 2,
       "salesAmount": 84757,
-      "expectedIncome": null,
+      "expectedIncome": 70623,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -1298,7 +2180,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:21:53",
@@ -1329,7 +2211,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:09:46",
@@ -1360,7 +2242,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 11:06:34",
@@ -1368,7 +2250,7 @@
       "sku": "856",
       "qty": 1,
       "amt": 41590,
-      "inc": null,
+      "inc": 31751,
       "st": "Shipped",
       "sample": false,
       "orderedAt": "2026-09-09 11:06:34",
@@ -1377,7 +2259,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 41590,
-      "expectedIncome": null,
+      "expectedIncome": 31751,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -1391,7 +2273,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:55:07",
@@ -1422,7 +2304,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:50:01",
@@ -1453,7 +2335,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:39:51",
@@ -1484,7 +2366,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:20:57",
@@ -1515,7 +2397,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:13:24",
@@ -1546,7 +2428,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:11:34",
@@ -1577,7 +2459,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 10:00:53",
@@ -1585,7 +2467,7 @@
       "sku": "781-1",
       "qty": 1,
       "amt": 44989,
-      "inc": null,
+      "inc": 32658,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 10:00:53",
@@ -1594,7 +2476,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 44989,
-      "expectedIncome": null,
+      "expectedIncome": 32658,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -1608,7 +2490,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:45:11",
@@ -1639,7 +2521,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:32:17",
@@ -1670,7 +2552,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:28:55",
@@ -1701,7 +2583,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:28:24",
@@ -1732,7 +2614,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 09:12:30",
@@ -1763,7 +2645,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:24:51",
@@ -1794,7 +2676,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:19:07",
@@ -1825,7 +2707,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:17:40",
@@ -1856,7 +2738,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:12:37",
@@ -1887,7 +2769,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 08:12:30",
@@ -1918,7 +2800,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:54:15",
@@ -1949,7 +2831,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:36:01",
@@ -1980,7 +2862,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:24:32",
@@ -2011,7 +2893,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 07:17:56",
@@ -2042,7 +2924,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:42:23",
@@ -2073,7 +2955,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:40:40",
@@ -2104,7 +2986,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:24:28",
@@ -2135,7 +3017,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 06:12:45",
@@ -2166,7 +3048,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 05:00:43",
@@ -2197,7 +3079,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 04:22:05",
@@ -2228,7 +3110,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 01:45:18",
@@ -2259,7 +3141,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 00:30:25",
@@ -2290,7 +3172,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     },
     {
       "d": "2026-09-09 00:16:19",
@@ -2321,10 +3203,10 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 13:35:01"
+      "collectedAt": "2026/9/9 14:05:18"
     }
   ],
-  "sourceCollectedAt": "2026/9/9 13:35:01",
+  "sourceCollectedAt": "2026/9/9 14:05:18",
   "schemaVersion": 3,
   "orderSchema": [
     "platform",
