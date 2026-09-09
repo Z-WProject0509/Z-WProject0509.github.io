@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026/9/9 16:07:27",
+  "generatedAt": "2026/9/9 16:33:22",
   "platform": "TK",
   "storeName": "Tiktok—MULMUL",
   "orders": {
-    "count": 56,
-    "totalQty": 62,
-    "amountLocal": 2573793
+    "count": 58,
+    "totalQty": 64,
+    "amountLocal": 2654644
   },
   "statusAgg": {
-    "Awaiting shipment": 7,
+    "Awaiting shipment": 9,
     "Shipped": 49
   },
-  "toshipCount": 7,
+  "toshipCount": 9,
   "fx": {
     "list": [
       {
@@ -89,12 +89,74 @@
   },
   "recent": [
     {
+      "d": "2026-09-09 15:30:24",
+      "id": "585978509486884247",
+      "sku": "710",
+      "qty": 1,
+      "amt": 34782,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 15:30:24",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 34782,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
+    },
+    {
+      "d": "2026-09-09 15:05:06",
+      "id": "585978059896030739",
+      "sku": "781G-2",
+      "qty": 1,
+      "amt": 46069,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 15:05:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 46069,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
+    },
+    {
       "d": "2026-09-09 14:59:39",
       "id": "585977957527749851",
       "sku": "795",
       "qty": 1,
       "amt": 43589,
-      "inc": null,
+      "inc": 31603,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 14:59:39",
@@ -103,7 +165,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 43589,
-      "expectedIncome": null,
+      "expectedIncome": 31603,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -117,7 +179,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:52:33",
@@ -125,7 +187,7 @@
       "sku": "781G-2",
       "qty": 1,
       "amt": 44150,
-      "inc": null,
+      "inc": 35226,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 14:52:33",
@@ -134,7 +196,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 44150,
-      "expectedIncome": null,
+      "expectedIncome": 35226,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -148,7 +210,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:30:31",
@@ -179,7 +241,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:14:57",
@@ -210,7 +272,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:12:59",
@@ -241,7 +303,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:44:00",
@@ -272,7 +334,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:32:10",
@@ -303,7 +365,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:22:54",
@@ -334,7 +396,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:21:52",
@@ -365,7 +427,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:14:24",
@@ -396,7 +458,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:59:18",
@@ -427,7 +489,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:52:36",
@@ -458,7 +520,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:48:06",
@@ -489,7 +551,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:46:17",
@@ -520,7 +582,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:42:56",
@@ -551,7 +613,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:42:21",
@@ -582,7 +644,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:41:34",
@@ -613,7 +675,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:41:13",
@@ -644,7 +706,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:38:35",
@@ -675,7 +737,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:30:13",
@@ -706,7 +768,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:51:30",
@@ -737,7 +799,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:39:18",
@@ -768,7 +830,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:25:50",
@@ -799,7 +861,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:21:53",
@@ -830,7 +892,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:09:46",
@@ -861,7 +923,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:06:34",
@@ -892,7 +954,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:55:07",
@@ -923,7 +985,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:50:01",
@@ -954,7 +1016,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:39:51",
@@ -985,7 +1047,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:20:57",
@@ -1016,7 +1078,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:13:24",
@@ -1047,7 +1109,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:11:34",
@@ -1078,7 +1140,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:00:53",
@@ -1109,7 +1171,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:45:11",
@@ -1140,7 +1202,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:32:17",
@@ -1171,7 +1233,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:28:55",
@@ -1202,7 +1264,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:28:24",
@@ -1233,7 +1295,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:12:30",
@@ -1264,7 +1326,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:24:51",
@@ -1295,7 +1357,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:19:07",
@@ -1326,7 +1388,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:17:40",
@@ -1357,7 +1419,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:12:37",
@@ -1388,7 +1450,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:12:30",
@@ -1419,7 +1481,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:54:15",
@@ -1450,7 +1512,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:36:01",
@@ -1481,7 +1543,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:24:32",
@@ -1512,7 +1574,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:17:56",
@@ -1543,7 +1605,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:42:23",
@@ -1574,7 +1636,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:40:40",
@@ -1605,7 +1667,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:24:28",
@@ -1636,7 +1698,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:12:45",
@@ -1667,7 +1729,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 05:00:43",
@@ -1698,7 +1760,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 04:22:05",
@@ -1729,7 +1791,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 01:45:18",
@@ -1760,7 +1822,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 00:30:25",
@@ -1791,7 +1853,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 00:16:19",
@@ -1822,11 +1884,40 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     }
   ],
   "toship": [
     {
+      "d": "2026-09-09 15:05:06",
+      "id": "585978059896030739",
+      "st": "Awaiting shipment",
+      "sku": "781G-2",
+      "amt": 46069,
+      "sample": false,
+      "orderedAt": "2026-09-09 15:05:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 46069,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
+    },
+    {
       "d": "2026-09-09 14:30:31",
       "id": "585966887146915139",
       "st": "Awaiting shipment",
@@ -1853,7 +1944,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:32:10",
@@ -1882,7 +1973,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:12:59",
@@ -1911,7 +2002,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:14:57",
@@ -1940,7 +2031,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:59:39",
@@ -1969,7 +2060,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:44:00",
@@ -1998,7 +2089,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:52:33",
@@ -2027,17 +2118,108 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
+    },
+    {
+      "d": "2026-09-09 15:30:24",
+      "id": "585978509486884247",
+      "st": "Awaiting shipment",
+      "sku": "710",
+      "amt": 34782,
+      "sample": false,
+      "orderedAt": "2026-09-09 15:30:24",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 34782,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
     }
   ],
   "allOrders": [
+    {
+      "d": "2026-09-09 15:30:24",
+      "id": "585978509486884247",
+      "sku": "710",
+      "qty": 1,
+      "amt": 34782,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 15:30:24",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 34782,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
+    },
+    {
+      "d": "2026-09-09 15:05:06",
+      "id": "585978059896030739",
+      "sku": "781G-2",
+      "qty": 1,
+      "amt": 46069,
+      "inc": null,
+      "st": "Awaiting shipment",
+      "sample": false,
+      "orderedAt": "2026-09-09 15:05:06",
+      "platform": "tiktok",
+      "country": "ID",
+      "store": "MULMUL",
+      "quantity": 1,
+      "salesAmount": 46069,
+      "expectedIncome": null,
+      "actualIncome": null,
+      "platformFee": null,
+      "commission": null,
+      "shippingFee": null,
+      "shippingSubsidy": null,
+      "discount": null,
+      "refundAmount": null,
+      "settlementStatus": "",
+      "settledAt": "",
+      "currency": "IDR",
+      "status": "Awaiting shipment",
+      "isFreeSample": false,
+      "remark": "",
+      "collectedAt": "2026/9/9 16:33:22"
+    },
     {
       "d": "2026-09-09 14:59:39",
       "id": "585977957527749851",
       "sku": "795",
       "qty": 1,
       "amt": 43589,
-      "inc": null,
+      "inc": 31603,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 14:59:39",
@@ -2046,7 +2228,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 43589,
-      "expectedIncome": null,
+      "expectedIncome": 31603,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -2060,7 +2242,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:52:33",
@@ -2068,7 +2250,7 @@
       "sku": "781G-2",
       "qty": 1,
       "amt": 44150,
-      "inc": null,
+      "inc": 35226,
       "st": "Awaiting shipment",
       "sample": false,
       "orderedAt": "2026-09-09 14:52:33",
@@ -2077,7 +2259,7 @@
       "store": "MULMUL",
       "quantity": 1,
       "salesAmount": 44150,
-      "expectedIncome": null,
+      "expectedIncome": 35226,
       "actualIncome": null,
       "platformFee": null,
       "commission": null,
@@ -2091,7 +2273,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:30:31",
@@ -2122,7 +2304,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:14:57",
@@ -2153,7 +2335,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 14:12:59",
@@ -2184,7 +2366,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:44:00",
@@ -2215,7 +2397,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:32:10",
@@ -2246,7 +2428,7 @@
       "status": "Awaiting shipment",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:22:54",
@@ -2277,7 +2459,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:21:52",
@@ -2308,7 +2490,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 13:14:24",
@@ -2339,7 +2521,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:59:18",
@@ -2370,7 +2552,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:52:36",
@@ -2401,7 +2583,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:48:06",
@@ -2432,7 +2614,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:46:17",
@@ -2463,7 +2645,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:42:56",
@@ -2494,7 +2676,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:42:21",
@@ -2525,7 +2707,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:41:34",
@@ -2556,7 +2738,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:41:13",
@@ -2587,7 +2769,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:38:35",
@@ -2618,7 +2800,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 12:30:13",
@@ -2649,7 +2831,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:51:30",
@@ -2680,7 +2862,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:39:18",
@@ -2711,7 +2893,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:25:50",
@@ -2742,7 +2924,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:21:53",
@@ -2773,7 +2955,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:09:46",
@@ -2804,7 +2986,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 11:06:34",
@@ -2835,7 +3017,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:55:07",
@@ -2866,7 +3048,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:50:01",
@@ -2897,7 +3079,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:39:51",
@@ -2928,7 +3110,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:20:57",
@@ -2959,7 +3141,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:13:24",
@@ -2990,7 +3172,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:11:34",
@@ -3021,7 +3203,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 10:00:53",
@@ -3052,7 +3234,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:45:11",
@@ -3083,7 +3265,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:32:17",
@@ -3114,7 +3296,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:28:55",
@@ -3145,7 +3327,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:28:24",
@@ -3176,7 +3358,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 09:12:30",
@@ -3207,7 +3389,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:24:51",
@@ -3238,7 +3420,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:19:07",
@@ -3269,7 +3451,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:17:40",
@@ -3300,7 +3482,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:12:37",
@@ -3331,7 +3513,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 08:12:30",
@@ -3362,7 +3544,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:54:15",
@@ -3393,7 +3575,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:36:01",
@@ -3424,7 +3606,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:24:32",
@@ -3455,7 +3637,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 07:17:56",
@@ -3486,7 +3668,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:42:23",
@@ -3517,7 +3699,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:40:40",
@@ -3548,7 +3730,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:24:28",
@@ -3579,7 +3761,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 06:12:45",
@@ -3610,7 +3792,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 05:00:43",
@@ -3641,7 +3823,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 04:22:05",
@@ -3672,7 +3854,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 01:45:18",
@@ -3703,7 +3885,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 00:30:25",
@@ -3734,7 +3916,7 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     },
     {
       "d": "2026-09-09 00:16:19",
@@ -3765,10 +3947,10 @@
       "status": "Shipped",
       "isFreeSample": false,
       "remark": "",
-      "collectedAt": "2026/9/9 16:07:27"
+      "collectedAt": "2026/9/9 16:33:22"
     }
   ],
-  "sourceCollectedAt": "2026/9/9 16:07:27",
+  "sourceCollectedAt": "2026/9/9 16:33:22",
   "schemaVersion": 3,
   "orderSchema": [
     "platform",
